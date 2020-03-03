@@ -1,0 +1,15 @@
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+	box-sizing: border-box;
+}
+
+/* Responsive images */
+img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+/*** Utility Classes ***/

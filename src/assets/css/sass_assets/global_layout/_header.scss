@@ -1,0 +1,53 @@
+header {
+	background: $green-dark;
+
+	nav .navbar-brand { font-size: 2rem }
+
+	.navbar-brand span,
+	nav .navbar-nav .nav-item a.nav-link { color: $green-light-2 }
+
+	#mobile-navbar { display: none }
+
+	nav .navbar-nav .nav-item a.nav-link {
+
+		&.page-active {
+			color: $dark-1;
+			border-bottom: 1px solid $dark-1;
+		}
+	}
+
+	nav .navbar-nav .nav-item a.nav-link:not(.page-active):hover { color: $green-light-1 }
+
+	#login-btn,
+	#signup-btn {
+		padding: .3rem 1rem;
+		border-radius: 5px;
+		border: 2px solid transparent;
+		background: transparent;
+		color: $green-light-2;
+	}
+
+	#login-btn {
+		border-color: lighten($dark-1, 11%);
+
+		&:hover {
+			border-color: $dark-2;
+			background: lighten($green-dark, 5%);
+		}
+	}
+
+	#signup-btn {
+		background: lighten($dark-1, 11%);
+
+		&:hover { background: $dark-2 }
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	
+	header {
+
+		#desktop-navbar { display: none }
+		#mobile-navbar { display: block }
+	}
+}

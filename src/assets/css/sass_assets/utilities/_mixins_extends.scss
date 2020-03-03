@@ -1,0 +1,32 @@
+// Mixins
+// Flexbox
+@mixin flex($direction, $justify, $align) {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: $direction;
+	flex-direction: $direction;
+	-webkit-box-pack: $justify;
+	-ms-flex-pack: $justify;
+	justify-content: $justify;
+	-webkit-box-align: $align;
+	-ms-flex-align: $align;
+	align-items: $align;
+}
+
+// Grid
+@mixin grid($columns, $grid-gap) {
+	display: grid;
+	display: -ms-grid;
+	grid-template-columns: $columns;
+	grid-gap: $grid-gap;
+}
+
+@mixin user-select {
+	-webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Standard syntax */
+}
