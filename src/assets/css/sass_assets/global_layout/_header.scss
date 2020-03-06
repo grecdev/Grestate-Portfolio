@@ -1,6 +1,11 @@
 header {
 	background: $green-dark;
-
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+	
 	nav .navbar-brand { font-size: 2rem }
 
 	.navbar-brand span,
@@ -21,7 +26,6 @@ header {
 	#login-btn,
 	#signup-btn {
 		padding: .3rem 1rem;
-		border-radius: 5px;
 		border: 2px solid transparent;
 		background: transparent;
 		color: $green-light-2;

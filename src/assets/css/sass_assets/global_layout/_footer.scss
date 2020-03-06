@@ -1,0 +1,24 @@
+footer {
+	background: $green-dark;
+	
+	.col {
+
+		a {
+			color: $green-light-2;
+			font-size: 1.1rem;
+			cursor: pointer;
+
+			&:hover {
+				text-decoration: underline;
+				color: $green-light-2;
+			}
+		}
+
+		.footer-social {
+
+			// img { width: 100% }
+		}
+
+		.footer-image { width: 75% }
+	}
+}

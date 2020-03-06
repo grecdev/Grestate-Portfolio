@@ -1,31 +1,46 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const GlobalContext = createContext();
 
-class GlobalContextProvider extends Component {
+const GlobalContextProvider = ({ children }) => {
 
-	state = {
-		test: 'test context'
+	const defaultGlobalState = {
+		counterActive: false
 	}
 
-	getImage(image) {
+	const [state, setState] = useState(defaultGlobalState);
 
-		return require(`../../media/${image}`);
+	const getImage = image => require(`../../media/${image}`);
+
+	const scrollEvent = e => {
+
+		const pos = window.pageYOffset;
+
+		if (pos >= 1300) setState(prevState => ({ ...prevState, counterActive: true }));
+		else setState(prevState => ({ ...prevState, counterActive: false }));
+
+		e.stopPropagation();
 	}
 
-	render() {
+	useEffect(() => {
 
-		const { getImage } = this;
+		window.addEventListener('scroll', scrollEvent);
 
-		return (
-			<GlobalContext.Provider value={{
-				...this.state,
-				getImage
-			}}>
-				{this.props.children}
-			</GlobalContext.Provider>
-		)
-	}
+		return () => {
+
+			window.removeEventListener('scroll', scrollEvent);
+
+		}
+	});
+
+	return (
+		<GlobalContext.Provider value={{
+			...state,
+			getImage
+		}}>
+			{children}
+		</GlobalContext.Provider>
+	)
 }
 
 export default GlobalContextProvider;

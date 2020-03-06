@@ -1,0 +1,10 @@
+form[name="property-form"] {
+	box-shadow: 0 0 9px 1px $dark-1;
+	background: #fff;
+
+	button[type='submit'] {
+		background: $green-dark;
+		
+		&:active { background-color: darken($green-dark, 10%) !important }
+	 }
+}

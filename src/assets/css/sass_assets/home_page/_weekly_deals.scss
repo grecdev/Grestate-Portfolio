@@ -1,0 +1,27 @@
+#weekly-deals {
+
+	.col {
+
+		&:hover {
+
+			> div:first-child img { transform: scale(1.1) }
+
+			> div:last-child * { letter-spacing: 2px }
+		}
+		
+		> div:first-child {
+			height: 300px;
+			overflow: hidden;
+
+			img { transition: transform 250ms ease-in-out }
+		}
+
+		> div:last-child {
+			color: #fff;
+			z-index: 2;
+			@include user-select;
+
+			h5, p { transition: all 250ms ease-in-out}
+		}
+	}
+}

@@ -2,10 +2,12 @@
 
 import React, { useState, lazy, Suspense } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
+
 // HUGE FILE
 // import ReactMapGL from 'react-map-gl';
 
 import Header from './components/global_layout/Header';
+import Footer from './components/global_layout/Footer';
 
 const HomePage = lazy(() => import('./components/pages/home/HomePage'));
 import BuyPage from './components/pages/buy/BuyPage';
@@ -37,8 +39,9 @@ const App = () => {
 					<Route exact strict path='/buy' component={BuyPage} />
 
 				</Switch>
-			</Suspense>
 
+				<Footer />
+			</Suspense>
 		</>
 	)
 }

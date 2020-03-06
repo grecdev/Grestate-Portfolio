@@ -1,0 +1,15 @@
+#how-it-works {
+
+	.col img { width: 20% }
+
+	.row .arrow {
+		width: 5%;
+		height: 3px;
+		background: $green-light-1;
+
+		i {
+			color: $green-light-1;
+			font-size: 1.5rem;
+		}
+	}
+}

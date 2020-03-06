@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 
-import Container from 'react-bootstrap/container';
+import PropertyForm from '../../global_layout/PropertyForm';
+
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -13,10 +15,19 @@ const Showcase = () => {
 	return (
 		<section id='home-showcase'>
 			<Container fluid>
-				<Row>
-					<div className="home-showcase-text">
-						<h1 className='mb-3'>Find the home that fits you</h1>
-						<h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, molestias.</h6>
+				<Row className='justify-content-center align-items-stretch'>
+					<div className="home-showcase-text d-flex flex-column justify-content-center">
+
+						<div className="mb-5">
+							<h1 className='mb-4'>Find the home that fits your needs</h1>
+							<p className='font-italic font-weight-light text-muted'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos numquam dolorum itaque quis, soluta minima quos esse eaque sed aliquid quas quasi. Sint, consequatur quia?</p>
+						</div>
+
+						<PropertyForm />
+
+						<div className="showcase-cartoon">
+							<img src={getImage('showcase-cartoon.svg')} alt='showcase cartoon' />
+						</div>
 					</div>
 
 					<div className="home-showcase-image">
@@ -29,7 +40,7 @@ const Showcase = () => {
 					</div>
 				</Row>
 			</Container>
-		</section>
+		</section >
 	)
 }
 
