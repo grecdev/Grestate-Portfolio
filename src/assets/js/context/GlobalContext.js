@@ -12,12 +12,22 @@ const GlobalContextProvider = ({ children }) => {
 
 	const getImage = image => require(`../../media/${image}`);
 
-	const scrollEvent = e => {
+	const counterAnimation = () => {
 
 		const pos = window.pageYOffset;
 
 		if (pos >= 1300) setState(prevState => ({ ...prevState, counterActive: true }));
-		else setState(prevState => ({ ...prevState, counterActive: false }));
+		else {
+
+			setState(prevState => ({ ...prevState, counterActive: false }));
+
+			document.querySelectorAll('.counter').forEach(counter => counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6))
+		}
+	}
+
+	const scrollEvent = e => {
+
+		counterAnimation();
 
 		e.stopPropagation();
 	}

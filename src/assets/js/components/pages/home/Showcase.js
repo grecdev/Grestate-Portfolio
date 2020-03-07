@@ -18,7 +18,7 @@ const Showcase = () => {
 				<Row className='justify-content-center align-items-stretch'>
 					<div className="home-showcase-text d-flex flex-column justify-content-center">
 
-						<div className="mb-5">
+						<div>
 							<h1 className='mb-4'>Find the home that fits your needs</h1>
 							<p className='font-italic font-weight-light text-muted'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos numquam dolorum itaque quis, soluta minima quos esse eaque sed aliquid quas quasi. Sint, consequatur quia?</p>
 						</div>

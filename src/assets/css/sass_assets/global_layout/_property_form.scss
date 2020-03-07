@@ -1,10 +1,47 @@
-form[name="property-form"] {
-	box-shadow: 0 0 9px 1px $dark-1;
+form {
+	border: 2px solid $dark-1;
 	background: #fff;
+	@include user-select;
+
+	.form-header {
+		top: -42px;
+		left: 40px;
+		background: #fff;
+
+		a {
+			padding: .5rem 1rem;
+			cursor: pointer;
+			position: relative;
+			border-right: 2px solid transparent;
+			border-left: 2px solid transparent;
+			border-top: 2px solid transparent;
+
+			&::before {
+				content: '';
+				position: absolute;
+				bottom: 0;
+				left: -2px;
+    		width: 106%;
+				height: 2px;
+				background: $dark-1;
+			}
+
+			&.active-form {
+				border-top: 2px solid $dark-1;
+				border-left: 2px solid $dark-1;
+				border-right: 2px solid $dark-1;
+				border-bottom: none;
+
+				&:before { display: none }
+			}
+		}
+	}
 
 	button[type='submit'] {
 		background: $green-dark;
+
+		&:focus { background: $green-dark }
 		
-		&:active { background-color: darken($green-dark, 10%) !important }
+		&:hover, &:active { background-color: darken($green-dark, 10%) !important }
 	 }
 }

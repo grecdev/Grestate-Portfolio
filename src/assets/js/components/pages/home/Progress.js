@@ -15,21 +15,27 @@ const Progress = () => {
 	const activateCounter = () => {
 
 		let speed;
+		let formattedStr;
+		let splittedNumber = [];
 
 		document.querySelectorAll('.counter').forEach(counter => {
 
 			function recursive() {
 
 				const incrementEnd = parseFloat(counter.dataset.incrementEnd);
-				const current = parseFloat(counter.textContent);
+
+				let current = counter.textContent.replace(/\,/g, '');
+				current = parseFloat(counter.textContent);
 
 				counter.dataset.incrementEnd.length > 3 ? speed = 100 : speed = 699;
 
 				let incrementNum = Math.ceil(incrementEnd / speed);
 
+				formattedStr = current + incrementNum;
+
 				if (current < incrementEnd) {
 
-					counter.textContent = current + incrementNum;
+					counter.textContent = formattedStr;
 
 					setTimeout(recursive, 5);
 

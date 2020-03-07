@@ -3,15 +3,15 @@
 
 	.container-fluid {
 
-		&, .row, .row > div { height: 100% }
-
-		.row { height: 100% }
+		&, > .row, .row > div { height: 100% }
 
 		.row > div { flex: 1 }
 	
 		.home-showcase-text {
 			padding: 5rem;
 			position: relative;
+
+			> div:first-child { margin-bottom: 5rem }
 
 			.showcase-cartoon {
 				position: absolute;
