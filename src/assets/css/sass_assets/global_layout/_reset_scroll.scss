@@ -1,0 +1,33 @@
+#reset-scroll {
+	position: fixed;
+	bottom: 20px;
+	right: 30px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid $dark-1;
+	@include flex(column, center, center);
+	background: $green-light-1;
+	font-size: 1.2rem;
+	color: $dark-1;
+	transition: all 200ms ease-in-out;
+	cursor: pointer;
+	
+	&:hover {
+		background: darken($green-light-1, 5%);
+		border-color: $dark-2;
+	}
+
+	&:hover button i { color: $dark-2 }
+
+	button {
+		background: none;
+		outline: none;
+		border: none;
+
+		i {
+			transition: color 200ms ease-in-out;
+			color: $dark-1;
+		}
+	}
+}

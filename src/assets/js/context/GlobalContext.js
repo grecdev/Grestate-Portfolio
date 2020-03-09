@@ -1,16 +1,33 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const GlobalContext = createContext();
 
 const GlobalContextProvider = ({ children }) => {
 
-	const defaultGlobalState = {
-		counterActive: false
+	const initialGlobalState = {
+		counterActive: false,
+		location: useLocation().pathname,
+		throttleEnable: true
 	}
 
-	const [state, setState] = useState(defaultGlobalState);
+	const [state, setState] = useState(initialGlobalState);
 
 	const getImage = image => require(`../../media/${image}`);
+
+	const throttle = (cb, interval) => {
+
+		return function (...args) {
+
+			if (!state.throttleEnable) return;
+
+			setState(prevState => ({ ...prevState, throttleEnable: false }));
+
+			cb.apply(this, args);
+
+			setTimeout(() => setState(prevState => ({ ...prevState, throttleEnable: true })), interval)
+		}
+	}
 
 	const counterAnimation = () => {
 
@@ -25,9 +42,20 @@ const GlobalContextProvider = ({ children }) => {
 		}
 	}
 
+	const resetScroll = () => {
+
+		const pos = window.pageYOffset;
+
+		if (pos >= 640) document.getElementById('reset-scroll').classList.remove('d-none');
+		else document.getElementById('reset-scroll').classList.add('d-none');
+
+		window.requestAnimationFrame(resetScroll);
+	}
+
 	const scrollEvent = e => {
 
 		counterAnimation();
+		resetScroll();
 
 		e.stopPropagation();
 	}
@@ -46,7 +74,8 @@ const GlobalContextProvider = ({ children }) => {
 	return (
 		<GlobalContext.Provider value={{
 			...state,
-			getImage
+			getImage,
+			throttle
 		}}>
 			{children}
 		</GlobalContext.Provider>

@@ -1,13 +1,14 @@
 "use strict";
 
 import React, { useState, lazy, Suspense } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 // HUGE FILE
 // import ReactMapGL from 'react-map-gl';
 
 import Header from './components/global_layout/Header';
 import Footer from './components/global_layout/Footer';
+import ResetScroll from './components/global_layout/ResetScroll';
 
 const HomePage = lazy(() => import('./components/pages/home/HomePage'));
 import BuyPage from './components/pages/buy/BuyPage';
@@ -21,8 +22,6 @@ const App = () => {
 		longitude: 26.061243,
 		zoom: 15
 	});
-
-	console.log(useLocation());
 
 	return (
 		<>
@@ -39,6 +38,8 @@ const App = () => {
 					<Route exact strict path='/buy' component={BuyPage} />
 
 				</Switch>
+
+				<ResetScroll />
 
 				<Footer />
 			</Suspense>
