@@ -15,7 +15,7 @@ const WeeklyDeals = () => {
 	return (
 		<section id='weekly-deals'>
 			<Container className='py-5'>
-				<SectionHeader title='Weekly Deals' />
+				<SectionHeader title='Weekly Deals' description={false} />
 
 				<Row>
 					<Col className='p-1 col-lg-7 position-relative d-flex flex-column justify-content-center align-items-center'>

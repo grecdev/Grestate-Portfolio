@@ -7,6 +7,7 @@
 @import './sass_assets/global_layout/header';
 @import './sass_assets/global_layout/property_form';
 @import './sass_assets/global_layout/section_header';
+@import './sass_assets/global_layout/showcase_header';
 @import './sass_assets/global_layout/reset_scroll';
 @import './sass_assets/global_layout/footer';
 
@@ -15,3 +16,9 @@
 @import './sass_assets/home_page/how_it_works';
 @import './sass_assets/home_page/weekly_deals';
 @import './sass_assets/home_page/progress_counter';
+
+// About page
+@import './sass_assets/about_page/about_showcase';
+@import './sass_assets/about_page/who_we_are';
+@import './sass_assets/about_page/our_team';
+@import './sass_assets/about_page/testimonial';

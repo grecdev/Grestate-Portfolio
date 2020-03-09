@@ -15,11 +15,9 @@ img {
 picture { height: 100% }
 
 /*** Utility Classes ***/
-input.input-field {
-	cursor: pointer;
-}
+input.input-field { cursor: pointer }
 
-.overlay-image{
+.overlay-image {
 	position: relative;
 
 	&::before {
@@ -35,4 +33,8 @@ input.input-field {
 	&-1::before { background: rgba(0, 0, 0, .3) }
 	&-2::before { background: rgba(0, 0, 0, .5) }
 	&-3::before { background: rgba(0, 0, 0, .7) }
+
+ 	> * { z-index: 1 }
 }
+
+.header-space { padding-top: 80px }

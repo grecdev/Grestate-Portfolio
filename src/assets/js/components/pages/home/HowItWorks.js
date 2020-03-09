@@ -15,7 +15,7 @@ const HowItWorks = () => {
 	return (
 		<section id='how-it-works'>
 			<Container className='p-3 mt-5'>
-				<SectionHeader title='How It Works' />
+				<SectionHeader title='How It Works' description={false} />
 
 				<Row className='align-items-center mt-5'>
 					<Col className='text-center'>

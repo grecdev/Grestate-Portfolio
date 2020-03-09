@@ -1,6 +1,6 @@
 "use strict";
 
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // HUGE FILE
@@ -11,7 +11,7 @@ import Footer from './components/global_layout/Footer';
 import ResetScroll from './components/global_layout/ResetScroll';
 
 const HomePage = lazy(() => import('./components/pages/home/HomePage'));
-import BuyPage from './components/pages/buy/BuyPage';
+const AboutPage = lazy(() => import('./components/pages/about/AboutPage'));
 
 const App = () => {
 
@@ -35,7 +35,7 @@ const App = () => {
 
 				<Switch>
 					<Route exact strict path='/' component={HomePage} />
-					<Route exact strict path='/buy' component={BuyPage} />
+					<Route exact strict path='/about' component={AboutPage} />
 
 				</Switch>
 

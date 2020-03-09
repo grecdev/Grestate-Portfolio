@@ -1,0 +1,5 @@
+.showcase-header {
+	color: $white;
+	border: 5px solid $white;
+	@include user-select;
+}

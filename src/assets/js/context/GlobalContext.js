@@ -1,13 +1,15 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 export const GlobalContext = createContext();
 
-const GlobalContextProvider = ({ children }) => {
+const GlobalContextProvider = (props) => {
+
+	const { children, location } = props;
 
 	const initialGlobalState = {
 		counterActive: false,
-		location: useLocation().pathname,
 		throttleEnable: true
 	}
 
@@ -52,6 +54,14 @@ const GlobalContextProvider = ({ children }) => {
 		window.requestAnimationFrame(resetScroll);
 	}
 
+	const loadEvent = e => {
+
+
+		e.stopPropagation();
+	}
+
+	document.addEventListener('DOMContentLoaded', loadEvent);
+
 	const scrollEvent = e => {
 
 		counterAnimation();
@@ -60,6 +70,7 @@ const GlobalContextProvider = ({ children }) => {
 		e.stopPropagation();
 	}
 
+
 	useEffect(() => {
 
 		window.addEventListener('scroll', scrollEvent);
@@ -67,13 +78,24 @@ const GlobalContextProvider = ({ children }) => {
 		return () => {
 
 			window.removeEventListener('scroll', scrollEvent);
+			document.removeEventListener('DOMContentLoaded', loadEvent);
 
 		}
+
 	});
+
+	useEffect(() => {
+
+		location.pathname !== '/' && document.body.classList.add('header-space');
+
+		window.scrollTo(0, 0);
+
+	}, [location.pathname]);
 
 	return (
 		<GlobalContext.Provider value={{
 			...state,
+			location: location.pathname,
 			getImage,
 			throttle
 		}}>
@@ -82,4 +104,10 @@ const GlobalContextProvider = ({ children }) => {
 	)
 }
 
-export default GlobalContextProvider;
+GlobalContextProvider.propTypes = {
+	match: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired,
+	history: PropTypes.object.isRequired
+};
+
+export default withRouter(GlobalContextProvider);

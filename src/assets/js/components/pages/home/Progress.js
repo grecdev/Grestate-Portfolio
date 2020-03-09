@@ -57,7 +57,7 @@ const Progress = () => {
 		<section id='progress-counter'>
 
 			<Container fluid className='py-5'>
-				<SectionHeader title='Progress across the years' />
+				<SectionHeader title='Progress across the years' description={false} />
 
 				<Row className='px-5'>
 					<Col className='text-center'>
