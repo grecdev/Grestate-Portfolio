@@ -20,7 +20,12 @@ const WeeklyDeals = () => {
 				<Row>
 					<Col className='p-1 col-lg-7 position-relative d-flex flex-column justify-content-center align-items-center'>
 						<div className='overlay-image overlay-image-2'>
-							<img src={getImage('property-sanfrancisco-9.jpg')} alt='San Francisco' />
+							<picture>
+								<source srcSet={getImage('property-sanfrancisco-9.jpg')} type='image/jpg' />
+								{/* <source srcSet={getImage('property-sanfrancisco-9.webp')} type='image/webp' /> */}
+
+								<img src={getImage('property-sanfrancisco-9.jpg')} alt='San Francisco' />
+							</picture>
 						</div>
 
 						<div className="position-absolute text-center">
@@ -32,7 +37,12 @@ const WeeklyDeals = () => {
 					<Col className='p-1 col-lg-5 position-relative d-flex flex-column justify-content-center align-items-center'>
 
 						<div className='overlay-image overlay-image-2'>
-							<img src={getImage('property-newyork-1.jpg')} alt='New York' />
+							<picture>
+								<source srcSet={getImage('property-newyork-1.jpg')} type='image/jpg' />
+								{/* <source srcSet={getImage('property-newyork-1.jpg')} type='image/webp' /> */}
+
+								<img src={getImage('property-newyork-1.jpg')} alt='New York' />
+							</picture>
 						</div>
 
 						<div className="position-absolute text-center">
@@ -45,7 +55,12 @@ const WeeklyDeals = () => {
 				<Row>
 					<Col className='p-1 col-lg-5 position-relative d-flex flex-column justify-content-center align-items-center'>
 						<div className='overlay-image overlay-image-2'>
-							<img src={getImage('property-boston-12.jpg')} alt='San Francisco' />
+							<picture>
+								<source srcSet={getImage('property-boston-12.jpg')} type='image/jpg' />
+								{/* <source srcSet={getImage('property-boston-12.webp')} type='image/webp' /> */}
+
+								<img src={getImage('property-boston-12.jpg')} alt='San Francisco' />
+							</picture>
 						</div>
 
 						<div className="position-absolute text-center">
@@ -57,7 +72,13 @@ const WeeklyDeals = () => {
 					<Col className='p-1 col-lg-7 position-relative d-flex flex-column justify-content-center align-items-center'>
 
 						<div className='overlay-image overlay-image-2'>
-							<img src={getImage('property-losangeles-7.jpg')} alt='New York' />
+							<picture>
+								<source srcSet={getImage('property-losangeles-7.jpg')} type='image/jpg' />
+								{/* <source srcSet={getImage('property-losangeles-7.webp')} type='image/webp' /> */}
+
+								<img src={getImage('property-losangeles-7.jpg')} alt='New York' />
+							</picture>
+
 						</div>
 
 						<div className="position-absolute text-center">

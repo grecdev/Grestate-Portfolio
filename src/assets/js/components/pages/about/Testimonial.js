@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { GlobalContext } from '../../../context/GlobalContext';
 
@@ -9,88 +11,245 @@ import Row from 'react-bootstrap/Row';
 
 const Testimonial = () => {
 
-	const { getImage } = useContext(GlobalContext);
+	const { getImage, throttle } = useContext(GlobalContext);
+
+	const defaultCarouselState = {
+		boxWidth: 0,
+		startPos: 0,
+		endPos: 0
+	}
+
+	const [carouselState, setCarouselState] = useState();
+
+	const testimonialDb = [
+		{
+			id: 1,
+			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
+			name: 'Elif Mathews',
+			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
+			avatar: 'testimonial-avatar-1.jpeg'
+		},
+		{
+			id: 2,
+			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
+			name: 'Dru Wood',
+			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
+			avatar: 'testimonial-avatar-2.jpeg'
+		},
+		{
+			id: 3,
+			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
+			name: 'Willem Lugo',
+			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
+			avatar: 'testimonial-avatar-3.jpeg'
+		},
+		{
+			id: 4,
+			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
+			name: 'Borys Redmond',
+			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
+			avatar: 'testimonial-avatar-4.jpeg'
+		},
+		{
+			id: 5,
+			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
+			name: 'Tashan Barr',
+			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
+			avatar: 'testimonial-avatar-5.jpeg'
+		}
+	];
+
+	const changeSlides = e => {
+
+		let direction;
+
+		if (e.type === 'click') {
+
+			document.querySelectorAll('.testimonial-box').forEach((box, index) => {
+
+				const currentPos = parseFloat(box.style.transform.replace(/(?![\.\-])(\D)/g, ''));
+
+				if (e.target.classList.contains('left-arrow') || e.target.parentElement.classList.contains('left-arrow')) direction = currentPos - carouselState.boxWidth;
+				if (e.target.classList.contains('right-arrow') || e.target.parentElement.classList.contains('right-arrow')) direction = currentPos + carouselState.boxWidth;
+
+				box.style.transform = `translateX(${direction}px)`;
+
+				if (currentPos === carouselState.startPos && (e.target.classList.contains('left-arrow') || e.target.parentElement.classList.contains('left-arrow'))) {
+
+					box.style.transition = 'none';
+					box.style.transform = `translateX(${carouselState.endPos}px)`;
+
+					setTimeout(() => box.style.transition = '', 300);
+				}
+
+				if (currentPos === carouselState.endPos && (e.target.classList.contains('right-arrow') || e.target.parentElement.classList.contains('right-arrow'))) {
+					box.style.transition = 'none';
+					box.style.transform = `translateX(${carouselState.startPos}px)`;
+
+					setTimeout(() => box.style.transition = '', 300);
+				}
+			});
+		}
+
+		e.stopPropagation();
+	}
+
+	let down = false;
+	let oldPosX = 0;
+	let direction = 0;
+	let inc = 0;
+
+	const moveSlides = e => {
+
+		/*
+
+			1. Get the currentPos
+			2. Event on the parent, but move the boxes
+
+		*/
+
+		if (e.currentTarget.id === 'carousel-draggable') {
+
+			if (e.type === 'mousedown') {
+
+				e.currentTarget.classList.add('grabbing');
+				down = true;
+			}
+
+			if (e.type === 'mousemove' && down) {
+
+				document.querySelectorAll('.testimonial-box').forEach((box, index) => {
+
+					let currentPos = Math.round(parseFloat(box.style.transform.match(/[\d\-]/g, '').join('')));
+
+
+					// if (carouselState.endPos < currentPos) {
+
+					// 	box.style.transition = 'none';
+
+					// 	box.style.transform = `translateX(${-carouselState.boxWidth * 2}px)`;
+
+					// 	setTimeout(() => box.style.transition = '', 1);
+					// 	console.log(box);
+					// }
+
+					// if (currentPos < carouselState.startPos) {
+
+					// 	box.style.transition = 'none';
+
+					// 	box.style.transform = `translateX(${carouselState.endPos + carouselState.boxWidth}px)`;
+
+					// 	setTimeout(() => box.style.transition = '', 1);
+					// 	console.log(box);
+					// }
+
+					// Move to the right
+					if (oldPosX < e.clientX) {
+
+						box.style.transform = `translateX(${currentPos + 10}px)`;
+
+						if (currentPos > (e.currentTarget.getBoundingClientRect().width + carouselState.boxWidth)) box.style.transform = `translateX(${carouselState.startPos}px)`
+
+						// Move to the left
+					} else {
+
+						box.style.transform = `translateX(${currentPos - 10}px)`;
+
+						if (currentPos < carouselState.startPos) box.style.transform = `translateX(${carouselState.boxWidth * 4}px)`;
+
+					}
+				});
+
+				oldPosX = e.clientX;
+			}
+
+			if (e.type === 'mouseup') {
+
+				console.log(carouselState);
+
+				document.querySelectorAll('.testimonial-box').forEach((box, index) => {
+
+					// let currentPos = Math.round(parseFloat(box.style.transform.match(/[\d\-]/g, '').join('')));
+
+					// console.log(box);
+
+				});
+
+				down = false;
+				e.currentTarget.classList.remove('grabbing');
+			}
+		}
+
+
+
+		e.stopPropagation();
+	}
+
+	const displayTestimonial = width => document.querySelectorAll('.testimonial-box').forEach((box, index) => {
+
+		box.style.transition = 'none';
+		box.style.transform = `translateX(${width * (index - 1)}px)`;
+
+		setTimeout(() => box.style.transition = '', 1);
+
+		const currentPos = Math.round(parseFloat(box.style.transform.match(/[\d\-]/g, '').join('')));
+
+		currentPos < 0 && setCarouselState(prevState => ({ ...prevState, startPos: currentPos }));
+
+		index === document.querySelectorAll('.testimonial-box').length - 1 && setCarouselState(prevState => ({ ...prevState, endPos: currentPos }));
+
+	});
+
+	useEffect(() => {
+
+		const boxMargins = parseFloat(window.getComputedStyle(document.querySelector('.testimonial-box')).getPropertyValue('margin-left'));
+		const width = Math.round(document.querySelector('.testimonial-box').getBoundingClientRect().width + boxMargins);
+
+		setCarouselState(prevState => ({ ...prevState, boxWidth: width }));
+
+		displayTestimonial(width);
+
+	}, []);
 
 	return (
 		<section id='testimonial' className='py-5'>
 			<SectionHeader title='What people say about us' description={true} />
 
 			<Container fluid>
-				<Row className='px-3 position-relative'>
+				<Row className='p-0 position-relative flex-column align-items-center'>
 
-					<div className='testimonial-box p-4 border rounded col-lg-4 shadow-lg' >
-						<div className="testimonial-box-review mb-4">
-							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!</p>
-						</div>
+					<div className='mb-4'
+						onMouseDown={moveSlides}
+						onMouseMove={moveSlides}
+						onMouseUp={moveSlides}
+						onMouseLeave={moveSlides}
+						id='carousel-draggable'
+					>
+						{testimonialDb.map((user, index) => (
+							<div
+								key={user.id}
+								className='testimonial-box p-4 rounded mx-3 position-absolute'
+								data-index={index}
+							>
+								<div className="testimonial-box-review mb-4">
+									<p>{user.feedback}</p>
+								</div>
 
-						<div className="testimonial-box-profile d-flex align-items-center">
-							<img src={getImage('testimonial-avatar-1.jpeg')} alt='avatar' className='mr-3' />
+								<div className="testimonial-box-profile d-flex align-items-center">
+									<img src={getImage(user.avatar)} alt='avatar' className='mr-3' />
 
-							<div className='d-flex flex-column'>
-								<span className='font-weight-bold'>Elif Mathews</span>
-								<span className='font-italic'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!</span>
+									<div className='d-flex flex-column'>
+										<span className='font-weight-bold'>{user.name}</span>
+										<span className='font-italic'>{user.description}</span>
+									</div>
+								</div>
 							</div>
-						</div>
+						))}
 					</div>
 
-					<div className='testimonial-box p-4 border rounded col-lg-4 shadow-lg'>
-						<div className="testimonial-box-review mb-4">
-							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!</p>
-						</div>
-
-						<div className="testimonial-box-profile d-flex align-items-center">
-							<img src={getImage('testimonial-avatar-2.jpeg')} alt='avatar' className='mr-3' />
-
-							<div className='d-flex flex-column'>
-								<span className='font-weight-bold'>Dru Wood</span>
-								<span className='font-italic'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!</span>
-							</div>
-						</div>
-					</div>
-
-					<div className='testimonial-box p-4 border rounded col-lg-4 shadow-lg'>
-						<div className="testimonial-box-review mb-4">
-							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!</p>
-						</div>
-
-						<div className="testimonial-box-profile d-flex align-items-center">
-							<img src={getImage('testimonial-avatar-3.jpeg')} alt='avatar' className='mr-3' />
-
-							<div className='d-flex flex-column'>
-								<span className='font-weight-bold'>Willem Lugo</span>
-								<span className='font-italic'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!</span>
-							</div>
-						</div>
-					</div>
-
-					<div className='testimonial-box p-4 border rounded col-lg-4 shadow-lg'>
-						<div className="testimonial-box-review mb-4">
-							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!</p>
-						</div>
-
-						<div className="testimonial-box-profile d-flex align-items-center">
-							<img src={getImage('testimonial-avatar-4.jpeg')} alt='avatar' className='mr-3' />
-
-							<div className='d-flex flex-column'>
-								<span className='font-weight-bold'>Borys Redmond</span>
-								<span className='font-italic'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!</span>
-							</div>
-						</div>
-					</div>
-
-					<div className='testimonial-box p-4 border rounded col-lg-4 shadow-lg'>
-						<div className="testimonial-box-review mb-4">
-							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!</p>
-						</div>
-
-						<div className="testimonial-box-profile d-flex align-items-center">
-							<img src={getImage('testimonial-avatar-5.jpeg')} alt='avatar' className='mr-3' />
-
-							<div className='d-flex flex-column'>
-								<span className='font-weight-bold'>Tashan Barr</span>
-								<span className='font-italic'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!</span>
-							</div>
-						</div>
+					<div onClick={throttle(changeSlides, 500)} className='d-flex flex-row justify-content-between'>
+						<button key={uuidv4()} className='left-arrow slide-button rounded-circle shadow-none mx-2' type='button'><i className="fas fa-chevron-left"></i></button>
+						<button key={uuidv4()} className='right-arrow slide-button rounded-circle shadow-none mx-2' type='button'><i className="fas fa-chevron-right"></i></button>
 					</div>
 
 				</Row>
