@@ -19,7 +19,7 @@ const Testimonial = () => {
 		endPos: 0
 	}
 
-	const [carouselState, setCarouselState] = useState();
+	const [carouselState, setCarouselState] = useState(defaultCarouselState);
 
 	const testimonialDb = [
 		{
@@ -67,6 +67,9 @@ const Testimonial = () => {
 
 			document.querySelectorAll('.testimonial-box').forEach((box, index) => {
 
+				box.classList.remove('draggable-transition');
+				box.classList.add('click-transition');
+
 				const currentPos = parseFloat(box.style.transform.replace(/(?![\.\-])(\D)/g, ''));
 
 				if (e.target.classList.contains('left-arrow') || e.target.parentElement.classList.contains('left-arrow')) direction = currentPos - carouselState.boxWidth;
@@ -94,97 +97,6 @@ const Testimonial = () => {
 		e.stopPropagation();
 	}
 
-	let down = false;
-	let oldPosX = 0;
-	let direction = 0;
-	let inc = 0;
-
-	const moveSlides = e => {
-
-		/*
-
-			1. Get the currentPos
-			2. Event on the parent, but move the boxes
-
-		*/
-
-		if (e.currentTarget.id === 'carousel-draggable') {
-
-			if (e.type === 'mousedown') {
-
-				e.currentTarget.classList.add('grabbing');
-				down = true;
-			}
-
-			if (e.type === 'mousemove' && down) {
-
-				document.querySelectorAll('.testimonial-box').forEach((box, index) => {
-
-					let currentPos = Math.round(parseFloat(box.style.transform.match(/[\d\-]/g, '').join('')));
-
-
-					// if (carouselState.endPos < currentPos) {
-
-					// 	box.style.transition = 'none';
-
-					// 	box.style.transform = `translateX(${-carouselState.boxWidth * 2}px)`;
-
-					// 	setTimeout(() => box.style.transition = '', 1);
-					// 	console.log(box);
-					// }
-
-					// if (currentPos < carouselState.startPos) {
-
-					// 	box.style.transition = 'none';
-
-					// 	box.style.transform = `translateX(${carouselState.endPos + carouselState.boxWidth}px)`;
-
-					// 	setTimeout(() => box.style.transition = '', 1);
-					// 	console.log(box);
-					// }
-
-					// Move to the right
-					if (oldPosX < e.clientX) {
-
-						box.style.transform = `translateX(${currentPos + 10}px)`;
-
-						if (currentPos > (e.currentTarget.getBoundingClientRect().width + carouselState.boxWidth)) box.style.transform = `translateX(${carouselState.startPos}px)`
-
-						// Move to the left
-					} else {
-
-						box.style.transform = `translateX(${currentPos - 10}px)`;
-
-						if (currentPos < carouselState.startPos) box.style.transform = `translateX(${carouselState.boxWidth * 4}px)`;
-
-					}
-				});
-
-				oldPosX = e.clientX;
-			}
-
-			if (e.type === 'mouseup') {
-
-				console.log(carouselState);
-
-				document.querySelectorAll('.testimonial-box').forEach((box, index) => {
-
-					// let currentPos = Math.round(parseFloat(box.style.transform.match(/[\d\-]/g, '').join('')));
-
-					// console.log(box);
-
-				});
-
-				down = false;
-				e.currentTarget.classList.remove('grabbing');
-			}
-		}
-
-
-
-		e.stopPropagation();
-	}
-
 	const displayTestimonial = width => document.querySelectorAll('.testimonial-box').forEach((box, index) => {
 
 		box.style.transition = 'none';
@@ -203,7 +115,7 @@ const Testimonial = () => {
 	useEffect(() => {
 
 		const boxMargins = parseFloat(window.getComputedStyle(document.querySelector('.testimonial-box')).getPropertyValue('margin-left'));
-		const width = Math.round(document.querySelector('.testimonial-box').getBoundingClientRect().width + boxMargins);
+		const width = Math.floor(document.querySelector('.testimonial-box').getBoundingClientRect().width + boxMargins);
 
 		setCarouselState(prevState => ({ ...prevState, boxWidth: width }));
 
@@ -218,17 +130,11 @@ const Testimonial = () => {
 			<Container fluid>
 				<Row className='p-0 position-relative flex-column align-items-center'>
 
-					<div className='mb-4'
-						onMouseDown={moveSlides}
-						onMouseMove={moveSlides}
-						onMouseUp={moveSlides}
-						onMouseLeave={moveSlides}
-						id='carousel-draggable'
-					>
+					<div className='mb-4 d-flex justify-content-between align-items-center'>
 						{testimonialDb.map((user, index) => (
 							<div
 								key={user.id}
-								className='testimonial-box p-4 rounded mx-3 position-absolute'
+								className='testimonial-box p-4 rounded position-absolute'
 								data-index={index}
 							>
 								<div className="testimonial-box-review mb-4">

@@ -12,6 +12,7 @@ import ResetScroll from './components/global_layout/ResetScroll';
 
 const HomePage = lazy(() => import('./components/pages/home/HomePage'));
 const AboutPage = lazy(() => import('./components/pages/about/AboutPage'));
+const ContactPage = lazy(() => import('./components/pages/contact/ContactPage'));
 
 const App = () => {
 
@@ -36,6 +37,7 @@ const App = () => {
 				<Switch>
 					<Route exact strict path='/' component={HomePage} />
 					<Route exact strict path='/about' component={AboutPage} />
+					<Route exact strict path='/contact' component={ContactPage} />
 
 				</Switch>
 

@@ -1,0 +1,41 @@
+#contact {
+	height: 90vh;
+	@include flex(row, space-between, center);
+
+	> div {
+		width: 50%;
+		height: 100%;
+	}
+
+	#contact-info {
+		@include flex(column, center, center);
+
+		.section-header { width: 100% }
+
+		p i {
+			width: 40px;
+			text-align: center;
+		}
+
+		button {
+			border: none;
+			outline: none;
+			background: $dark-2;
+			color: $white;
+			transition: all 200ms ease-in-out;
+
+			&:hover, &:active { background: lighten($dark-2, 10%) !important }
+
+			&:first-child { margin-left: auto }
+		}
+
+		#contact-form-modal {
+			background: rgba($dark-1, .5);
+			top: 0;
+			left: 0;
+			z-index: 100;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}

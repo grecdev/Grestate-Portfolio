@@ -12,8 +12,8 @@
 		.testimonial-box {
 			border: 2px solid $green-light-1;
 			width: 32%;
-			transition: transform 0s ease-in-out;
 			@include user-select;
+			margin-left: 1rem;
 
 			.testimonial-box-profile img {
 				border-radius: 50%;
@@ -21,6 +21,9 @@
 				height: 70px;
 				pointer-events: none;
 			}
+
+			&.draggable-transition { transition: transform 0s ease-in-out }
+			&.click-transition { transition: transform 350ms ease-in-out }
 		}
 
 		.slide-button {
