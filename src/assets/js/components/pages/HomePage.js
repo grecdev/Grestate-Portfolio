@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Showcase from './Showcase';
-import HowItWorks from './HowItWorks';
-import WeeklyDeals from './WeeklyDeals';
-import Progress from './Progress';
+import Showcase from './home/Showcase';
+import HowItWorks from './home/HowItWorks';
+import WeeklyDeals from './home/WeeklyDeals';
+import Progress from './home/Progress';
 
 const HomePage = () => {
 

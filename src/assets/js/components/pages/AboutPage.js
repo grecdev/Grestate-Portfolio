@@ -1,9 +1,9 @@
 import React from 'react';
 
-import AboutShowcase from './AboutShowcase';
-import WhoWeAre from './WhoWeAre';
-import OurTeam from './OurTeam';
-import Testimonial from './Testimonial';
+import AboutShowcase from './about/AboutShowcase';
+import WhoWeAre from './about/WhoWeAre';
+import OurTeam from './about/OurTeam';
+import Testimonial from './about/Testimonial';
 
 const AboutPage = () => {
 
