@@ -10,7 +10,8 @@ const GlobalContextProvider = (props) => {
 
 	const initialGlobalState = {
 		counterActive: false,
-		throttleEnable: true
+		throttleEnable: true,
+		documentLoaded: false
 	}
 
 	const [state, setState] = useState(initialGlobalState);
@@ -56,6 +57,7 @@ const GlobalContextProvider = (props) => {
 
 	const loadEvent = e => {
 
+		document.readyState === 'interactive' && setState(prevState => ({ ...prevState, documentLoaded: true }));
 
 		e.stopPropagation();
 	}
@@ -70,6 +72,27 @@ const GlobalContextProvider = (props) => {
 		e.stopPropagation();
 	}
 
+	const disableLetters = e => {
+
+		/*
+			Numpad + normal keyboard numbers
+			+ && - and parentheses
+			Space && Ctrl + a && Backspace
+			dot
+			arrow keys
+			Tab
+		*/
+
+		// Disable shift
+		if(e.shiftKey) e.preventDefault();
+
+		const availableCharacters = e.which >= 48 && e.which <= 57 || e.which >= 96 && e.which <= 105 || e.which === 189 || e.which === 187 || e.which === 8 || e.which === 32 || e.which === 17 || e.which === 107 || e.which === 109 || e.ctrlKey || e.which === 190 || e.which === 110 || e.which >= 37 && e.which <= 40 || e.which === 9 || e.which === 123 || e.which === 116 || e.which === 191 || e.which === 188
+
+		if(availableCharacters) return true
+		else e.preventDefault()
+
+		e.stopPropagation();
+	}
 
 	useEffect(() => {
 
@@ -82,7 +105,7 @@ const GlobalContextProvider = (props) => {
 
 		}
 
-	});
+	}, []);
 
 	useEffect(() => {
 
@@ -97,7 +120,8 @@ const GlobalContextProvider = (props) => {
 			...state,
 			location: location.pathname,
 			getImage,
-			throttle
+			throttle,
+			disableLetters
 		}}>
 			{children}
 		</GlobalContext.Provider>

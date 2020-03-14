@@ -1,0 +1,38 @@
+#mortage .container-custom .row .col.mortage-inputs .mortage-input-box {
+
+	&:nth-child(2) {
+		
+		.row > div:first-child { width: 80% }
+		.row > div:nth-child(2) { width: 20% }
+	}
+
+	input {
+		width: 100%;
+
+		&.input-left {
+			padding-right: .5rem;
+			padding-left: 25px;
+		}
+
+		&.input-right {
+			padding-right: 25px;
+			padding-left: .5rem;
+		}
+	}
+
+	input:focus, select:focus {
+		outline-color: $green-light-1;
+	}
+	
+	.input-sign {
+		top: 50%;
+		transform: translateY(-50%);
+		z-index: 1;
+		width: 25px;
+		color: lighten($dark-2, 30%);
+		@include user-select;
+
+		&.left { left: 0 }
+		&.right {right: 0 }
+	}
+}

@@ -38,3 +38,12 @@ input.input-field { cursor: pointer }
 }
 
 .header-space { padding-top: 80px }
+
+.container-custom {
+	margin: 0 auto;
+	overflow: hidden;
+
+	&-sm { max-width: 900px }
+	&-md { max-width: 1200px }
+	&-lg { max-width: 1500px }
+}

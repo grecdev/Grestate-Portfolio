@@ -142,7 +142,12 @@ const Testimonial = () => {
 								</div>
 
 								<div className="testimonial-box-profile d-flex align-items-center">
-									<img src={getImage(user.avatar)} alt='avatar' className='mr-3' />
+									<picture>
+										<source srcSet={getImage(user.avatar)} type='image/jpeg' />
+										<source srcSet={getImage(user.avatar)} type='image/webp' />
+
+										<img src={getImage(user.avatar)} alt='avatar' className='mr-3' />
+									</picture>
 
 									<div className='d-flex flex-column'>
 										<span className='font-weight-bold'>{user.name}</span>
