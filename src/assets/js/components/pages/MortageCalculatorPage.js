@@ -12,8 +12,6 @@ const MortageCalculatorPage = () => {
 
 	const getTotalPayment = payment => setPayment(payment);
 
-	console.log(payment);
-
 	return (
 		<main id="mortage">
 
@@ -21,7 +19,7 @@ const MortageCalculatorPage = () => {
 
 			<div className="container-custom container-custom-sm">
 				<Row>
-					<MortageChart payment={payment}/>
+					{/* <MortageChart payment={payment}/> */}
 					<MortageCalculator getTotalPayment={getTotalPayment} />
 				</Row>
 			</div>

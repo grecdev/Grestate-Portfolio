@@ -15,6 +15,8 @@ import {
 
 } from '../../../constants/actionTypes';
 
+import RegexAlert from '../../global_layout/RegexAlert';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -23,8 +25,8 @@ const MortageCalculator = ({getTotalPayment}) => {
 	const { disableLetters } = useContext(GlobalContext);
 
 	const initialState = {
-		home_price: 300100,
-		down_payment: 30010,
+		home_price: 100000,
+		down_payment: 10000,
 		down_payment_percent: 10,
 		loan_program: 0,
 		interest_rate: 2,
@@ -39,10 +41,11 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 	const calculateLoan = e => {
 
-		let value, percent, payment, homePrice, downPayment, months, interestRate, totalPayment, insurance, taxes;
+		let value, ecuation, homePrice, downPayment, downPaymentPercent, months, interestRate, totalPayment, insurance, taxes;
 
 		homePrice = parseFloat(document.getElementById('home-price').value);
 		downPayment = parseFloat(document.getElementById('down-payment').value);
+		downPaymentPercent = parseFloat(document.getElementById('down-payment-percent').value);
 		months = parseFloat(document.getElementById('loan-program').value) * 12;
 		interestRate = parseFloat(document.getElementById('interest-rate').value) / 1200;
 
@@ -51,37 +54,31 @@ const MortageCalculator = ({getTotalPayment}) => {
 	
 		if (e.target.id === 'home-price') {
 
-			payment = (value / 100) * downPayment;
-			dispatch({ type: SET_HOME_PRICE, payload: value });
+			// Calculate down payment
+			ecuation = state.down_payment_percent / 100 * homePrice
 
-			if(downPayment > 0) {
+			dispatch({ type: SET_HOME_PRICE, payload: homePrice });
 
-				dispatch({ type: SET_DOWN_PAYMENT, payload: payment });
-				downPayment = payment;
+			if(state.down_payment > 0 || homePrice <= downPayment) dispatch({type: SET_DOWN_PAYMENT, payload: ecuation });
+
+			if(e.target.value.length === 0) {
+
+				dispatch({ type: SET_HOME_PRICE, payload: state.home_price });
+				dispatch({type: SET_DOWN_PAYMENT, payload: state.down_payment });
 			}
 		}
 
 		if(e.target.id === 'down-payment') {
 
-			percent = value * 100 / homePrice;
 			dispatch({ type: SET_DOWN_PAYMENT, payload: value });
 
-			if(homePrice > 0) dispatch({ type: SET_DOWN_PAYMENT_PERCENT, payload: percent });
 		}
 
 		if(e.target.id === 'down-payment-percent') {
 
 			if(value <= 100) {
 
-				payment = (homePrice / 100) * value;
-
 				dispatch({ type: SET_DOWN_PAYMENT_PERCENT, payload: value });
-
-				if(homePrice > 0) {
-
-					dispatch({ type: SET_DOWN_PAYMENT, payload: payment });
-					downPayment = payment;
-				}
 
 			} else return
 		}
@@ -95,8 +92,8 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 		totalPayment = calculateTotalPayment(homePrice, downPayment, interestRate, months);
 
-		insurance = totalPayment / 10;
-		taxes = totalPayment / 6;
+		insurance = totalPayment / 7;
+		taxes = totalPayment / 4;
 
 		dispatch({
 			type: SET_TOTAL_PAYMENT,
@@ -117,8 +114,8 @@ const MortageCalculator = ({getTotalPayment}) => {
 		const loanProgram = parseFloat(document.querySelector('#loan-program').value) * 12;
 
 		const totalPayment = calculateTotalPayment(state.home_price, state.down_payment, state.interest_rate / 1200, loanProgram);
-		const insurance = totalPayment / 10;
-		const taxes = totalPayment / 6;
+		const insurance = totalPayment / 7;
+		const taxes = totalPayment / 4;
 
 		getTotalPayment({totalPayment, insurance, taxes});
 

@@ -55,15 +55,6 @@ const GlobalContextProvider = (props) => {
 		window.requestAnimationFrame(resetScroll);
 	}
 
-	const loadEvent = e => {
-
-		document.readyState === 'interactive' && setState(prevState => ({ ...prevState, documentLoaded: true }));
-
-		e.stopPropagation();
-	}
-
-	document.addEventListener('DOMContentLoaded', loadEvent);
-
 	const scrollEvent = e => {
 
 		counterAnimation();

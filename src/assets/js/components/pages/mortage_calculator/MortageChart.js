@@ -14,29 +14,26 @@ const MortageChart = ({payment}) => {
 		const chart = new Chart(ctx, {
 			type: 'pie',
 			data: {
-					labels: ['Red', 'Blue', 'Yellow'],
+					labels: ['Principal & interest', 'Taxes', 'Insurance'],
 					datasets: [{
-						label: '# of Votes',
-						data: [12, 19, 3],
+						data: [payment.totalPayment, payment.taxes, payment.insurance],
 						backgroundColor: [
-								'red',
-								'green',
-								'blue'
+								'#6f42c1',
+								'#dc3545',
+								'#ffc107'
 						],
-						borderColor: [
-								'#fff'
-						],
-						borderWidth: 2
+						borderColor: '#fff',
+						borderWidth: 5
 				}]
 			}
 		});
 
-	}, []);
+	}, [payment]);
 
 	return (
 
 		<Col className='mortage-chart d-flex flex-column justify-content-center align-items-center'>
-			<canvas id='chart' width="150" height="150" aria-label="Hello ARIA World" role="img">
+			<canvas id='chart' width='550' height='300' aria-label="Hello ARIA World" role="img">
 				<p>Loading...</p>
 			</canvas>
 		</Col>
