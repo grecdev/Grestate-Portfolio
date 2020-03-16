@@ -77,5 +77,9 @@ module.exports = merge(config, {
 				]
 			}
 		]
+	},
+	performance: {
+    maxEntrypointSize: 250000,
+    maxAssetSize: 250000
 	}
 });

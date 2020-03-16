@@ -1,1 +1,10 @@
+// Property Search
 export const GET_DATABASE = 'GET_DATABASE';
+
+// Mortage Calculator
+export const SET_HOME_PRICE = 'SET_HOME_PRICE';
+export const SET_DOWN_PAYMENT = 'SET_DOWN_PAYMENT';
+export const SET_DOWN_PAYMENT_PERCENT = 'SET_DOWN_PAYMENT_PERCENT';
+export const SET_LOAN_PROGRAM = 'SET_LOAN_PROGRAM';
+export const SET_INTEREST_RATE = 'SET_INTEREST_RATE';
+export const SET_TOTAL_PAYMENT = 'SET_TOTAL_PAYMENT';

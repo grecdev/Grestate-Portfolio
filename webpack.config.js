@@ -36,5 +36,8 @@ module.exports = {
 	},
 	plugins: [
 		new Dotenv()
-	]
+	],
+	externals: {
+		moment: 'moment'
+	}
 };
