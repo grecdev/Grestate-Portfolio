@@ -3,6 +3,10 @@
 @import './sass_assets/utilities/mixins_extends';
 @import './sass_assets/utilities/utility';
 
+// Charts
+@import "./chartist/chartist-settings";
+@import "./chartist/chartist";
+
 // Global layout
 @import './sass_assets/global_layout/header';
 @import './sass_assets/global_layout/property_form';
