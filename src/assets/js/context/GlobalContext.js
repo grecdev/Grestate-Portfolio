@@ -18,18 +18,15 @@ const GlobalContextProvider = (props) => {
 
 	const getImage = image => require(`../../media/${image}`);
 
-	const throttle = (cb, interval) => {
+	const throttle = (cb, interval) => function (...args) {
 
-		return function (...args) {
+		if (!state.throttleEnable) return;
 
-			if (!state.throttleEnable) return;
+		setState(prevState => ({ ...prevState, throttleEnable: false }));
 
-			setState(prevState => ({ ...prevState, throttleEnable: false }));
+		cb.apply(this, args);
 
-			cb.apply(this, args);
-
-			setTimeout(() => setState(prevState => ({ ...prevState, throttleEnable: true })), interval)
-		}
+		setTimeout(() => setState(prevState => ({ ...prevState, throttleEnable: true })), interval)
 	}
 
 	const counterAnimation = () => {

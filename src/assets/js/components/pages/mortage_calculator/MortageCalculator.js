@@ -11,7 +11,8 @@ import {
 	SET_DOWN_PAYMENT_PERCENT,
 	SET_LOAN_PROGRAM,
 	SET_INTEREST_RATE,
-	SET_TOTAL_PAYMENT
+	RESET_DOWN_PAYMENT,
+	RESET_MORTAGE_INPUTS
 
 } from '../../../constants/actionTypes';
 
@@ -25,105 +26,170 @@ const MortageCalculator = ({getTotalPayment}) => {
 	const { disableLetters } = useContext(GlobalContext);
 
 	const initialState = {
-		home_price: 100000,
-		down_payment: 10000,
+		home_price: '100,000',
+		down_payment: '10,000',
 		down_payment_percent: 10,
 		loan_program: 0,
 		interest_rate: 2,
-		total_payment: 0,
-		insurance: 0,
-		taxes: 0
+		required_home_price: 50000
 	}
 
 	const [state, dispatch] = useReducer(MortageReducer, initialState);
 
-	const calculateTotalPayment = (homePrice, downPayment, interestRate, months) => (homePrice - downPayment) * (interestRate * Math.pow((1 + interestRate), months)) / (Math.pow((1 + interestRate), months) - 1);
+	const calculateTotalPayment = (homePrice, downPayment, interestRate, months) => {
+
+		let rate = interestRate / 1200;
+
+		const principal_interest = Math.ceil((homePrice - downPayment) * (rate * Math.pow((1 + rate), months)) / (Math.pow((1 + rate), months) - 1));
+		const insurance = Math.ceil(principal_interest /7);
+		const taxes = Math.ceil(principal_interest / 4);
+		const payment_per_month = principal_interest + insurance + taxes;
+		
+		getTotalPayment({
+			principal_interest,
+			insurance,
+			taxes,
+			payment_per_month
+		});
+	}
+
+	const convertToNumber = input => {
+
+		const match = input.match(/[\d\.]/g);
+
+		if(match !== null) return parseFloat(match.join(''));
+		else return 0;
+	
+	};
+
+	const formatNumber = input => {
+
+		let str = String(input).replace(/\,/g, '');
+
+		return parseFloat(str).toLocaleString();
+	}
 
 	const calculateLoan = e => {
 
-		let value, ecuation, homePrice, downPayment, downPaymentPercent, months, interestRate, totalPayment, insurance, taxes;
+		let ecuation;
 
-		homePrice = parseFloat(document.getElementById('home-price').value);
-		downPayment = parseFloat(document.getElementById('down-payment').value);
-		downPaymentPercent = parseFloat(document.getElementById('down-payment-percent').value);
-		months = parseFloat(document.getElementById('loan-program').value) * 12;
-		interestRate = parseFloat(document.getElementById('interest-rate').value) / 1200;
+		const isEmpty = e.target.value.length === 0;
 
-		if(e.target.tagName === 'INPUT') e.target.value.length > 0 ? value = parseFloat(e.target.value) : value = 0;
-		else value = e.target.value;
+		const homePrice = document.getElementById('home-price').value;
+		const downPayment = document.getElementById('down-payment').value;
+		const downPaymentPercent = document.getElementById('down-payment-percent').value;
+		const loanProgram = document.getElementById('loan-program').value;
+		const interestRate = document.getElementById('interest-rate').value;
+		const months = parseFloat(loanProgram) * 12;
 	
 		if (e.target.id === 'home-price') {
 
-			// Calculate down payment
-			ecuation = state.down_payment_percent / 100 * homePrice
+			// Formatted number
+			dispatch({type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
 
-			dispatch({ type: SET_HOME_PRICE, payload: homePrice });
+			// Find out the down payment according to percentage
+			if(downPaymentPercent.length > 0) {
 
-			if(state.down_payment > 0 || homePrice <= downPayment) dispatch({type: SET_DOWN_PAYMENT, payload: ecuation });
-
-			if(e.target.value.length === 0) {
-
-				dispatch({ type: SET_HOME_PRICE, payload: state.home_price });
-				dispatch({type: SET_DOWN_PAYMENT, payload: state.down_payment });
+				ecuation = (convertToNumber(downPaymentPercent) / 100) * convertToNumber(homePrice);
+				dispatch({type: SET_DOWN_PAYMENT, payload: formatNumber(ecuation)});
 			}
+
+			// Reset all inputs
+			if(isEmpty) dispatch({type: RESET_MORTAGE_INPUTS});
+			
+			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
 		}
 
 		if(e.target.id === 'down-payment') {
 
-			dispatch({ type: SET_DOWN_PAYMENT, payload: value });
+			// If home price is invalid don't type
+			if(homePrice.length === 0) {
+				
+				console.log('invalid home price');
+				return;
+			}
 
+			if(convertToNumber(downPayment) > convertToNumber(homePrice)) {
+
+				console.log('Down payment must be less than home price');
+				return;
+			}
+
+			// Formatted number
+			dispatch({type: SET_DOWN_PAYMENT, payload: formatNumber(downPayment) });
+
+			// Find out the down payment percentage value according to down payment sum
+			ecuation = (convertToNumber(downPayment) / convertToNumber(homePrice)) * 100;
+			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: ecuation})
+
+			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
+
+			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
 		}
 
 		if(e.target.id === 'down-payment-percent') {
 
-			if(value <= 100) {
+			// If home price is invalid don't type
+			if(homePrice.length === 0) {
+				
+				console.log('invalid home price');
+				return;
+			}
 
-				dispatch({ type: SET_DOWN_PAYMENT_PERCENT, payload: value });
+			if(convertToNumber(downPaymentPercent) > 100) {
 
-			} else return
+				console.log('Down payment must be less than home price');
+
+				return;
+			}
+
+			// Formatted number
+			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: downPaymentPercent });
+
+			// Find out the down payment percentage according to down payment sum
+			ecuation = convertToNumber(downPaymentPercent) / 100 * convertToNumber(homePrice);
+			dispatch({type: SET_DOWN_PAYMENT, payload: formatNumber(ecuation)})
+
+			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
+
+			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
 		}
 
-		if (e.target.id === 'loan-program') dispatch({ type: SET_LOAN_PROGRAM, payload: value });
+		if (e.target.id === 'loan-program') {
+
+			dispatch({ type: SET_LOAN_PROGRAM, payload: loanProgram });
+
+			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
+		}
 
 		if(e.target.id === 'interest-rate') {
 
-			value <= 100 ? dispatch({ type: SET_INTEREST_RATE, payload: value }) : null
-		}
+			if(convertToNumber(interestRate) > 100) {
 
-		totalPayment = calculateTotalPayment(homePrice, downPayment, interestRate, months);
+				console.log('Interest rate can\'t be higher than 100');
 
-		insurance = totalPayment / 7;
-		taxes = totalPayment / 4;
-
-		dispatch({
-			type: SET_TOTAL_PAYMENT,
-			payload: {
-				total_payment: totalPayment,
-				insurance,
-				taxes
+				return;
 			}
-		});
 
-		getTotalPayment({totalPayment, insurance, taxes});
+			dispatch({ type: SET_INTEREST_RATE, payload: interestRate });
+
+			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
+		}
 
 		e.stopPropagation();
 	}
 
 	useEffect(() => {
 
-		const loanProgram = parseFloat(document.querySelector('#loan-program').value) * 12;
+		const months = parseFloat(document.querySelector('#loan-program').value) * 12;
 
-		const totalPayment = calculateTotalPayment(state.home_price, state.down_payment, state.interest_rate / 1200, loanProgram);
-		const insurance = totalPayment / 7;
-		const taxes = totalPayment / 4;
-
-		getTotalPayment({totalPayment, insurance, taxes});
+		calculateTotalPayment(convertToNumber(state.home_price), convertToNumber(state.down_payment), state.interest_rate, months);
 
 	}, []);
 
 	return (
 
-		<Col className='mortage-inputs'>
+		<Col className='mortage-inputs p-0'>
 
 			<div className="mortage-input-box d-flex flex-column my-4">
 				<label htmlFor='home-price'>Home price</label>

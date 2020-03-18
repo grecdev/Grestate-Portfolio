@@ -1,5 +1,11 @@
-.ct-series-a .ct-slice-pie { fill: #a748ca }
+.ct-series-a .ct-slice-donut { stroke: $green-dark }
+.ct-series-b .ct-slice-donut { stroke: $dark-1 }
+.ct-series-c .ct-slice-donut { stroke: $dark-2 }
 
-.ct-series-b .ct-slice-pie { fill: #007bff }
+.total-payment {
+	line-height: 2.3rem;
 
-.ct-series-c .ct-slice-pie { fill: #dc3545 }
+	span:first-child { font-size: 3rem }
+	span:last-child { font-size: 1.3rem }
+
+}

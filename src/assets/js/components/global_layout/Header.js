@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 const Header = () => {
 	return (
-		<header className='py-2'>
+		<header>
 			<Navbar id='desktop-navbar' className='justify-content-between align-items-center'>
 				<NavLink className='navbar-brand p-0 m-0' exact to='/'>Gr<span>estate</span></NavLink>
 

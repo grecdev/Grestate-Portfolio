@@ -3,39 +3,52 @@ import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col';
 
-import Chart from 'chart.js';
-
 const MortageChart = ({payment}) => {
+	
+	let disabledChart = false;
+
+	// So we can check if we don't have any values in the inputs
+	const values = Object.values(payment).map(value => {
+
+		if(isNaN(value) || value === 0) {
+
+			value = 1;
+			disabledChart = true;
+
+		} else value;
+		
+		return value;
+	});
+
+	// Without the total payment which is displayed in the mortage info component
+	values.pop();
+
+	const data = {
+		labels: [' ', ' ', ' '],
+		series: values
+	};
+
+	const options = {
+		width: 450,
+		height: 330,
+		donut:true,
+		donutWidth: 50
+	}
 
 	useEffect(() => {
 
-		const ctx = document.getElementById('chart');
-
-		const chart = new Chart(ctx, {
-			type: 'pie',
-			data: {
-					labels: ['Principal & interest', 'Taxes', 'Insurance'],
-					datasets: [{
-						data: [payment.totalPayment, payment.taxes, payment.insurance],
-						backgroundColor: [
-								'#6f42c1',
-								'#dc3545',
-								'#ffc107'
-						],
-						borderColor: '#fff',
-						borderWidth: 5
-				}]
-			}
-		});
+		new Chartist.Pie('.ct-chart', data, options);
 
 	}, [payment]);
 
 	return (
 
-		<Col className='mortage-chart d-flex flex-column justify-content-center align-items-center'>
-			<canvas id='chart' width='550' height='300' aria-label="Hello ARIA World" role="img">
-				<p>Loading...</p>
-			</canvas>
+		<Col className='mortage-chart p-0 d-flex flex-column justify-content-center align-items-center position-relative'>
+			<div className="ct-chart ct-perfect-fourth"></div>
+
+			<p className="d-flex flex-column total-payment position-absolute font-weight-bold text-center">
+				<span>${isNaN(payment.payment_per_month) ? 0 : payment.payment_per_month}</span><span>/month</span>
+			</p>
 		</Col>
 		
 	)

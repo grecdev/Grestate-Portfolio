@@ -5,7 +5,8 @@ import {
 	SET_DOWN_PAYMENT_PERCENT,
 	SET_LOAN_PROGRAM,
 	SET_INTEREST_RATE,
-	SET_TOTAL_PAYMENT
+	RESET_DOWN_PAYMENT,
+	RESET_MORTAGE_INPUTS
 
 } from '../constants/actionTypes';
 
@@ -43,12 +44,19 @@ export default (state, action) => {
 				interest_rate: action.payload
 			}
 
-		case SET_TOTAL_PAYMENT:
+		case RESET_DOWN_PAYMENT:
 			return {
 				...state,
-				total_payment: action.payload.totalPayment,
-				taxes: action.payload.taxes,
-				insurance: action.payload.insurance
+				down_payment: '',
+				down_payment_percent: ''
+			}
+
+		case RESET_MORTAGE_INPUTS:
+			return {
+				...state,
+				home_price: '',
+				down_payment: '',
+				down_payment_percent: ''
 			}
 		
 		default:

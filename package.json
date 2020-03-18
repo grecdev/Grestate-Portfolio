@@ -16,7 +16,6 @@
 	"license": "ISC",
 	"dependencies": {
 		"bootstrap": "^4.4.1",
-		"chart.js": "^2.9.3",
 		"dotenv-webpack": "^1.7.0",
 		"jump.js": "^1.0.2",
 		"react": "^16.13.0",
