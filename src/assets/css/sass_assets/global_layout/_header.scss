@@ -6,38 +6,23 @@ header {
 	width: 100%;
 	z-index: 100;
 	
-	nav .navbar-brand {
-		font-size: 2rem;
-
-		span {
-			text-transform: none;
-			font-weight: normal;
-		}
-	}
+	nav .navbar-brand { font-size: 2rem }
 
 	.navbar-brand span,
-	nav .navbar-nav .nav-item a.nav-link {
-		text-transform: uppercase;
-		font-weight: bold;
-		color: $green-light-2;
-	}
+	nav .navbar-nav .nav-item a.nav-link { color: $green-light-2 }
 
 	#mobile-navbar { display: none }
 
-	nav .navbar-nav .nav-item a.nav-link {
-
-		&.page-active { color: $dark-1 }
-	}
+	nav .navbar-nav .nav-item a.nav-link.page-active { color: $dark-1 }
 
 	nav .navbar-nav .nav-item a.nav-link:not(.page-active):hover { color: $green-light-1 }
 
 	#login-btn,
 	#signup-btn {
 		padding: .3rem 1rem;
-		border: 3px solid transparent;
+		border: 2px solid transparent;
 		background: transparent;
 		color: $green-light-2;
-		text-transform: uppercase;
 	}
 
 	#login-btn {

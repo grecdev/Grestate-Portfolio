@@ -1,37 +1,29 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
+
+import { GlobalContext } from '../../context/GlobalContext';
 
 import { v4 as uuidv4 } from 'uuid';
-
-import {
-
-	GET_DATABASE
-
-} from '../../constants/actionTypes';
-
-import FormReducer from '../../reducers/FormReducer';
 
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-const PropertyForm = () => {
+const PropertyForm = ({buy, rent, multiple}) => {
 
-	const [database, dispatch] = useReducer(FormReducer, []);
-
-	const defaultFormTypeState = {
-		buy: true,
-		rent: false
-	}
-
-	const [formType, setFormType] = useState(defaultFormTypeState);
-
+	const {
+		db,
+		changePage
+	} = useContext(GlobalContext);
+	
 	const changeForm = e => {
 
 		const formType = e.target.dataset.formType;
 
-		formType === 'buy' && setFormType(prevState => ({ ...prevState, buy: true, rent: false }));
-		formType === 'rent' && setFormType(prevState => ({ ...prevState, buy: false, rent: true }));
+		document.querySelectorAll('.property-search-form form').forEach(form => form.classList.replace('d-block', 'd-none'));
+
+		document.querySelector(`form[name="${formType}"]`).classList.replace('d-none', 'd-block');
 
 		e.stopPropagation();
 	}
@@ -40,7 +32,7 @@ const PropertyForm = () => {
 
 		if (type === 'city') {
 
-			const cities = database.properties.map(property => property.addressCity);
+			const cities = db.map(property => property.addressCity);
 
 			const removedDuplicates = cities.filter((duplicate, index) => cities.indexOf(duplicate) === index);
 
@@ -55,7 +47,7 @@ const PropertyForm = () => {
 		if (type === 'property-type') {
 
 			// Capitalized
-			const propertyType = database.properties.map(property => property.propertyType.substring(0, 1).toUpperCase() + property.propertyType.substring(1));
+			const propertyType = db.map(property => property.propertyType.substring(0, 1).toUpperCase() + property.propertyType.substring(1));
 
 			const removedDuplicates = propertyType.filter((duplicate, index) => propertyType.indexOf(duplicate) === index);
 
@@ -69,7 +61,7 @@ const PropertyForm = () => {
 
 		if (type === 'budget-sell') {
 
-			const propertiesForSell = database.properties.filter(property => property.propertyPrice !== undefined);
+			const propertiesForSell = db.filter(property => property.propertyPrice !== undefined);
 			const price = propertiesForSell.map(price => parseFloat(price.propertyPrice)).sort((a, b) => a - b);
 
 			const removedDuplicates = price.filter((duplicates, index) => price.indexOf(duplicates) === index);
@@ -98,113 +90,134 @@ const PropertyForm = () => {
 
 		if (type === 'budget-rent') {
 
-			const propertiesForRent = database.properties.filter(property => property.propertyRent !== undefined);
+			const propertiesForRent = db.filter(property => property.propertyRent !== undefined);
 			const price = propertiesForRent.map(price => parseFloat(price.propertyRent)).sort((a, b) => a - b);
 
 			return price.filter((duplicates, index) => price.indexOf(duplicates) === index).map(price => {
 
 				return <option key={uuidv4()} value={price}>{'$' + price.toLocaleString()}</option>
 			});
-
-			// const uniqueFormattedPrice = formattedPrice.filter((duplicates, index) => formattedPrice.indexOf(duplicates) === index);
-
-			// return uniqueFormattedPrice.map(price => <option key={uuidv4()} value={price.replace(/[\$ ]/g, '')}>{price}</option>);
-
-			return null;
 		}
 	}
 
-	const getXhr = () => {
+	const submitForm = e => {
 
-		return new Promise((resolve, reject) => {
+		const formInputs = {
+			city: {
+				buy: document.getElementById('city-buy').value,
+				rent: document.getElementById('city-rent').value
+			},
+			property_type: {
+				buy: document.getElementById('property-type-buy').value,
+				rent: document.getElementById('property-type-rent').value
+			},
+			budget: {
+				buy: document.getElementById('buy-budget').value,
+				rent: document.getElementById('rent-budget').value
+			}
+		}
 
-			const xhr = new XMLHttpRequest();
+		let submitted = false;
 
-			xhr.open('GET', 'https://grecdev.github.io/json-api/properties.json', true);
+		if(e.target.name.includes('buy')) {
 
-			xhr.onload = () => {
+			// console.log(formInputs);
+			
+			let arr = [...db];
+			
+			// Status
+			arr = arr.filter(item => item.propertyStatus === 'buy' );
 
-				const response = JSON.parse(xhr.responseText);
+			// Location
+			arr = arr.filter(item => {
 
-				xhr.status >= 400 ? reject(response) : resolve(response);
+				let regex = formInputs.city.buy.replace('-', ' ');
+				regex = new RegExp(`[${regex}]`, 'gi');
+				return item.addressCity === item.addressCity.match(regex).join('');
+			});
 
+			// Property Type
+			arr = arr.filter(item => {
+
+				let regex = formInputs.property_type.buy.replace('-', ' ');
+				regex = new RegExp(`^${regex}$`, `gi`);
+
+				if(item.propertyType.match(regex) !== null) regex = item.propertyType.match(regex).join('');
+
+				return item.propertyType === regex;
+			});
+
+			// Budget
+			arr = arr.filter(item => {
+
+				let startPrice = parseFloat(formInputs.budget.buy.substring(0, formInputs.budget.buy.indexOf('-')).replace(',', ''));
+				let endPrice = parseFloat(formInputs.budget.buy.substring(formInputs.budget.buy.indexOf('-') + 1, formInputs.budget.buy.length).replace(',', ''));
+
+				return parseFloat(item.propertyPrice) >= startPrice && parseFloat(item.propertyPrice) <= endPrice;
+			});
+
+			if(arr.length > 0) {
+
+				submitted = true;
+				changePage('/buy');
+
+			} else {
+
+				submitted = false;
 			}
 
-			xhr.onerror = () => reject('Some error occurred');
+			console.log(arr);
+		}
 
-			xhr.send();
+		if(e.target.name.includes('rent')) {
 
-		});
+			
+		}
+
+		const consoleStyle = 'background: #000; padding: 0.5rem; border: 2px dotted #11FF00';
+
+		console.log(`%cForm has been submitted: ${submitted}`, consoleStyle);
+		e.preventDefault();
+		e.stopPropagation();
+		return submitted;
 	}
-
-	const getFetch = () => {
-
-		return new Promise((resolve, reject) => {
-
-			fetch('https://grecdev.github.io/json-api/properties.json')
-				.then(errorHandling)
-				.then(data => resolve(data))
-				.catch(err => reject(err))
-
-			function errorHandling(response) {
-
-				if (!response.ok) throw Error(response.statusText)
-
-				return response.json();
-			}
-		});
-	}
-
-	const getAjax = async () => {
-
-		const response = await fetch('https://grecdev.github.io/json-api/properties.json');
-		const data = await response.json();
-
-		return data;
-	}
-
-	useEffect(() => {
-
-		getXhr()
-			.then(data => dispatch({ type: GET_DATABASE, payload: data }))
-			.catch(err => console.log(err));
-
-	}, []);
 
 	return (
 		<div className='property-search-form'>
-			{formType.buy && (
-				<Form className='py-2 px-3 rounded position-relative' name='buy-property'>
+			{buy && (
+				<Form className='py-2 px-3 rounded position-relative d-block' name='buy-property' onSubmit={submitForm}>
 
-					<Row className="form-header position-absolute">
-						<a className='rounded-top active-form' role='button' data-form-type='buy' onClick={changeForm}>Buy</a>
-						<a className='rounded-top' role='button' data-form-type='rent' onClick={changeForm}>Rent</a>
-					</Row>
+					{multiple && (
+						<Row className="form-header position-absolute">
+							<a className='rounded-top active-form' role='button' data-form-type='buy-property' onClick={changeForm}>Buy</a>
+							<a className='rounded-top' role='button' data-form-type='rent-property' onClick={changeForm}>Rent</a>
+						</Row>
+					)}
 
 					<Row className='align-items-center'>
 						<Col className='border-right'>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='city-buy' className='m-0'>
 								<Form.Label>City</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='city' />}
+									{db !== undefined && <DynamicOptions type='city' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
 
 						<Col className='border-right'>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='property-type-buy' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='property-type' />}
+									{db !== undefined && <DynamicOptions type='property-type' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
 
 						<Col>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='buy-budget' className='m-0'>
 								<Form.Label>Budget</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='budget-sell' />}
+									{db !== undefined && <DynamicOptions type='budget-sell' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -216,38 +229,38 @@ const PropertyForm = () => {
 				</Form>
 			)}
 
-			{formType.rent && (
-				<Form className='py-2 px-3 rounded position-relative' name='rent-property'>
+			{rent && (
+				<Form className='py-2 px-3 rounded position-relative d-none' name='rent-property' onSubmit={submitForm}>
 
 					<Row className="form-header position-absolute">
-						<a className='rounded-top' role='button' data-form-type='buy' onClick={changeForm}>Buy</a>
-						<a className='rounded-top active-form' role='button' data-form-type='rent' onClick={changeForm}>Rent</a>
+						<a className='rounded-top' role='button' data-form-type='buy-property' onClick={changeForm}>Buy</a>
+						<a className='rounded-top active-form' role='button' data-form-type='rent-property' onClick={changeForm}>Rent</a>
 					</Row>
 
 					<Row className='align-items-center'>
 						<Col className='border-right'>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='city-rent' className='m-0'>
 								<Form.Label>City</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='city' />}
+									{db !== undefined && <DynamicOptions type='city' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
 
 						<Col className='border-right'>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='property-type-rent' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='property-type' />}
+									{db !== undefined && <DynamicOptions type='property-type' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
 
 						<Col>
-							<Form.Group controlId='city-input' className='m-0'>
+							<Form.Group controlId='rent-budget' className='m-0'>
 								<Form.Label>Rent per month</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{database.properties !== undefined && <DynamicOptions type='budget-rent' />}
+									{db !== undefined && <DynamicOptions type='budget-rent' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -257,9 +270,16 @@ const PropertyForm = () => {
 						</Col>
 					</Row>
 				</Form>
+				
 			)}
 		</div>
 	)
+}
+
+PropertyForm.propTypes = {
+	multiple: PropTypes.bool.isRequired,
+	buy: PropTypes.bool.isRequired,
+	rent: PropTypes.bool.isRequired
 }
 
 export default PropertyForm;

@@ -1,42 +1,57 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+
+import GlobalReducer from '../reducers/GlobalReducer';
+import FormReducer from '../reducers/FormReducer';
+import {
+
+	GET_DATABASE,
+	TOGGLE_THROTTLE,
+	SET_COUNTER
+
+} from '../constants/actionTypes';
 
 export const GlobalContext = createContext();
 
 const GlobalContextProvider = (props) => {
 
-	const { children, location } = props;
+	const { children, location, history } = props;
 
 	const initialGlobalState = {
 		counterActive: false,
-		throttleEnable: true,
+		throttle: true,
 		documentLoaded: false
 	}
 
-	const [state, setState] = useState(initialGlobalState);
+	const databaseState = {
+		db: []
+	}
+
+	const [state, dispatchState]= useReducer(GlobalReducer, initialGlobalState)
+	const [database, dispatchDatabase] = useReducer(FormReducer, databaseState);
 
 	const getImage = image => require(`../../media/${image}`);
+	const changePage = page => history.push(page);
 
 	const throttle = (cb, interval) => function (...args) {
 
-		if (!state.throttleEnable) return;
+		if (!state.throttle) return;
 
-		setState(prevState => ({ ...prevState, throttleEnable: false }));
+		dispatchState({type: TOGGLE_THROTTLE, payload: false})
 
 		cb.apply(this, args);
 
-		setTimeout(() => setState(prevState => ({ ...prevState, throttleEnable: true })), interval)
+		setTimeout(() => dispatchState({type: TOGGLE_THROTTLE, payload: true}), interval)
 	}
 
 	const counterAnimation = () => {
 
 		const pos = window.pageYOffset;
-
-		if (pos >= 1300) setState(prevState => ({ ...prevState, counterActive: true }));
+		if (pos >= 1300) dispatchState({type: SET_COUNTER, payload: true});
 		else {
 
-			setState(prevState => ({ ...prevState, counterActive: false }));
+			dispatchState({type: SET_COUNTER, payload: false});
 
 			document.querySelectorAll('.counter').forEach(counter => counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6))
 		}
@@ -95,6 +110,63 @@ const GlobalContextProvider = (props) => {
 
 	}, []);
 
+	const getXhr = () => {
+
+		return new Promise((resolve, reject) => {
+
+			const xhr = new XMLHttpRequest();
+
+			xhr.open('GET', 'https://grecdev.github.io/json-api/properties.json', true);
+
+			xhr.onload = () => {
+
+				const response = JSON.parse(xhr.responseText);
+
+				xhr.status >= 400 ? reject(response) : resolve(response);
+
+			}
+
+			xhr.onerror = () => reject('Some error occurred');
+
+			xhr.send();
+
+		});
+	}
+
+	const getFetch = () => {
+
+		return new Promise((resolve, reject) => {
+
+			fetch('https://grecdev.github.io/json-api/properties.json')
+				.then(errorHandling)
+				.then(data => resolve(data))
+				.catch(err => reject(err))
+
+			function errorHandling(response) {
+
+				if (!response.ok) throw Error(response.statusText)
+
+				return response.json();
+			}
+		});
+	}
+
+	const getAjax = async () => {
+
+		const response = await fetch('https://grecdev.github.io/json-api/properties.json');
+		const data = await response.json();
+
+		return data;
+	}
+
+	useEffect(() => {
+
+		getXhr()
+			.then(data => dispatchDatabase({ type: GET_DATABASE, payload: data }))
+			.catch(err => console.log(err));
+
+	}, []);
+
 	useEffect(() => {
 
 		location.pathname !== '/' && document.body.classList.add('header-space');
@@ -106,10 +178,12 @@ const GlobalContextProvider = (props) => {
 	return (
 		<GlobalContext.Provider value={{
 			...state,
+			...database,
 			location: location.pathname,
 			getImage,
 			throttle,
-			disableLetters
+			disableLetters,
+			changePage
 		}}>
 			{children}
 		</GlobalContext.Provider>

@@ -1,4 +1,8 @@
-// Property Search
+// Global Context
+export const TOGGLE_THROTTLE = 'TOGGLE_THROTTLE';
+export const SET_COUNTER = 'SET_COUNTER';
+
+// Property form
 export const GET_DATABASE = 'GET_DATABASE';
 
 // Mortage Calculator

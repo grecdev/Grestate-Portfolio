@@ -115,6 +115,9 @@ const MortageCalculator = ({getTotalPayment}) => {
 				return;
 			}
 
+			if(downPayment.length === 0) calculateTotalPayment(0, 0, 0, 0);
+			else calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
+
 			// Formatted number
 			dispatch({type: SET_DOWN_PAYMENT, payload: formatNumber(downPayment) });
 
@@ -123,8 +126,6 @@ const MortageCalculator = ({getTotalPayment}) => {
 			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: ecuation})
 
 			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
-
-			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
 		}
 
 		if(e.target.id === 'down-payment-percent') {
@@ -150,9 +151,10 @@ const MortageCalculator = ({getTotalPayment}) => {
 			ecuation = convertToNumber(downPaymentPercent) / 100 * convertToNumber(homePrice);
 			dispatch({type: SET_DOWN_PAYMENT, payload: formatNumber(ecuation)})
 
-			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
+			if(downPaymentPercent.length === 0) calculateTotalPayment(0, 0, 0, 0);
+			else calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
 
-			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
+			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
 		}
 
 		if (e.target.id === 'loan-program') {

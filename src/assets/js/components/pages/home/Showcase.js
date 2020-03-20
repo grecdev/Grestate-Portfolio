@@ -4,7 +4,6 @@ import PropertyForm from '../../global_layout/PropertyForm';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 import { GlobalContext } from '../../../context/GlobalContext';
 
@@ -23,7 +22,7 @@ const Showcase = () => {
 							<p className='font-italic font-weight-light text-muted'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos numquam dolorum itaque quis, soluta minima quos esse eaque sed aliquid quas quasi. Sint, consequatur quia?</p>
 						</div>
 
-						<PropertyForm />
+						<PropertyForm buy={true} rent={true} multiple={true}/>
 
 						<div className="showcase-cartoon">
 							<img src={getImage('showcase-cartoon.svg')} alt='showcase cartoon' />
