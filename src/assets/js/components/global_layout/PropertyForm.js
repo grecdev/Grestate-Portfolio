@@ -28,14 +28,20 @@ const PropertyForm = ({buy, rent, multiple}) => {
 		e.stopPropagation();
 	}
 
-	const DynamicOptions = ({ type }) => {
+	const DynamicOptions = ({ type, status }) => {
+
+		let removedDuplicates;
 
 		if (type === 'city') {
 
-			const cities = db.map(property => property.addressCity);
+			let cities;
 
-			const removedDuplicates = cities.filter((duplicate, index) => cities.indexOf(duplicate) === index);
+			if(status === 'buy') cities = db.map(item => { if(item.propertyStatus === 'buy') return item.addressCity });
 
+			if(status === 'rent') cities = db.map(item => { if(item.propertyStatus === 'rent') return item.addressCity });
+
+			removedDuplicates = cities.filter((duplicate, index) => cities.indexOf(duplicate) === index && duplicate !== undefined);
+	
 			return removedDuplicates.map(city => {
 
 				const formattedValue = city.replace(/ /g, '-').toLowerCase();
@@ -46,57 +52,89 @@ const PropertyForm = ({buy, rent, multiple}) => {
 
 		if (type === 'property-type') {
 
-			// Capitalized
-			const propertyType = db.map(property => property.propertyType.substring(0, 1).toUpperCase() + property.propertyType.substring(1));
+			let propertyType;
 
-			const removedDuplicates = propertyType.filter((duplicate, index) => propertyType.indexOf(duplicate) === index);
+			if(status === 'buy') {
+
+				// Capitalized
+				propertyType = db.map(item => {
+
+					if(item.propertyStatus === 'buy') return item.propertyType.substring(0, 1).toUpperCase() + item.propertyType.substring(1);
+				});
+			}
+
+			if(status === 'rent') {
+
+				// Capitalized
+				propertyType = db.map(item => {
+
+					if(item.propertyStatus === 'rent') return item.propertyType.substring(0, 1).toUpperCase() + item.propertyType.substring(1);
+				});
+			}
+
+			removedDuplicates = propertyType.filter((duplicate, index) => propertyType.indexOf(duplicate) === index && duplicate !== undefined);
 
 			return removedDuplicates.map(propertyType => {
 
-				const formattedValue = propertyType.replace(/ /g, '-').toLowerCase();
+			const formattedValue = propertyType.replace(/ /g, '-').toLowerCase();
 
 				return <option key={uuidv4()} value={formattedValue}>{propertyType}</option>
 			});
 		}
 
-		if (type === 'budget-sell') {
+		if (type === 'budget') {
 
-			const propertiesForSell = db.filter(property => property.propertyPrice !== undefined);
-			const price = propertiesForSell.map(price => parseFloat(price.propertyPrice)).sort((a, b) => a - b);
+			let propertyStatus, priceRange, formattedPrice, uniqueFormattedPrice;
 
-			const removedDuplicates = price.filter((duplicates, index) => price.indexOf(duplicates) === index);
+			// const propertiesForRent = db.filter(property => property.propertyRent !== undefined);
+			// const price = propertiesForRent.map(price => parseFloat(price.propertyRent)).sort((a, b) => a - b);
 
-			const formattedPrice = removedDuplicates.map(price => {
+			// return price.filter((duplicates, index) => price.indexOf(duplicates) === index).map(price => {
 
-				let formattedPrice;
+			// 	return <option key={uuidv4()} value={price}>{'$' + price.toLocaleString()}</option>
+			// });
 
-				if (price >= 50000 && price <= 100000) formattedPrice = '$50,000 - $100,000';
+			if(status === 'buy') {
 
-				if (price >= 100000 && price <= 300000) formattedPrice = '$100,000 - $300,000';
+				propertyStatus = db.filter(item => item.propertyStatus === 'buy');
+				priceRange = propertyStatus.map(price => parseFloat(price.propertyPrice)).sort((a, b) => a - b);
 
-				if (price >= 300000 && price <= 500000) formattedPrice = '$300,000 - $500,000';
+				removedDuplicates = priceRange.filter((duplicates, index) => priceRange.indexOf(duplicates) === index);
 
-				if (price >= 500000 && price <= 700000) formattedPrice = '$500,000 - $700,000';
+				formattedPrice = removedDuplicates.map(price => {
 
-				if (price >= 700000 && price <= 1000000) formattedPrice = '$700,000 - $1,000,000';
+					let formattedPrice;
 
-				return formattedPrice;
-			});
+					if (price >= 100000 && price <= 150000) formattedPrice = '$100,000 - $150,000';
 
-			const uniqueFormattedPrice = formattedPrice.filter((duplicates, index) => formattedPrice.indexOf(duplicates) === index);
+					if (price >= 200000 && price <= 250000) formattedPrice = '$200,000 - $250,000';
+
+					return formattedPrice;
+				});
+			}
+
+			if(status === 'rent') {
+				
+				propertyStatus = db.filter(item => item.propertyStatus === 'rent');
+				priceRange = propertyStatus.map(price => parseFloat(price.propertyRent)).sort((a, b) => a - b);
+
+				removedDuplicates = priceRange.filter((duplicates, index) => priceRange.indexOf(duplicates) === index);
+
+				formattedPrice = removedDuplicates.map(price => {
+
+					let formattedPrice;
+
+					if (price >= 200 && price <= 500) formattedPrice = '$200 - $500';
+
+					if (price >= 500 && price <= 1000) formattedPrice = '$500 - $1000';
+
+					return formattedPrice;
+				});
+			}
+
+			uniqueFormattedPrice = formattedPrice.filter((duplicates, index) => formattedPrice.indexOf(duplicates) === index);
 
 			return uniqueFormattedPrice.map(price => <option key={uuidv4()} value={price.replace(/[\$ ]/g, '')}>{price}</option>);
-		}
-
-		if (type === 'budget-rent') {
-
-			const propertiesForRent = db.filter(property => property.propertyRent !== undefined);
-			const price = propertiesForRent.map(price => parseFloat(price.propertyRent)).sort((a, b) => a - b);
-
-			return price.filter((duplicates, index) => price.indexOf(duplicates) === index).map(price => {
-
-				return <option key={uuidv4()} value={price}>{'$' + price.toLocaleString()}</option>
-			});
 		}
 	}
 
@@ -120,8 +158,6 @@ const PropertyForm = ({buy, rent, multiple}) => {
 		let submitted = false;
 
 		if(e.target.name.includes('buy')) {
-
-			// console.log(formInputs);
 			
 			let arr = [...db];
 			
@@ -171,7 +207,48 @@ const PropertyForm = ({buy, rent, multiple}) => {
 
 		if(e.target.name.includes('rent')) {
 
+			let arr = [...db];
 			
+			// Status
+			arr = arr.filter(item => item.propertyStatus === 'rent' );
+
+			// Location
+			arr = arr.filter(item => {
+
+				let regex = formInputs.city.rent.replace('-', ' ');
+				regex = new RegExp(`[${regex}]`, 'gi');
+				return item.addressCity === item.addressCity.match(regex).join('');
+			});
+
+			// Property Type
+			arr = arr.filter(item => {
+
+				let regex = formInputs.property_type.rent.replace('-', ' ');
+				regex = new RegExp(`^${regex}$`, `gi`);
+
+				if(item.propertyType.match(regex) !== null) regex = item.propertyType.match(regex).join('');
+
+				return item.propertyType === regex;
+			});
+
+			// Budget
+			arr = arr.filter(item => {
+
+				let startPrice = parseFloat(formInputs.budget.rent.substring(0, formInputs.budget.rent.indexOf('-')).replace('-', ''));
+				let endPrice = parseFloat(formInputs.budget.rent.substring(formInputs.budget.rent.indexOf('-') + 1, formInputs.budget.rent.length).replace('-', ''));
+
+				return parseFloat(item.propertyRent) >= startPrice && parseFloat(item.propertyRent) <= endPrice;
+			});
+
+			if(arr.length > 0) {
+
+				submitted = true;
+				changePage('/rent');
+
+			} else {
+
+				submitted = false;
+			}
 		}
 
 		const consoleStyle = 'background: #000; padding: 0.5rem; border: 2px dotted #11FF00';
@@ -199,7 +276,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='city-buy' className='m-0'>
 								<Form.Label>City</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='city' />}
+									{db !== undefined && <DynamicOptions type='city' status='buy' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -208,7 +285,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='property-type-buy' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='property-type' />}
+									{db !== undefined && <DynamicOptions type='property-type' status='buy' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -217,7 +294,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='buy-budget' className='m-0'>
 								<Form.Label>Budget</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='budget-sell' />}
+									{db !== undefined && <DynamicOptions type='budget' status='buy' />}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -242,7 +319,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='city-rent' className='m-0'>
 								<Form.Label>City</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='city' />}
+									{db !== undefined && <DynamicOptions type='city' status='rent'/>}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -251,7 +328,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='property-type-rent' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='property-type' />}
+									{db !== undefined && <DynamicOptions type='property-type' status='rent'/>}
 								</Form.Control>
 							</Form.Group>
 						</Col>
@@ -260,7 +337,7 @@ const PropertyForm = ({buy, rent, multiple}) => {
 							<Form.Group controlId='rent-budget' className='m-0'>
 								<Form.Label>Rent per month</Form.Label>
 								<Form.Control as='select' className='border-0 bg-white input-field shadow-none'>
-									{db !== undefined && <DynamicOptions type='budget-rent' />}
+									{db !== undefined && <DynamicOptions type='budget' status='rent'/>}
 								</Form.Control>
 							</Form.Group>
 						</Col>
