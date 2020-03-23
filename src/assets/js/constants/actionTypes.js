@@ -2,8 +2,13 @@
 export const TOGGLE_THROTTLE = 'TOGGLE_THROTTLE';
 export const SET_COUNTER = 'SET_COUNTER';
 
-// Property form
+// Fetch
 export const GET_DATABASE = 'GET_DATABASE';
+export const FILTER_DATABASE = 'FILTER_DATABASE';
+
+// Handling inputs
+export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
+export const RESET_INPUTS = 'RESET_INPUTS';
 
 // Mortage Calculator
 export const SET_HOME_PRICE = 'SET_HOME_PRICE';

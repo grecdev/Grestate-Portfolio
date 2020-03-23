@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import PropertyForm from '../../global_layout/PropertyForm';
+import PropertyForm from '../../global_layout/property_form/PropertyForm';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

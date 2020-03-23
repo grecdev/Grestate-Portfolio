@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import GlobalReducer from '../reducers/GlobalReducer';
-import FormReducer from '../reducers/FormReducer';
+import FetchReducer from '../reducers/FetchReducer';
 import {
 
 	GET_DATABASE,
+	FILTER_DATABASE,
 	TOGGLE_THROTTLE,
 	SET_COUNTER
 
@@ -25,11 +26,12 @@ const GlobalContextProvider = (props) => {
 	}
 
 	const databaseState = {
-		db: []
+		db: [],
+		filtered_db: []
 	}
 
 	const [state, dispatchState]= useReducer(GlobalReducer, initialGlobalState)
-	const [database, dispatchDatabase] = useReducer(FormReducer, databaseState);
+	const [database, dispatchFetch] = useReducer(FetchReducer, databaseState);
 
 	const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
@@ -38,11 +40,11 @@ const GlobalContextProvider = (props) => {
 
 		if (!state.throttle) return;
 
-		dispatchState({type: TOGGLE_THROTTLE, payload: false})
+		dispatchState({type: TOGGLE_THROTTLE, payload: false});
 
 		cb.apply(this, args);
 
-		setTimeout(() => dispatchState({type: TOGGLE_THROTTLE, payload: true}), interval)
+		setTimeout(() => dispatchState({type: TOGGLE_THROTTLE, payload: true}), interval);
 	}
 
 	const counterAnimation = () => {
@@ -104,11 +106,10 @@ const GlobalContextProvider = (props) => {
 		return () => {
 
 			window.removeEventListener('scroll', scrollEvent);
-			document.removeEventListener('DOMContentLoaded', loadEvent);
 
 		}
 
-	}, []);
+	}, [location]);
 
 	const getXhr = () => {
 
@@ -159,10 +160,12 @@ const GlobalContextProvider = (props) => {
 		return data;
 	}
 
+	const filterDatabase = data => dispatchFetch({type: FILTER_DATABASE, payload: data });
+
 	useEffect(() => {
 
 		getXhr()
-			.then(data => dispatchDatabase({ type: GET_DATABASE, payload: data }))
+			.then(data => dispatchFetch({ type: GET_DATABASE, payload: data }))
 			.catch(err => console.log(err));
 
 	}, []);
@@ -183,7 +186,8 @@ const GlobalContextProvider = (props) => {
 			getImage,
 			throttle,
 			disableLetters,
-			changePage
+			changePage,
+			filterDatabase
 		}}>
 			{children}
 		</GlobalContext.Provider>

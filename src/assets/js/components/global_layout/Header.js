@@ -17,11 +17,11 @@ const Header = () => {
 					</Nav.Item>
 
 					<Nav.Item>
-						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/buy'>Buy</NavLink>
+						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/buy-homes'>Buy</NavLink>
 					</Nav.Item>
 
 					<Nav.Item>
-						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/sell'>Sell</NavLink>
+						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/rental-listings'>Rent</NavLink>
 					</Nav.Item>
 
 					<Nav.Item>

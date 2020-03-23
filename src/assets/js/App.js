@@ -39,7 +39,7 @@ const App = () => {
 
 				<Switch>
 					<Route exact strict path='/' component={HomePage} />
-					<Route exact strict path='/buy' component={BuyPage} />
+					<Route exact strict path='/buy-homes' component={BuyPage} />
 					<Route exact strict path='/mortage-calculator' component={MortageCalculatorPage} />
 					<Route exact strict path='/about' component={AboutPage} />
 					<Route exact strict path='/contact' component={ContactPage} />
@@ -55,4 +55,4 @@ const App = () => {
 	)
 }
 
-export default App
+export default App;

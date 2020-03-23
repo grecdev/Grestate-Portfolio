@@ -1,6 +1,7 @@
 import {
 
-	GET_DATABASE
+	GET_DATABASE,
+	FILTER_DATABASE
 	
 } from '../constants/actionTypes';
 
@@ -12,6 +13,12 @@ export default (state, action) => {
 			return {
 				...state,
 				db: action.payload
+			}
+
+		case FILTER_DATABASE:
+			return {
+				...state,
+				filtered_db: action.payload
 			}
 
 		default:
