@@ -1,13 +1,13 @@
 import {
 
 	TOGGLE_THROTTLE,
-	SET_COUNTER
+	CHANGE_LOCATION
 
 } from '../constants/actionTypes';
 
-export default ((state, action) => {
+export default (state, action) => {
 
-	switch(action.type) {
+	switch (action.type) {
 
 		case TOGGLE_THROTTLE:
 			return {
@@ -15,14 +15,14 @@ export default ((state, action) => {
 				throttle: action.payload
 			}
 
-		case SET_COUNTER:
+		case CHANGE_LOCATION:
 			return {
 				...state,
-				counterActive: action.payload
+				location: action.payload
 			}
 
 		default:
 			return state;
 	}
 
-});
+};

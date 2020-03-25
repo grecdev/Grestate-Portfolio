@@ -10,15 +10,16 @@ import Col from 'react-bootstrap/Col';
 
 const Progress = () => {
 
-	const { counterActive } = useContext(GlobalContext);
+	const { counter } = useContext(GlobalContext);
 
 	const activateCounter = () => {
 
 		let speed;
 		let formattedStr;
-		let splittedNumber = [];
 
-		document.querySelectorAll('.counter').forEach(counter => {
+		document.getElementById('progress-counter').classList.add('activate-counter');
+
+		document.getElementById('progress-counter').classList.contains('activate-counter') && document.querySelectorAll('.counter').forEach(counter => {
 
 			function recursive() {
 
@@ -44,14 +45,13 @@ const Progress = () => {
 
 			recursive();
 		});
-
 	}
 
 	useEffect(() => {
 
-		counterActive && activateCounter();
-
-	}, [counterActive]);
+		counter && activateCounter();
+		
+	}, [counter]);
 
 	return (
 		<section id='progress-counter'>

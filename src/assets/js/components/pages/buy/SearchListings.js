@@ -2,12 +2,16 @@ import React from 'react';
 
 import PropertyBox from './PropertyBox';
 
-const SearchListings = () => {
+import Row from 'react-bootstrap/row';
 
+const SearchListings = () => {
+	
 	return (
-		<section id='search-listings'>
+		<Row id='search-listings' className='p-3 m-0 justify-content-between align-items-start'>
+
 			<PropertyBox />
-		</section>
+			
+		</Row>
 	)
 }
 

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import {
 	GET_DATABASE,
 	FILTER_DATABASE,
 	TOGGLE_THROTTLE,
-	SET_COUNTER
+	CHANGE_LOCATION
 
 } from '../constants/actionTypes';
 
@@ -20,9 +20,8 @@ const GlobalContextProvider = (props) => {
 	const { children, location, history } = props;
 
 	const initialGlobalState = {
-		counterActive: false,
 		throttle: true,
-		documentLoaded: false
+		location: undefined
 	}
 
 	const databaseState = {
@@ -36,34 +35,33 @@ const GlobalContextProvider = (props) => {
 	const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
 
-	const throttle = (cb, interval) => function (...args) {
+	const throttleEvent = (cb, interval) => function (...args) {
 
 		if (!state.throttle) return;
 
-		dispatchState({type: TOGGLE_THROTTLE, payload: false});
+		dispatchState({type: TOGGLE_THROTTLE, payload: false });
 
 		cb.apply(this, args);
 
 		setTimeout(() => dispatchState({type: TOGGLE_THROTTLE, payload: true}), interval);
 	}
 
+	const [counter, setCounter] = useState(false);
+
 	const counterAnimation = () => {
 
-		const pos = window.pageYOffset;
-		if (pos >= 1300) dispatchState({type: SET_COUNTER, payload: true});
+		if (window.pageYOffset >= 1350) setCounter(true);
 		else {
 
-			dispatchState({type: SET_COUNTER, payload: false});
+			setCounter(false);
+			document.querySelectorAll('.counter').forEach(counter => counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6));
 
-			document.querySelectorAll('.counter').forEach(counter => counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6))
 		}
 	}
 
 	const resetScroll = () => {
 
-		const pos = window.pageYOffset;
-
-		if (pos >= 640) document.getElementById('reset-scroll').classList.remove('d-none');
+		if (window.pageYOffset >= 640) document.getElementById('reset-scroll').classList.remove('d-none');
 		else document.getElementById('reset-scroll').classList.add('d-none');
 
 		window.requestAnimationFrame(resetScroll);
@@ -72,7 +70,7 @@ const GlobalContextProvider = (props) => {
 	const scrollEvent = e => {
 
 		counterAnimation();
-		resetScroll();
+		resetScroll();		
 
 		e.stopPropagation();
 	}
@@ -98,18 +96,6 @@ const GlobalContextProvider = (props) => {
 
 		e.stopPropagation();
 	}
-
-	useEffect(() => {
-
-		window.addEventListener('scroll', scrollEvent);
-
-		return () => {
-
-			window.removeEventListener('scroll', scrollEvent);
-
-		}
-
-	}, [location]);
 
 	const getXhr = () => {
 
@@ -168,6 +154,10 @@ const GlobalContextProvider = (props) => {
 			.then(data => dispatchFetch({ type: GET_DATABASE, payload: data }))
 			.catch(err => console.log(err));
 
+		window.addEventListener('scroll', scrollEvent, true);
+
+		return () => window.removeEventListener('scroll', scrollEvent);
+
 	}, []);
 
 	useEffect(() => {
@@ -176,15 +166,17 @@ const GlobalContextProvider = (props) => {
 
 		window.scrollTo(0, 0);
 
+		dispatchState({type: CHANGE_LOCATION, payload: location.pathname });
+
 	}, [location.pathname]);
 
 	return (
 		<GlobalContext.Provider value={{
 			...state,
 			...database,
-			location: location.pathname,
+			counter,
 			getImage,
-			throttle,
+			throttleEvent,
 			disableLetters,
 			changePage,
 			filterDatabase

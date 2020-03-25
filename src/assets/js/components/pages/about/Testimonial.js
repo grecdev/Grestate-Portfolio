@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 
 const Testimonial = () => {
 
-	const { getImage, throttle } = useContext(GlobalContext);
+	const { getImage, throttleEvent } = useContext(GlobalContext);
 
 	const defaultCarouselState = {
 		boxWidth: 0,
@@ -158,7 +158,7 @@ const Testimonial = () => {
 						))}
 					</div>
 
-					<div onClick={throttle(changeSlides, 500)} className='d-flex flex-row justify-content-between'>
+					<div onClick={throttleEvent(changeSlides, 500)} className='d-flex flex-row justify-content-between'>
 						<button key={uuidv4()} className='left-arrow slide-button rounded-circle shadow-none mx-2' type='button'><i className="fas fa-chevron-left"></i></button>
 						<button key={uuidv4()} className='right-arrow slide-button rounded-circle shadow-none mx-2' type='button'><i className="fas fa-chevron-right"></i></button>
 					</div>

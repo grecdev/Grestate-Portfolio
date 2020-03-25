@@ -23,9 +23,10 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 	const {
 
 		db,
+		filtered_db,
 		filterDatabase,
 		changePage,
-		location
+		location,
 		
 	} = useContext(GlobalContext);
 
@@ -82,6 +83,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		let submitted = false;
 		let arr = [...db];
+		let test = false;
 
 		if(e.target.name.includes('buy')) {
 			
@@ -119,7 +121,8 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			if(arr.length > 0) {
 
 				submitted = true;
-				// !location.includes('buy-homes') && changePage('/buy-homes');
+				!location.includes('buy-homes') && changePage('/buy-homes');
+				
 
 			} else {
 
@@ -160,15 +163,13 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				return parseFloat(item.propertyRent) >= startPrice && parseFloat(item.propertyRent) <= endPrice;
 			});
 
-			if(arr.length > 0) {
+			submitted = true;
+			!location.includes('rental-listings') && changePage('/rental-listings');
 
-				submitted = true;
-				!location.includes('rental-listings') && changePage('/rental-listings');
-				
-
-			} else {
+			if(arr.length === 0) {
 
 				submitted = false;
+
 			}
 		}
 

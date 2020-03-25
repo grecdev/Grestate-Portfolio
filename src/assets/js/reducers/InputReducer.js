@@ -6,7 +6,7 @@ import {
 } from '../constants/actionTypes';
 
 
-export default ((state, action) => {
+export default (state, action) => {
 
 	switch(action.type) {
 
@@ -24,4 +24,4 @@ export default ((state, action) => {
 		default:
 			return state;
 	}
-});
+};

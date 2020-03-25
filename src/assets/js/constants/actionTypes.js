@@ -1,6 +1,6 @@
 // Global Context
 export const TOGGLE_THROTTLE = 'TOGGLE_THROTTLE';
-export const SET_COUNTER = 'SET_COUNTER';
+export const CHANGE_LOCATION = 'CHANGE_LOCATION';
 
 // Fetch
 export const GET_DATABASE = 'GET_DATABASE';
