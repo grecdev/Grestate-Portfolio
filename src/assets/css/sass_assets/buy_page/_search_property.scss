@@ -16,8 +16,39 @@
 	}
 	
 	#search-map {
-		border: 1px solid red;
 		height: 73vh;
+
+		.mapboxgl-marker {
+			width: 25px;
+			height: 25px;
+			position: relative;
+			z-index: 1;
+
+			&:hover > .marker-info,
+			.marker-info:hover { display: block }
+
+			.marker-info {
+				background: $dark-1;
+				color: $white;
+				width: 120px;
+				position: absolute;
+				top: 40px;
+				left: -48px;
+				display: none;
+				z-index: 10000;
+
+				&::before {
+					content: '';
+					position: absolute;
+					top: -19px;
+					left: 50%;
+					transform: translateX(-50%);
+					border-style: solid;
+					border-color: transparent transparent $dark-1 transparent;
+					border-width: 10px 10px 10px 10px;
+				}
+			}
+		}
 	}
 
 	#search-listings {
@@ -30,12 +61,7 @@
 			to { transform: rotate(180deg) }
 		}
 
-		.search-not-found {
-
-			img {
-				width: 50%;
-			}
-		}
+		.search-not-found img { width: 50% }
 		
 		.property-box {
 			cursor: pointer;

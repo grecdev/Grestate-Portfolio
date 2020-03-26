@@ -1,17 +1,19 @@
-import React, { useContext, memo } from 'react';
+import React, { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GlobalContext } from '../../../context/GlobalContext';
+import { FetchContext } from '../../../context/FetchContext';
 
 const PropertyBox = () => {
 
 	const {
 
-		filtered_db,
-		getImage,
-		changePage
-		
+		changePage,
+		getImage
+
 	} = useContext(GlobalContext);
+
+	const { filtered_db } = useContext(FetchContext);
 
 	const test = e => {
 		
@@ -22,8 +24,6 @@ const PropertyBox = () => {
 		e.stopPropagation();
 	}
 
-	// console.log(filtered_db, document.body.contains(document.querySelector('search-listings-loader')));
-
 	if(filtered_db.length === 0) {
 	
 		return (
@@ -32,7 +32,6 @@ const PropertyBox = () => {
 				<img className='mx-auto' src={getImage('property-not-found.png')} alt='property not found' />
 			</div>
 		)
-
 	}
 
 	if(filtered_db.length > 0) {

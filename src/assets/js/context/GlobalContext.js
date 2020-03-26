@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import GlobalReducer from '../reducers/GlobalReducer';
-import FetchReducer from '../reducers/FetchReducer';
 import {
 
-	GET_DATABASE,
-	FILTER_DATABASE,
 	TOGGLE_THROTTLE,
 	CHANGE_LOCATION
 
@@ -19,19 +16,13 @@ const GlobalContextProvider = (props) => {
 
 	const { children, location, history } = props;
 
-	const initialGlobalState = {
+	const defaultGlobalState = {
 		throttle: true,
 		location: undefined
 	}
 
-	const databaseState = {
-		db: [],
-		filtered_db: []
-	}
-
-	const [state, dispatchState]= useReducer(GlobalReducer, initialGlobalState)
-	const [database, dispatchFetch] = useReducer(FetchReducer, databaseState);
-
+	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState)
+	
 	const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
 
@@ -39,11 +30,11 @@ const GlobalContextProvider = (props) => {
 
 		if (!state.throttle) return;
 
-		dispatchState({type: TOGGLE_THROTTLE, payload: false });
+		dispatch({type: TOGGLE_THROTTLE, payload: false });
 
 		cb.apply(this, args);
 
-		setTimeout(() => dispatchState({type: TOGGLE_THROTTLE, payload: true}), interval);
+		setTimeout(() => dispatch({type: TOGGLE_THROTTLE, payload: true}), interval);
 	}
 
 	const [counter, setCounter] = useState(false);
@@ -97,62 +88,7 @@ const GlobalContextProvider = (props) => {
 		e.stopPropagation();
 	}
 
-	const getXhr = () => {
-
-		return new Promise((resolve, reject) => {
-
-			const xhr = new XMLHttpRequest();
-
-			xhr.open('GET', 'https://grecdev.github.io/json-api/properties.json', true);
-
-			xhr.onload = () => {
-
-				const response = JSON.parse(xhr.responseText);
-
-				xhr.status >= 400 ? reject(response) : resolve(response);
-
-			}
-
-			xhr.onerror = () => reject('Some error occurred');
-
-			xhr.send();
-
-		});
-	}
-
-	const getFetch = () => {
-
-		return new Promise((resolve, reject) => {
-
-			fetch('https://grecdev.github.io/json-api/properties.json')
-				.then(errorHandling)
-				.then(data => resolve(data))
-				.catch(err => reject(err))
-
-			function errorHandling(response) {
-
-				if (!response.ok) throw Error(response.statusText)
-
-				return response.json();
-			}
-		});
-	}
-
-	const getAjax = async () => {
-
-		const response = await fetch('https://grecdev.github.io/json-api/properties.json');
-		const data = await response.json();
-
-		return data;
-	}
-
-	const filterDatabase = data => dispatchFetch({type: FILTER_DATABASE, payload: data });
-
 	useEffect(() => {
-
-		getXhr()
-			.then(data => dispatchFetch({ type: GET_DATABASE, payload: data }))
-			.catch(err => console.log(err));
 
 		window.addEventListener('scroll', scrollEvent, true);
 
@@ -166,20 +102,18 @@ const GlobalContextProvider = (props) => {
 
 		window.scrollTo(0, 0);
 
-		dispatchState({type: CHANGE_LOCATION, payload: location.pathname });
+		dispatch({type: CHANGE_LOCATION, payload: location.pathname });
 
 	}, [location.pathname]);
 
 	return (
 		<GlobalContext.Provider value={{
 			...state,
-			...database,
 			counter,
 			getImage,
 			throttleEvent,
 			disableLetters,
 			changePage,
-			filterDatabase
 		}}>
 			{children}
 		</GlobalContext.Provider>

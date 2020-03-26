@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { GlobalContext } from '../../context/GlobalContext';
+import { FetchContext } from '../../context/FetchContext';
 
 import PropertyForm from '../global_layout/property_form/PropertyForm';
 import SearchMap from './buy/SearchMap';
@@ -12,21 +12,7 @@ import Col from 'react-bootstrap/Col';
 
 const BuyPage = () => {
 
-	const {
-
-		filtered_db
-
-	} = useContext(GlobalContext);
-
-	const [loading, setLoading]= useState(false);
-
-	useEffect(() => {
-
-		setLoading(true);
-
-		setTimeout(() => setLoading(false), 700);
-
-	}, [filtered_db]);
+	const { loader } = useContext(FetchContext);
 
 	return (
 		<main id='search-property'>
@@ -41,13 +27,13 @@ const BuyPage = () => {
 
 				<Col className='col-lg-6 p-0 m-0'>
 
-					{loading ? (
+					{loader ? (
 
 						<div className="search-listings-loader d-flex flex-column justify-content-center align-items-center">
 							<div className='mx-auto'></div>
 						</div>
 
-					) : <SearchListings /> }
+					) :  <SearchListings /> }
 
 				</Col>
 			</Row>

@@ -2,6 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '../../../context/GlobalContext';
+import { FetchContext } from '../../../context/FetchContext';
 
 import InputReducer from '../../../reducers/InputReducer';
 import {
@@ -22,13 +23,17 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 	const {
 
-		db,
-		filtered_db,
-		filterDatabase,
 		changePage,
 		location,
 		
 	} = useContext(GlobalContext);
+
+	const {
+
+		db,
+		filterDatabase,
+		
+	} = useContext(FetchContext);
 
 	const defaultInputState = {
 		city_buy: '',
@@ -83,7 +88,6 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		let submitted = false;
 		let arr = [...db];
-		let test = false;
 
 		if(e.target.name.includes('buy')) {
 			

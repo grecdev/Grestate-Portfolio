@@ -5,6 +5,7 @@ export const CHANGE_LOCATION = 'CHANGE_LOCATION';
 // Fetch
 export const GET_DATABASE = 'GET_DATABASE';
 export const FILTER_DATABASE = 'FILTER_DATABASE';
+export const SET_LOADER = 'SET_LOADER';
 
 // Handling inputs
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
