@@ -1,23 +1,26 @@
 import React, { useContext } from 'react';
 
 import { FetchContext } from '../../context/FetchContext';
+import { GlobalContext } from '../../context/GlobalContext';
 
 import PropertyForm from '../global_layout/property_form/PropertyForm';
-import SearchMap from './buy/SearchMap';
-import SearchListings from './buy/SearchListings';
+import SearchMap from './search_property/SearchMap';
+import SearchListings from './search_property/SearchListings';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const BuyPage = () => {
+const SearchPropertyPage = () => {
 
 	const { loader } = useContext(FetchContext);
+	const { location } = useContext(GlobalContext);
 
 	return (
 		<main id='search-property'>
 			<Container className='p-3 mb-2'>
-				<PropertyForm multiple={false} buy={true} rent={false} />
+				{location.includes('buy') && <PropertyForm multiple={false} buy={true} rent={false} /> }
+				{location.includes('rental') && <PropertyForm multiple={false} buy={false} rent={true} /> }
 			</Container>
 
 			<Row className='m-0'>
@@ -41,4 +44,4 @@ const BuyPage = () => {
 	)
 }
 
-export default BuyPage;
+export default SearchPropertyPage;

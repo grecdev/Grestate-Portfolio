@@ -4,7 +4,7 @@ export const CHANGE_LOCATION = 'CHANGE_LOCATION';
 
 // Fetch
 export const GET_DATABASE = 'GET_DATABASE';
-export const FILTER_DATABASE = 'FILTER_DATABASE';
+export const FILTER_BUY_PROPERTIES = 'FILTER_BUY_PROPERTIES';
 export const SET_LOADER = 'SET_LOADER';
 
 // Handling inputs
@@ -19,3 +19,9 @@ export const SET_LOAN_PROGRAM = 'SET_LOAN_PROGRAM';
 export const SET_INTEREST_RATE = 'SET_INTEREST_RATE';
 export const RESET_MORTAGE_INPUTS = 'RESET_MORTAGE_INPUTS';
 export const RESET_DOWN_PAYMENT = 'RESET_DOWN_PAYMENT';
+
+// Search property map
+export const SET_VIEWPORT = 'SET_VIEWPORT';
+export const SET_PROPERTIES = 'SET_PROPERTIES';
+export const TOGGLE_POPUP = 'TOGGLE_POPUP';
+export const SET_POPUP_INFO = 'SET_POPUP_INFO';

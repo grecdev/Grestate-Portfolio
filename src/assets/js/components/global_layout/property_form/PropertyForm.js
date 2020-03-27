@@ -125,7 +125,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			if(arr.length > 0) {
 
 				submitted = true;
-				!location.includes('buy-homes') && changePage('/buy-homes');
+				!location.includes('buy-properties') && changePage('/buy-properties');
 				
 
 			} else {
@@ -177,7 +177,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			}
 		}
 
-		filterDatabase(arr);
+		filterDatabase(arr, e.target);
 
 		const consoleStyle = 'background: #000; padding: 0.5rem; border: 2px dotted #11FF00';
 
@@ -235,12 +235,14 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			)}
 
 			{rent && (
-				<Form className='py-2 px-3 rounded position-relative d-none' name='rent-property' onSubmit={submitForm}>
+				<Form className={!location.includes('rental') ? 'py-2 px-3 rounded position-relative d-none' : 'py-2 px-3 rounded position-relative d-block'} name='rent-property' onSubmit={submitForm}>
 
-					<Row className="form-header position-absolute">
-						<a className='rounded-top' role='button' data-form-type='buy-property' onClick={changeForm}>Buy</a>
-						<a className='rounded-top active-form' role='button' data-form-type='rent-property' onClick={changeForm}>Rent</a>
-					</Row>
+				{multiple && (
+						<Row className="form-header position-absolute">
+							<a className='rounded-top' role='button' data-form-type='buy-property' onClick={changeForm}>Buy</a>
+							<a className='rounded-top active-form' role='button' data-form-type='rent-property' onClick={changeForm}>Rent</a>
+						</Row>
+					)}
 
 					<Row className='align-items-center'>
 						<Col className='border-right'>

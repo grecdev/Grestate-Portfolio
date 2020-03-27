@@ -1,12 +1,14 @@
-import React, { useEffect, useReducer, createContext } from 'react';
+import React, { useEffect, useReducer, createContext, useContext } from 'react';
 
 export const FetchContext = createContext();
+
+import { GlobalContext } from '../context/GlobalContext';
 
 import FetchReducer from '../reducers/FetchReducer';
 import {
 
 	GET_DATABASE,
-	FILTER_DATABASE,
+	FILTER_BUY_PROPERTIES,
 	SET_LOADER
 
 } from '../constants/actionTypes';
@@ -15,19 +17,24 @@ const FetchContextProvider = (props) => {
 
 	const { children } = props;
 
+	const { location } = useContext(GlobalContext);
+
 	const defaultDatabaseState = {
 		db: [],
-		filtered_db: [],
+		filtered_buy_properties: [],
 		loader: false
 	}
 
 	const [state, dispatch] = useReducer(FetchReducer, defaultDatabaseState);
 
-	const filterDatabase = data => {
+	const filterDatabase = (data, target) => {
 		
-		dispatch({ type: FILTER_DATABASE, payload: data });
+		if(target.name.includes('buy')) {
 
-		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+			dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
+	
+			setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+		}
 	}
 
 	const getXhr = () => {

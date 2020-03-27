@@ -17,7 +17,7 @@ const Header = () => {
 					</Nav.Item>
 
 					<Nav.Item>
-						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' exact to='/buy-homes'>Buy</NavLink>
+						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' exact to='/buy-properties'>Buy</NavLink>
 					</Nav.Item>
 
 					<Nav.Item>

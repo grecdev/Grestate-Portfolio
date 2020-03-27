@@ -8,7 +8,7 @@ import Footer from './components/global_layout/Footer';
 import ResetScroll from './components/global_layout/ResetScroll';
 
 const HomePage = lazy(() => import('./components/pages/HomePage'));
-const BuyPage = lazy(() => import('./components/pages/BuyPage'));
+const SearchPropertyPage = lazy(() => import('./components/pages/SearchPropertyPage'));
 const MortageCalculatorPage = lazy(() => import('./components/pages/MortageCalculatorPage'));
 const AboutPage = lazy(() => import('./components/pages/AboutPage'));
 const ContactPage = lazy(() => import('./components/pages/ContactPage'));
@@ -23,7 +23,8 @@ const App = () => {
 
 				<Switch>
 					<Route exact strict path='/' component={HomePage} />
-					<Route exact strict path='/buy-homes' component={BuyPage} />
+					<Route exact strict path='/buy-properties' component={SearchPropertyPage} />
+					<Route exact strict path='/rental-listings' component={SearchPropertyPage} />
 					<Route exact strict path='/mortage-calculator' component={MortageCalculatorPage} />
 					<Route exact strict path='/about' component={AboutPage} />
 					<Route exact strict path='/contact' component={ContactPage} />

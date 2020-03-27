@@ -13,7 +13,7 @@ const PropertyBox = () => {
 
 	} = useContext(GlobalContext);
 
-	const { filtered_db } = useContext(FetchContext);
+	const { filtered_buy_properties } = useContext(FetchContext);
 
 	const test = e => {
 		
@@ -24,7 +24,19 @@ const PropertyBox = () => {
 		e.stopPropagation();
 	}
 
-	if(filtered_db.length === 0) {
+	const hightlightPin = e => {
+
+		const pinIndex = e.currentTarget.dataset.pinIndex;
+
+		const pinImage = document.querySelectorAll('.marker-image')[pinIndex];
+
+		e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin.svg'));
+		e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin.svg'));
+
+		e.stopPropagation();
+	}
+
+	if(filtered_buy_properties.length === 0) {
 	
 		return (
 			<div className="search-not-found text-center">
@@ -34,11 +46,19 @@ const PropertyBox = () => {
 		)
 	}
 
-	if(filtered_db.length > 0) {
+	if(filtered_buy_properties.length > 0) {
 
-		return filtered_db.map(item => (
+		return filtered_buy_properties.map(item => (
 	
-			<div key={uuidv4()} className="property-box mx-3" data-property-id={item.id} onClick={test} >
+			<div
+				key={uuidv4()}
+				className="property-box mx-3"
+				data-property-id={item.id}
+				data-pin-index={item.id - 1}
+				onMouseEnter={hightlightPin}
+				onMouseLeave={hightlightPin}
+				onClick={test}
+			>
 				<img src={getImage(item.propertyImages.showcaseImage)} className='rounded'/>
 
 				<div className="property-box-info pt-3">

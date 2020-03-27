@@ -13,6 +13,7 @@
 
 import '../css/style.scss';
 import '../css/bootstrap.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

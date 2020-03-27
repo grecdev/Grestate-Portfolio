@@ -1,7 +1,7 @@
 import {
 
 	GET_DATABASE,
-	FILTER_DATABASE,
+	FILTER_BUY_PROPERTIES,
 	SET_LOADER
 	
 } from '../constants/actionTypes';
@@ -16,11 +16,11 @@ export default (state, action) => {
 				db: action.payload
 			}
 
-		case FILTER_DATABASE:
+		case FILTER_BUY_PROPERTIES:
 			return {
 				...state,
 				loader: true,
-				filtered_db: action.payload
+				filtered_buy_properties: action.payload
 			}
 
 		case SET_LOADER:
