@@ -28,12 +28,23 @@
 			img { cursor: pointer }
 		}
 
-		.mapboxgl-popup-tip { border-bottom-color: $dark-1 }
-
 		.mapboxgl-popup-content {
 			cursor: auto;
-			border: 3px solid $dark-1;
 			user-select: text;
+		}
+
+		.mapboxgl-user-location-dot {
+			background: $green-dark;
+			@include flex(column, center, center);
+
+			&::after {
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: $dark-1;
+			}
+
+			&::before { background: #FF5752 }
 		}
 	}
 

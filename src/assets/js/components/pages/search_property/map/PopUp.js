@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
+import { FetchContext } from '../../../../context/FetchContext';
 
 import { v4 as uuidv4 } from 'uuid';
 
 import { Popup } from 'react-map-gl';
 
 const PopUp = ({ showPopup, togglePopup, popupInfo }) => {
+
+	const { filtered_buy_properties } = useContext(FetchContext);
+
+	useEffect(() => {
+
+		togglePopup(false);
+
+	}, [filtered_buy_properties]);
 	
 	return showPopup ? (
 

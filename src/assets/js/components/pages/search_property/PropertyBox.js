@@ -32,7 +32,7 @@ const PropertyBox = () => {
 
 		e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin.svg'));
 		e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin.svg'));
-
+		
 		e.stopPropagation();
 	}
 
@@ -48,13 +48,13 @@ const PropertyBox = () => {
 
 	if(filtered_buy_properties.length > 0) {
 
-		return filtered_buy_properties.map(item => (
+		return filtered_buy_properties.map((item, index) => (
 	
 			<div
 				key={uuidv4()}
 				className="property-box mx-3"
 				data-property-id={item.id}
-				data-pin-index={item.id - 1}
+				data-pin-index={index}
 				onMouseEnter={hightlightPin}
 				onMouseLeave={hightlightPin}
 				onClick={test}

@@ -4,7 +4,6 @@ import { FetchContext } from '../../../context/FetchContext';
 import MapReducer from '../../../reducers/MapReducer';
 import {
 
-	SET_VIEWPORT,
 	SET_PROPERTIES,
 	TOGGLE_POPUP,
 	SET_POPUP_INFO
@@ -12,7 +11,8 @@ import {
 } from '../../../constants/actionTypes';
 
 // HUGE FILE
-import ReactMapGL from 'react-map-gl';
+// Check for optimizaion / fix
+import ReactMapGL, { GeolocateControl } from 'react-map-gl';
 
 import Markers from './map/Markers';
 import PopUp from './map/PopUp';
@@ -48,8 +48,6 @@ const SearchMap = () => {
 
 		const properties = filtered_buy_properties.map(item => {
 
-			console.log(item);
-
 			return {
 				coordinates: item.coordinates,
 				country: item.addressLocation,
@@ -59,6 +57,7 @@ const SearchMap = () => {
 		});
 
 		if(filtered_buy_properties.length > 0 ) dispatch({ type: SET_PROPERTIES, payload: properties });
+		else dispatch({ type: SET_PROPERTIES, payload: defaultData });
 
 	}, [filtered_buy_properties]);
 
@@ -79,13 +78,14 @@ const SearchMap = () => {
 		}));
 
 	}, [state.properties]);
-
+	
 	return (
 		<section id='search-map'>
 			<ReactMapGL
 				{...viewport}
 				onViewportChange={setViewport}
 				mapboxApiAccessToken={process.env.MAP_KEY}
+				mapStyle='mapbox://styles/mapbox/dark-v10'
 			>
 				<Markers
 					data={state.properties}
@@ -93,11 +93,21 @@ const SearchMap = () => {
 					getPropertyInfo={getPropertyInfo}
 					showPopup={state.show_popup}
 				/>
+
 				<PopUp
 					showPopup={state.show_popup}
 					togglePopup={togglePopup}
 					popupInfo={state.popup_info}
 				/>
+				<GeolocateControl
+          positionOptions={{enableHighAccuracy: true}}
+					trackUserLocation={true}
+					style={{
+						position: 'absolute',
+						top: 20,
+						left: 20
+					}}
+        />
 			</ReactMapGL>
 		</section>
 	)
