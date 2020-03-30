@@ -1,6 +1,8 @@
 import React, { useState, useReducer, useContext, useEffect } from 'react';
 
 import { FetchContext } from '../../../context/FetchContext';
+import { GlobalContext } from '../../../context/GlobalContext';
+
 import MapReducer from '../../../reducers/MapReducer';
 import {
 
@@ -10,8 +12,6 @@ import {
 
 } from '../../../constants/actionTypes';
 
-// HUGE FILE
-// Check for optimizaion / fix
 import ReactMapGL, { GeolocateControl } from 'react-map-gl';
 
 import Markers from './map/Markers';
@@ -19,7 +19,14 @@ import PopUp from './map/PopUp';
 
 const SearchMap = () => {
 
-	const { filtered_buy_properties } = useContext(FetchContext);
+	const { location } = useContext(GlobalContext);
+
+	const {
+
+		filtered_buy_properties,
+		filtered_rent_properties
+
+	} = useContext(FetchContext);
 
 	const defaultData = [
 		{
@@ -44,9 +51,14 @@ const SearchMap = () => {
 
 	const getPropertyInfo = index => dispatch({ type: SET_POPUP_INFO, payload: state.properties[index] });
 
+	const [arr, setArr] = useState([]);
+
 	useEffect(() => {
 
-		const properties = filtered_buy_properties.map(item => {
+		location.includes('buy-properties') && setArr(filtered_buy_properties);
+		location.includes('rental-listings') && setArr(filtered_rent_properties);
+
+		const properties = arr.map(item => {
 
 			return {
 				coordinates: item.coordinates,
@@ -56,14 +68,14 @@ const SearchMap = () => {
 			}
 		});
 
-		if(filtered_buy_properties.length > 0 ) dispatch({ type: SET_PROPERTIES, payload: properties });
+		if(arr.length > 0) dispatch({ type: SET_PROPERTIES, payload: properties });
 		else dispatch({ type: SET_PROPERTIES, payload: defaultData });
 
-	}, [filtered_buy_properties]);
+	}, [filtered_buy_properties, filtered_rent_properties, arr]);
 
 	const [viewport, setViewport] = useState({
 		width: 759,
-		height: 527,
+		height: 528,
 		zoom: 16,
 		latitude: undefined,
 		longitude: undefined
@@ -99,6 +111,7 @@ const SearchMap = () => {
 					togglePopup={togglePopup}
 					popupInfo={state.popup_info}
 				/>
+
 				<GeolocateControl
           positionOptions={{enableHighAccuracy: true}}
 					trackUserLocation={true}

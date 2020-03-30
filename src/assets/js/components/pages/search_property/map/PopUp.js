@@ -10,13 +10,18 @@ import { Popup } from 'react-map-gl';
 
 const PopUp = ({ showPopup, togglePopup, popupInfo }) => {
 
-	const { filtered_buy_properties } = useContext(FetchContext);
+	const {
+
+		filtered_buy_properties,
+		filtered_rent_properties
+
+	} = useContext(FetchContext);
 
 	useEffect(() => {
 
 		togglePopup(false);
 
-	}, [filtered_buy_properties]);
+	}, [filtered_buy_properties, filtered_rent_properties]);
 	
 	return showPopup ? (
 

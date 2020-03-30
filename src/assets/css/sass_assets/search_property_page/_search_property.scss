@@ -33,6 +33,8 @@
 			user-select: text;
 		}
 
+		.mapboxgl-ctrl-geolocate { box-shadow: none }
+
 		.mapboxgl-user-location-dot {
 			background: $green-dark;
 			@include flex(column, center, center);

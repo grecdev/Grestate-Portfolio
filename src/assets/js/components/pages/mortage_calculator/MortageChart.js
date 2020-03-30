@@ -1,7 +1,9 @@
-import React, {useEffect}from 'react';
+import React, { useEffect }from 'react';
 import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col';
+
+import Chartist from './chartist.min.js';
 
 const MortageChart = ({payment}) => {
 	

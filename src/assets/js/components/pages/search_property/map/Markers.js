@@ -12,8 +12,6 @@ export class Markers extends PureComponent {
 
 	togglePopup = e => {
 
-		const { getImage } = this.context;
-
 		const { togglePopup, getPropertyInfo } = this.props;
 
 		togglePopup(true);
@@ -25,7 +23,7 @@ export class Markers extends PureComponent {
 
 	hightlightProperty = e => {
 
-		const { getImage } = this.context;
+		const { getImage, location } = this.context;
 
 		const propertyIndex = e.currentTarget.dataset.propertyIndex;
 
@@ -37,16 +35,25 @@ export class Markers extends PureComponent {
 			e.type === 'mouseleave' && propertyBox.classList.remove('highlight-property');
 		}
 
-		e.type === 'mouseenter' && e.currentTarget.setAttribute('src', getImage('hightlight-pin.svg'));
-		e.type === 'mouseleave' && e.currentTarget.setAttribute('src', getImage('pin.svg'));
+		if(location.includes('buy')) {
+
+			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', getImage('hightlight-pin-1.svg'));
+			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', getImage('pin-1.svg'));
+		}
+
+		if(location.includes('rent')) {
+
+			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', getImage('hightlight-pin-2.svg'));
+			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', getImage('pin-2.svg'));
+		}
 
 		e.stopPropagation();
 	}
 	
 	render() {
 
-		const { data, showPopup } = this.props;
-		const { getImage } = this.context;
+		const { data } = this.props;
+		const { getImage, location } = this.context;
 
 		return data.map((item, index) => (
 			<Marker
@@ -55,7 +62,7 @@ export class Markers extends PureComponent {
 				latitude={item.coordinates.latitude}
 			>
 				<img
-					src={getImage("pin.svg")}
+					src={location.includes('buy') ? getImage("pin-1.svg") : getImage("pin-2.svg")}
 					className='marker-image'
 					data-property-index={index}
 					onClick={this.togglePopup}
@@ -70,8 +77,7 @@ export class Markers extends PureComponent {
 Markers.propTypes = {
 	data: PropTypes.array.isRequired,
 	togglePopup: PropTypes.func.isRequired,
-	getPropertyInfo: PropTypes.func.isRequired,
-	showPopup: PropTypes.bool.isRequired
+	getPropertyInfo: PropTypes.func.isRequired
 }
 
 export default Markers;

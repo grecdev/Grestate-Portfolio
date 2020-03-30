@@ -1,14 +1,16 @@
 import React, { useEffect, useReducer, createContext, useContext } from 'react';
 
+import { GlobalContext } from './GlobalContext';
+
 export const FetchContext = createContext();
-
-import { GlobalContext } from '../context/GlobalContext';
-
 import FetchReducer from '../reducers/FetchReducer';
 import {
 
 	GET_DATABASE,
 	FILTER_BUY_PROPERTIES,
+	FILTER_RENTAL_PROPERTIES,
+	RESET_BUY_PROPERTIES,
+	RESET_RENTAL_PROPERTIES,
 	SET_LOADER
 
 } from '../constants/actionTypes';
@@ -22,6 +24,7 @@ const FetchContextProvider = (props) => {
 	const defaultDatabaseState = {
 		db: [],
 		filtered_buy_properties: [],
+		filtered_rent_properties: [],
 		loader: false
 	}
 
@@ -32,6 +35,13 @@ const FetchContextProvider = (props) => {
 		if(target.name.includes('buy')) {
 
 			dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
+	
+			setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+		}
+
+		if(target.name.includes('rent')) {
+
+			dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: data });
 	
 			setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
 		}
@@ -93,6 +103,16 @@ const FetchContextProvider = (props) => {
 			.catch(err => console.log(err));
 
 	}, []);
+
+	useEffect(() => {
+
+		if(location !== undefined) {
+
+			if(!location.includes('buy')) dispatch({ type: RESET_BUY_PROPERTIES }); 
+			if(!location.includes('rent')) dispatch({ type: RESET_RENTAL_PROPERTIES });
+		}
+
+	}, [location]);
 
 	return (
 

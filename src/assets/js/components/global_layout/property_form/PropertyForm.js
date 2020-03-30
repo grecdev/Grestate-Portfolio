@@ -122,6 +122,8 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				return parseFloat(item.propertyPrice) >= startPrice && parseFloat(item.propertyPrice) <= endPrice;
 			});
 
+			
+
 			if(arr.length > 0) {
 
 				submitted = true;
@@ -170,15 +172,20 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			submitted = true;
 			!location.includes('rental-listings') && changePage('/rental-listings');
 
-			if(arr.length === 0) {
+			if(arr.length > 0) {
+
+				submitted = true;
+				!location.includes('rental-listings') && changePage('/rental-listings');
+				
+
+			} else {
 
 				submitted = false;
-
 			}
 		}
 
 		filterDatabase(arr, e.target);
-
+		
 		const consoleStyle = 'background: #000; padding: 0.5rem; border: 2px dotted #11FF00';
 
 		console.log(`%cForm has been submitted: ${submitted}`, consoleStyle);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -9,11 +9,17 @@ const PropertyBox = () => {
 	const {
 
 		changePage,
-		getImage
+		getImage,
+		location
 
 	} = useContext(GlobalContext);
 
-	const { filtered_buy_properties } = useContext(FetchContext);
+	const {
+
+		filtered_buy_properties,
+		filtered_rent_properties
+
+	} = useContext(FetchContext);
 
 	const test = e => {
 		
@@ -30,13 +36,31 @@ const PropertyBox = () => {
 
 		const pinImage = document.querySelectorAll('.marker-image')[pinIndex];
 
-		e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin.svg'));
-		e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin.svg'));
+		if(location.includes('buy')) {
+			
+			e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin-1.svg'));
+			e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin-1.svg'));
+		}
+
+		if(location.includes('rent')) {
+
+			e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin-2.svg'));
+			e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin-2.svg'));
+		}
 		
 		e.stopPropagation();
 	}
 
-	if(filtered_buy_properties.length === 0) {
+	const [arr, setArr] = useState([]);
+
+	useEffect(() => {
+
+		location.includes('buy-properties') && setArr(filtered_buy_properties);
+		location.includes('rental-listings') && setArr(filtered_rent_properties);
+
+	}, [filtered_buy_properties, filtered_rent_properties]);
+
+	if(arr.length === 0) {
 	
 		return (
 			<div className="search-not-found text-center">
@@ -46,47 +70,55 @@ const PropertyBox = () => {
 		)
 	}
 
-	if(filtered_buy_properties.length > 0) {
+	if(arr.length > 0) {
 
-		return filtered_buy_properties.map((item, index) => (
+		let price;
+
+		return arr.map((item, index) => {
+			
+			if(item.propertyStatus === 'buy') price = item.propertyPrice
+			if(item.propertyStatus === 'rent') price = item.propertyRent
+
+			return (
 	
-			<div
-				key={uuidv4()}
-				className="property-box mx-3"
-				data-property-id={item.id}
-				data-pin-index={index}
-				onMouseEnter={hightlightPin}
-				onMouseLeave={hightlightPin}
-				onClick={test}
-			>
-				<img src={getImage(item.propertyImages.showcaseImage)} className='rounded'/>
-
-				<div className="property-box-info pt-3">
-					<p className='font-weight-bold m-0'>{item.addressLocation}</p>
-					<p className='text-black-50 mb-1'>{item.addressCity}</p>
-
-					<p className='price font-weight-bold'>${parseFloat(item.propertyPrice).toLocaleString()}</p>
+				<div
+					key={uuidv4()}
+					className="property-box mx-3"
+					data-property-id={item.id}
+					data-pin-index={index}
+					onMouseEnter={hightlightPin}
+					onMouseLeave={hightlightPin}
+					onClick={test}
+				>
+					<img src={getImage(item.propertyImages.showcaseImage)} className='rounded'/>
+	
+					<div className="property-box-info pt-3">
+						<p className='font-weight-bold m-0'>{item.addressLocation}</p>
+						<p className='text-black-50 mb-1'>{item.addressCity}</p>
+	
+						<p className='price font-weight-bold'>${parseFloat(price).toLocaleString()}</p>
+					</div>
+	
+					<div className="features-preview d-flex flex-row justify-content-start align-items-center">
+						<div className='position-relative'>
+							<p className='pr-3'><i className="fas fa-bed mr-1"></i> {item.bedrooms}</p>
+							<div className='d-none p-2 text-center position-absolute pop-up'>Bedrooms</div>
+						</div>
+	
+						<div className='position-relative'>
+							<p className='pr-3'><i className="fas fa-bath mr-1"></i> {item.bathrooms}</p>
+							<div className='d-none p-2 text-center position-absolute pop-up'>Bathrooms</div>
+						</div>
+	
+						<div className='position-relative'>
+							<p className='pr-3'><i className="fas fa-ruler-combined mr-1"></i> {item.propertySize}</p>
+							<div className='d-none p-2 text-center position-absolute pop-up'>Property Size</div>
+						</div>
+					</div>
 				</div>
-
-				<div className="features-preview d-flex flex-row justify-content-start align-items-center">
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-bed mr-1"></i> {item.bedrooms}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Bedrooms</div>
-					</div>
-
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-bath mr-1"></i> {item.bathrooms}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Bathrooms</div>
-					</div>
-
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-ruler-combined mr-1"></i> {item.propertySize}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Property Size</div>
-					</div>
-				</div>
-			</div>
-
-		));
+	
+			)
+		});
 	}
 };
 
