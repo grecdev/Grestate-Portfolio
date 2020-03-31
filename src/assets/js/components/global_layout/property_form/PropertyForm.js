@@ -1,4 +1,11 @@
-import React, { useContext, useReducer } from 'react';
+import React, {
+
+	useContext,
+	useReducer,
+	useEffect
+
+} from 'react';
+
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '../../../context/GlobalContext';
@@ -8,7 +15,9 @@ import InputReducer from '../../../reducers/InputReducer';
 import {
 
 	SET_INPUT_VALUE,
-	RESET_INPUTS
+	RESET_INPUTS,
+	RESET_BUY_INPUTS,
+  RESET_RENT_INPUTS
 
 } from '../../../constants/actionTypes';
 
@@ -32,6 +41,8 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		db,
 		filterDatabase,
+		filtered_buy_properties,
+		filtered_rent_properties
 		
 	} = useContext(FetchContext);
 
@@ -44,14 +55,14 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 		rent_budget: ''
 	};
 
-	const [inputState, dispatchInputState] = useReducer(InputReducer, defaultInputState);
+	const [state, dispatch] = useReducer(InputReducer, defaultInputState);
 
 	const handleChange = e => {
 
 		const target = e.target.id.replace(/\-/g, '_');
 		const value = e.target.value;
 
-		dispatchInputState({type: SET_INPUT_VALUE, target: target, payload: value });
+		dispatch({type: SET_INPUT_VALUE, target: target, payload: value });
 
 		e.stopPropagation();
 	}
@@ -64,7 +75,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		document.querySelector(`form[name="${formType}"]`).classList.replace('d-none', 'd-block');
 
-		dispatchInputState({type: RESET_INPUTS, payload: defaultInputState })
+		dispatch({type: RESET_INPUTS, payload: defaultInputState });
 
 		e.stopPropagation();
 	}
@@ -122,14 +133,11 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				return parseFloat(item.propertyPrice) >= startPrice && parseFloat(item.propertyPrice) <= endPrice;
 			});
 
-			
-
 			if(arr.length > 0) {
 
 				submitted = true;
 				!location.includes('buy-properties') && changePage('/buy-properties');
 				
-
 			} else {
 
 				submitted = false;
@@ -177,7 +185,6 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				submitted = true;
 				!location.includes('rental-listings') && changePage('/rental-listings');
 				
-
 			} else {
 
 				submitted = false;
@@ -193,6 +200,54 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 		e.stopPropagation();
 		return submitted;
 	}
+
+	// So the inputs remain the same when the page is changed
+	useEffect(() => {
+
+		let city, property_type, budget;
+
+		if(filtered_buy_properties.length > 0) {
+
+			city = filtered_buy_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
+			property_type = filtered_buy_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
+			budget = parseFloat(filtered_buy_properties[0].propertyPrice);
+		
+			Array.from(document.querySelectorAll('#buy-budget option')).forEach(item => {
+
+				const item_value_start = parseFloat(item.value.substring(0, item.value.indexOf('-')).replace(/\,/g, ''));
+				const item_value_end = parseFloat(item.value.substring(item.value.indexOf('-') + 1, item.value.length).replace(/\,/g, ''));
+
+				if(item_value_start <= budget && item_value_end >= budget) budget = item.value;
+			});
+
+			dispatch({type: SET_INPUT_VALUE, target: 'city_buy', payload: city });
+			dispatch({type: SET_INPUT_VALUE, target: 'property_type_buy', payload: property_type });
+			dispatch({type: SET_INPUT_VALUE, target: 'buy_budget', payload: budget });
+		}
+
+		if(filtered_rent_properties.length > 0) {
+
+			city = filtered_rent_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
+			property_type = filtered_rent_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
+			budget = parseFloat(filtered_rent_properties[0].propertyRent);
+		
+			Array.from(document.querySelectorAll('#rent-budget option')).forEach(item => {
+
+				const item_value_start = parseFloat(item.value.substring(0, item.value.indexOf('-')).replace(/\,/g, ''));
+				const item_value_end = parseFloat(item.value.substring(item.value.indexOf('-') + 1, item.value.length).replace(/\,/g, ''));
+
+				if(item_value_start <= budget && item_value_end >= budget) budget = item.value;
+			});
+
+			dispatch({type: SET_INPUT_VALUE, target: 'city_rent', payload: city });
+			dispatch({type: SET_INPUT_VALUE, target: 'property_type_rent', payload: property_type });
+			dispatch({type: SET_INPUT_VALUE, target: 'rent_budget', payload: budget });
+		}
+
+		!location.includes('buy') && dispatch({ type: RESET_BUY_INPUTS });
+		!location.includes('rent') && dispatch({ type: RESET_RENT_INPUTS });
+
+	}, [location]);
 
 	return (
 		<div className='property-search-form'>
@@ -210,7 +265,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col className='border-right'>
 							<Form.Group controlId='city-buy' className='m-0'>
 								<Form.Label>City</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.city_buy} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.city_buy} onChange={handleChange}>
 									<DynamicOptions type='city' status='buy' />
 								</Form.Control>
 							</Form.Group>
@@ -219,7 +274,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col className='border-right'>
 							<Form.Group controlId='property-type-buy' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.property_type_buy} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.property_type_buy} onChange={handleChange}>
 									<DynamicOptions type='property-type' status='buy' />
 								</Form.Control>
 							</Form.Group>
@@ -228,7 +283,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col>
 							<Form.Group controlId='buy-budget' className='m-0'>
 								<Form.Label>Budget</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.buy_budget} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.buy_budget} onChange={handleChange}>
 									<DynamicOptions type='budget' status='buy' />
 								</Form.Control>
 							</Form.Group>
@@ -255,7 +310,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col className='border-right'>
 							<Form.Group controlId='city-rent' className='m-0'>
 								<Form.Label>City</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.city_rent} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.city_rent} onChange={handleChange}>
 									<DynamicOptions type='city' status='rent'/>
 								</Form.Control>
 							</Form.Group>
@@ -264,7 +319,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col className='border-right'>
 							<Form.Group controlId='property-type-rent' className='m-0'>
 								<Form.Label>Property Type</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.property_type_rent} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.property_type_rent} onChange={handleChange}>
 									<DynamicOptions type='property-type' status='rent'/>
 								</Form.Control>
 							</Form.Group>
@@ -273,7 +328,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 						<Col>
 							<Form.Group controlId='rent-budget' className='m-0'>
 								<Form.Label>Rent per month</Form.Label>
-								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={inputState.rent_budget} onChange={handleChange}>
+								<Form.Control as='select' className='border-0 bg-white input-field shadow-none' value={state.rent_budget} onChange={handleChange}>
 									<DynamicOptions type='budget' status='rent'/>
 								</Form.Control>
 							</Form.Group>

@@ -13,6 +13,8 @@ export const SET_LOADER = 'SET_LOADER';
 // Handling inputs
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
 export const RESET_INPUTS = 'RESET_INPUTS';
+export const RESET_BUY_INPUTS = 'RESET_BUY_INPUTS';
+export const RESET_RENT_INPUTS = 'RESET_RENT_INPUTS';
 
 // Mortage Calculator
 export const SET_HOME_PRICE = 'SET_HOME_PRICE';

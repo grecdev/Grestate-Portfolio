@@ -1,4 +1,4 @@
-import React, { useContext }from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { FetchContext } from '../../../context/FetchContext';
@@ -8,7 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 const DynamicOptions = (props) => {
 
 	const { db } = useContext(FetchContext);
-	const { type, status } = props;
+
+	const {
+
+		type,
+		status
+
+	} = props;
 	
 	let removedDuplicates;
 

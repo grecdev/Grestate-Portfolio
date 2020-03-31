@@ -40,7 +40,7 @@ const PopUp = ({ showPopup, togglePopup, popupInfo }) => {
 				<p className='mb-2'>Latitude: {popupInfo.coordinates.latitude}</p>
 				<p className='mb-2'>Longitude: {popupInfo.coordinates.longitude}</p>
 				<p className='mb-0 font-weight-light'>To search the location on google maps: {popupInfo.coordinates.latitude}, {popupInfo.coordinates.longitude}</p>
-				{popupInfo.property_id && <Link to={`/buy-homes/house-${popupInfo.property_id}`} className='mb-2'>More about this property</Link>}
+				{popupInfo.property_id && <Link to={`/buy-properties/house-${popupInfo.property_id}`} className='mb-2'>More about this property</Link>}
 			</div>
 		</Popup>
 

@@ -25,7 +25,7 @@ const PropertyBox = () => {
 		
 		const propertyId = e.currentTarget.dataset.propertyId;
 
-		changePage(`/buy-homes/house-${propertyId}`);
+		changePage(`/buy-properties/house-${propertyId}`);
 
 		e.stopPropagation();
 	}
