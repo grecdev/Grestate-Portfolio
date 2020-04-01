@@ -1,0 +1,30 @@
+#property-page #left-side {
+
+	#images-slider-small {
+
+		.image-small {
+			width: 100%;
+			cursor: pointer;
+			
+
+			&:last-child { margin: 0 !important }
+
+			&.selected {
+				border: 2px solid $green-dark;
+				padding: .1rem;
+			}
+		}
+
+		.image-big {
+			height: 100%;
+			width: 100%;
+
+			p {
+				bottom: 0;
+				right: 10px;
+				background: rgba($dark-1, .7);
+				color: $white;
+			}
+		}
+	}
+}
