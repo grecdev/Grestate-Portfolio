@@ -20,8 +20,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { HashRouter as Router } from 'react-router-dom';
 
-import GlobalContextProvider from './context/GlobalContext';
-import FetchContexTProvider from './context/FetchContext';
+import GlobalContextProvider from '@context/GlobalContext';
+import FetchContexTProvider from '@context/FetchContext';
 
 ReactDOM.render(
 	<Router>
@@ -32,3 +32,8 @@ ReactDOM.render(
 		</GlobalContextProvider>
 	</Router>
 	, document.getElementById('root'));
+
+// if (process.env.NODE_ENV !== 'production') {
+// 	const {whyDidYouUpdate} = require('why-did-you-update');
+// 	whyDidYouUpdate(React);
+// }

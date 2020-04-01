@@ -1,0 +1,16 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@context": "./src/assets/js/context",
+          "@components": "./src/assets/js/components",
+          "@constants": "./src/assets/js/constants",
+          "@reducers": "./src/assets/js/reducers",
+					"@media": "./src/assets/media"
+        }
+      }
+    ]
+  ]
+}

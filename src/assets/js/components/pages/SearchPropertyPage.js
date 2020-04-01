@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
-import { FetchContext } from '../../context/FetchContext';
-import { GlobalContext } from '../../context/GlobalContext';
+import { FetchContext } from '@context/FetchContext';
+import { GlobalContext } from '@context/GlobalContext';
 
-import PropertyForm from '../global_layout/property_form/PropertyForm';
+import PropertyForm from '@components/global_layout/property_form/PropertyForm';
 import SearchMap from './search_property/SearchMap';
 import SearchListings from './search_property/SearchListings';
 

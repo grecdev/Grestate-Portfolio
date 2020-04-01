@@ -1,16 +1,16 @@
 import React, { useState, useReducer, useContext, useEffect } from 'react';
 
-import { FetchContext } from '../../../context/FetchContext';
-import { GlobalContext } from '../../../context/GlobalContext';
+import { FetchContext } from '@context/FetchContext';
+import { GlobalContext } from '@context/GlobalContext';
 
-import MapReducer from '../../../reducers/MapReducer';
+import MapReducer from '@reducers/MapReducer';
 import {
 
 	SET_PROPERTIES,
 	TOGGLE_POPUP,
 	SET_POPUP_INFO
 
-} from '../../../constants/actionTypes';
+} from '@constants/actionTypes';
 
 import ReactMapGL, { GeolocateControl } from 'react-map-gl';
 

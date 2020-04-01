@@ -1,10 +1,9 @@
 import React from 'react';
 
-import SectionHeader from '../../global_layout/SectionHeader';
+import SectionHeader from '@components/global_layout/SectionHeader';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-// import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const ContactInfo = () => {

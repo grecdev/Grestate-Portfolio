@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { GlobalContext } from '../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

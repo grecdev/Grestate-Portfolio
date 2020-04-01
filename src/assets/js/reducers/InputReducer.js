@@ -5,7 +5,7 @@ import {
 	RESET_BUY_INPUTS,
 	RESET_RENT_INPUTS
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export default (state, action) => {
 

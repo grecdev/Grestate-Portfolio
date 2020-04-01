@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ShowcaseHeader from '../../global_layout/ShowcaseHeader';
+import ShowcaseHeader from '@components/global_layout/ShowcaseHeader';
 
 const MortageShowcase = () => {
 

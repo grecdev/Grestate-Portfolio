@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 
-import SectionHeader from '../../global_layout/SectionHeader';
+import SectionHeader from '@components/global_layout/SectionHeader';
 
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

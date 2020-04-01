@@ -1,9 +1,9 @@
 import React, { useReducer, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
-import MortageReducer from '../../../reducers/MortageReducer';
+import MortageReducer from '@reducers/MortageReducer';
 import {
 
 	SET_HOME_PRICE,
@@ -14,9 +14,9 @@ import {
 	RESET_DOWN_PAYMENT,
 	RESET_MORTAGE_INPUTS
 
-} from '../../../constants/actionTypes';
+} from '@constants/actionTypes';
 
-import RegexAlert from '../../global_layout/RegexAlert';
+import RegexAlert from '@components/global_layout/RegexAlert';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';

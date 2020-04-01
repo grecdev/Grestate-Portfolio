@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '../../../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 import { Marker } from 'react-map-gl';
 

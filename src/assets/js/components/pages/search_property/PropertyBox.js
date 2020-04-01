@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { GlobalContext } from '../../../context/GlobalContext';
-import { FetchContext } from '../../../context/FetchContext';
+import { GlobalContext } from '@context/GlobalContext';
+import { FetchContext } from '@context/FetchContext';
 
 const PropertyBox = () => {
 
@@ -25,7 +25,8 @@ const PropertyBox = () => {
 		
 		const propertyId = e.currentTarget.dataset.propertyId;
 
-		changePage(`/buy-properties/house-${propertyId}`);
+		location.includes('buy') && changePage(`/buy-properties/house-${propertyId}`);
+		location.includes('rent') && changePage(`/rental-listings/house-${propertyId}`);
 
 		e.stopPropagation();
 	}

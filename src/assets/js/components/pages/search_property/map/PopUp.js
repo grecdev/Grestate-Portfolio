@@ -2,7 +2,8 @@ import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { FetchContext } from '../../../../context/FetchContext';
+import { FetchContext } from '@context/FetchContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -16,6 +17,8 @@ const PopUp = ({ showPopup, togglePopup, popupInfo }) => {
 		filtered_rent_properties
 
 	} = useContext(FetchContext);
+
+	const { location } = useContext(GlobalContext);
 
 	useEffect(() => {
 
@@ -40,7 +43,9 @@ const PopUp = ({ showPopup, togglePopup, popupInfo }) => {
 				<p className='mb-2'>Latitude: {popupInfo.coordinates.latitude}</p>
 				<p className='mb-2'>Longitude: {popupInfo.coordinates.longitude}</p>
 				<p className='mb-0 font-weight-light'>To search the location on google maps: {popupInfo.coordinates.latitude}, {popupInfo.coordinates.longitude}</p>
-				{popupInfo.property_id && <Link to={`/buy-properties/house-${popupInfo.property_id}`} className='mb-2'>More about this property</Link>}
+				{ popupInfo.property_id && location.includes('buy') ? <Link to={`/buy-properties/house-${popupInfo.property_id}`} className='mb-2'>More about this property</Link> : null }
+
+				{ popupInfo.property_id && location.includes('rent') ? <Link to={`/rental-listings/house-${popupInfo.property_id}`} className='mb-2'>More about this property</Link> : null }
 			</div>
 		</Popup>
 

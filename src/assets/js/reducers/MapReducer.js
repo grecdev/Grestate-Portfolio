@@ -5,7 +5,7 @@ import {
 	SET_POPUP_INFO,
 	SET_VIEWPORT
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export default (state, action) => {
 	

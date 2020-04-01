@@ -2,13 +2,13 @@ import React, { createContext, useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import GlobalReducer from '../reducers/GlobalReducer';
+import GlobalReducer from '@reducers/GlobalReducer';
 import {
 
 	TOGGLE_THROTTLE,
 	CHANGE_LOCATION
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export const GlobalContext = createContext();
 

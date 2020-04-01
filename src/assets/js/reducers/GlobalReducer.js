@@ -3,7 +3,7 @@ import {
 	TOGGLE_THROTTLE,
 	CHANGE_LOCATION
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export default (state, action) => {
 

@@ -8,7 +8,7 @@ import {
 	RESET_DOWN_PAYMENT,
 	RESET_MORTAGE_INPUTS
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export default (state, action) => {
 

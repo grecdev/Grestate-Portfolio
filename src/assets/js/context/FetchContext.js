@@ -1,9 +1,9 @@
 import React, { useEffect, useReducer, createContext, useContext } from 'react';
 
-import { GlobalContext } from './GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 export const FetchContext = createContext();
-import FetchReducer from '../reducers/FetchReducer';
+import FetchReducer from '@reducers/FetchReducer';
 import {
 
 	GET_DATABASE,
@@ -13,7 +13,7 @@ import {
 	RESET_RENTAL_PROPERTIES,
 	SET_LOADER
 
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 const FetchContextProvider = (props) => {
 

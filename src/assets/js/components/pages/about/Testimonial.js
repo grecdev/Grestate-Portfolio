@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
-import SectionHeader from '../../global_layout/SectionHeader';
+import SectionHeader from '@components/global_layout/SectionHeader';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

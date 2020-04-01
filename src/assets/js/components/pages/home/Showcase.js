@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 
-import PropertyForm from '../../global_layout/property_form/PropertyForm';
+import PropertyForm from '@components/global_layout/property_form/PropertyForm';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-import { GlobalContext } from '../../../context/GlobalContext';
+import { GlobalContext } from '@context/GlobalContext';
 
 const Showcase = () => {
 

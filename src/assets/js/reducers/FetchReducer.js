@@ -7,7 +7,7 @@ import {
 	RESET_RENTAL_PROPERTIES,
 	SET_LOADER
 	
-} from '../constants/actionTypes';
+} from '@constants/actionTypes';
 
 export default (state, action) => {
 

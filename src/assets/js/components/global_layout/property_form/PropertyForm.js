@@ -8,10 +8,10 @@ import React, {
 
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '../../../context/GlobalContext';
-import { FetchContext } from '../../../context/FetchContext';
+import { GlobalContext } from '@context/GlobalContext';
+import { FetchContext } from '@context/FetchContext';
 
-import InputReducer from '../../../reducers/InputReducer';
+import InputReducer from '@reducers/InputReducer';
 import {
 
 	SET_INPUT_VALUE,
