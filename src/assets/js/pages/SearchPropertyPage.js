@@ -4,8 +4,8 @@ import { FetchContext } from '@context/FetchContext';
 import { GlobalContext } from '@context/GlobalContext';
 
 import PropertyForm from '@components/global_layout/property_form/PropertyForm';
-import SearchMap from './search_property/SearchMap';
-import SearchListings from './search_property/SearchListings';
+import SearchMap from '@components/pages/search_property/SearchMap';
+import SearchListings from '@components/pages/search_property/SearchListings';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

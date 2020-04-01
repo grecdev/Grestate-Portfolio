@@ -7,13 +7,13 @@ import Header from '@components/global_layout/Header';
 import Footer from '@components/global_layout/Footer';
 import ResetScroll from '@components/global_layout/ResetScroll';
 
-const HomePage = lazy(() => import('@components/pages/HomePage'));
-const SearchPropertyPage = lazy(() => import('@components/pages/SearchPropertyPage'));
-const MortageCalculatorPage = lazy(() => import('@components/pages/MortageCalculatorPage'));
-const AboutPage = lazy(() => import('@components/pages/AboutPage'));
-const ContactPage = lazy(() => import('@components/pages/ContactPage'));
-const NotFoundPage = lazy(() => import('@components/pages/NotFoundPage'));
-const PropertyPage = lazy(() => import('@components/pages/PropertyPage'));
+const HomePage = lazy(() => import('./pages/HomePage'));
+const SearchPropertyPage = lazy(() => import('./pages/SearchPropertyPage'));
+const MortageCalculatorPage = lazy(() => import('./pages/MortageCalculatorPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const PropertyPage = lazy(() => import('./pages/PropertyPage'));
 
 const App = () => {
 
