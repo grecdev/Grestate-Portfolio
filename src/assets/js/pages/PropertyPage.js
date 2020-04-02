@@ -4,6 +4,7 @@ import { FetchContext } from '@context/FetchContext';
 import { GlobalContext } from '@context/GlobalContext';
 
 import ImagesSlider_small from '@components/pages/property_page/ImagesSlider_small';
+import PropertyDetails from '@components/pages/property_page/PropertyDetails';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -31,8 +32,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		// if(filtered_buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		// if(filtered_rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		if(filtered_buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		if(filtered_rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
@@ -44,51 +45,31 @@ const PropertyPage = ({ match }) => {
 
 	}, [filtered_buy_properties, filtered_rent_properties]);
 
-	// if(property !== undefined) {
+	if(property !== undefined) {
 
-	// 	return (
-	// 		<main id="property-page">
-	// 			<Container className='py-4 px-0'>
+		return (
+			<main id="property-page">
+				<Container className='py-4 px-0'>
 
-	// 			<Row className='m-0'>
-	// 				<Col id='left-side' className='col-lg-8 p-0'>
+				<Row className='m-0 align-items-start'>
+					<Col id='left-side' className='col-lg-8 p-0'>
 
-	// 					<ImagesSlider_small images={property.propertyImages}/>
+						<ImagesSlider_small images={property.propertyImages}/>
 
-	// 				</Col>
+						<PropertyDetails info={property} />
+						
+					</Col>
 
-	// 				<Col id='right-side' className='col-lg-4 p-0'>
-	// 					Right side
-	// 				</Col>	
-	// 			</Row>
+					<Col id='right-side' className='col-lg-4 p-0'>
+						Right side
+					</Col>	
+				</Row>
 
-	// 			</Container>
-	// 		</main>
-	// 	)
+				</Container>
+			</main>
+		)
 
-	// } else return null;
-
-	console.log(property);
-
-	return (
-		<main id="property-page">
-			<Container className='py-4 px-0'>
-
-			<Row className='m-0'>
-				<Col id='left-side' className='col-lg-7 p-0'>
-
-					<ImagesSlider_small />
-
-				</Col>
-
-				<Col id='right-side' className='col-lg-4 p-0'>
-					Right side
-				</Col>	
-			</Row>
-
-			</Container>
-		</main>
-	)
+	} else return null;
 }
 
 export default PropertyPage;

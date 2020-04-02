@@ -10,12 +10,6 @@ const ImagesSlider_small = ({ images }) => {
 
 	const { getImage } = useContext(GlobalContext);
 
-	// Fockup, later delete it
-	const mockup_images = {
-		showcaseImage: "property-newyork-1.jpg",
-		reviewImages: ["property-newyork-1.jpg", "property-newyork-2.jpg", "property-newyork-3.jpg", "property-newyork-4.jpg"]
-	}
-
 	const defaultState = {
 		// So when we click on the smaller image, display it on the big one
 		image_shown: 0
@@ -26,11 +20,11 @@ const ImagesSlider_small = ({ images }) => {
 			<Row className='m-0'>
 				<Col className='d-flex flex-column justify-content-between align-items-start p-0 col-lg-3 mr-3'>
 					{
-						mockup_images.reviewImages.map((image, index) => {
+						images.reviewImages.map((image, index) => {
 
 							if(index < 3) {
 
-								if(index === 0) {
+								if(index === defaultState.image_shown) {
 
 									return (
 
@@ -55,9 +49,9 @@ const ImagesSlider_small = ({ images }) => {
 
 				<Col className='p-0 col-lg-8'>
 					<div className="image-big position-relative">
-						<img className='rounded' src={getImage(mockup_images.showcaseImage)} alt={mockup_images.showcaseImage} />
+						<img className='rounded' src={getImage(images.showcaseImage)} alt={images.showcaseImage} />
 
-				    <p className="position-absolute px-3 py-1 rounded">{defaultState.image_shown + 1} / {mockup_images.reviewImages.length}</p>
+				    <p className="position-absolute px-3 py-1 rounded">{defaultState.image_shown + 1} / {images.reviewImages.length}</p>
 					</div>
 				</Col>
 			</Row>
@@ -66,7 +60,7 @@ const ImagesSlider_small = ({ images }) => {
 }
 
 ImagesSlider_small.propTypes = {
-	// images: PropTypes.object.isRequired
+	images: PropTypes.object.isRequired
 }
 
 export default ImagesSlider_small;
