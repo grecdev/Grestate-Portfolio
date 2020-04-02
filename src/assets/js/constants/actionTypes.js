@@ -30,3 +30,6 @@ export const SET_VIEWPORT = 'SET_VIEWPORT';
 export const SET_PROPERTIES = 'SET_PROPERTIES';
 export const TOGGLE_POPUP = 'TOGGLE_POPUP';
 export const SET_POPUP_INFO = 'SET_POPUP_INFO';
+
+// Property Image Slider
+export const SET_SHOWN_IMAGE = 'SET_SHOWN_IMAGE';

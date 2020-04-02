@@ -108,13 +108,13 @@ const PropertyDetails = (props) => {
 					<div className='d-flex flex-row justify-content-start align-items-stretch mb-4'>
 						<h4 className="font-weight-light text-secondary mr-4">Interior</h4>
 
-						<div className='d-flex flex-row flex-wrap justify-content-between align-items-start'>
+						<div className='d-flex flex-row flex-wrap justify-content-start align-items-start'>
 							{features.interior.map(item => {
 
 								// Make every word have the first letter uppercase
 								let formatted = item.split(' ').map(item => item.substring(0, 1).toUpperCase() + item.substring(1)).join(' ');
 
-								return <p className='feature-item p-2 m-0' key={item}>{formatted}</p>
+								return <p className='feature-item p-2 mx-3 my-2' key={item}>{formatted}</p>
 							})}
 						</div>
 					</div>
@@ -122,13 +122,13 @@ const PropertyDetails = (props) => {
 					<div className='d-flex flex-row justify-content-start align-items-stretch'>
 						<h4 className="font-weight-light text-secondary mr-4">Exterior</h4>
 
-						<div className='d-flex flex-row flex-wrap justify-content-between align-items-start'>
+						<div className='d-flex flex-row flex-wrap justify-content-start align-items-start'>
 							{features.exterior.map(item => {
 
 								// Make every word have the first letter uppercase
 								let formatted = item.split(' ').map(item => item.substring(0, 1).toUpperCase() + item.substring(1)).join(' ');
 
-								return <p className='feature-item p-2 m-0' key={item}>{formatted}</p>
+								return <p className='feature-item p-2 mx-3 my-2' key={item}>{formatted}</p>
 							})}
 						</div>
 					</div>
