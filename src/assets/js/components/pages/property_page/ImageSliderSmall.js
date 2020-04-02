@@ -27,17 +27,20 @@ const ImageSliderSmall = (props) => {
 
 	const displayImages = () => {
 
-		document.querySelectorAll('.review-image').forEach((item, index) => {
+		document.querySelectorAll('.review-image').forEach((image, index) => {
 
-			item.style.transition = 'none';
+			image.style.transition = 'none';
+			
+			setTimeout(() => image.style.transition = '', transitionTime);
+		
+			const image_width = Math.ceil(image.getBoundingClientRect().width);
+			const image_pos = image_width * (index - shownImage);
 
-			setTimeout(() => item.style.transition = '', transitionTime);
-
-			const item_margin = parseFloat(window.getComputedStyle(item).getPropertyValue('margin-top'));
-			const item_width = Math.ceil(item.getBoundingClientRect().width + item_margin);
-			const item_pos = item_width * (index - shownImage);
-
-			item.style.transform = `translateY(${item_pos}px)`;
+			image.style.transform = `translateY(${image_pos}px)`;
+			const current_pos = parseFloat(image.style.transform.match(/\d/g).join(''));
+			
+			if(current_pos < 0) image.style.transform = `translateY(${-image_width}px)`;
+			if(current_pos >= image_width) image.style.transform = `translateY(${image_width}px)`;
 		});
 	}
 
@@ -62,8 +65,7 @@ const ImageSliderSmall = (props) => {
 
 			document.querySelectorAll('.review-image').forEach((image, index) => {
 
-				const image_margin = parseFloat(window.getComputedStyle(image).getPropertyValue('margin-top'));
-				const image_width = Math.ceil(image.getBoundingClientRect().width + image_margin);
+				const image_width = Math.ceil(image.getBoundingClientRect().width);
 				const current_pos = parseFloat(image.style.transform.match(/\d/g).join(''));
 
 				// Moving upwards
@@ -146,7 +148,7 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.reviewImages.map(item => <img key={item} className='my-4 review-image rounded position-absolute' src={getImage(item)} alt={item} />)}
+						{images.reviewImages.map(item => <img key={item} className='review-image rounded position-absolute' src={getImage(item)} alt={item} />)}
 
 				    <p className="position-absolute px-3 py-1 rounded">{shownImage + 1} / {images.reviewImages.length}</p>
 					</div>
