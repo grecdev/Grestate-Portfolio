@@ -7,7 +7,8 @@ import PropertySliderReducer from '@reducers/PropertySliderReducer';
 
 import {
 
-	SET_SHOWN_IMAGE
+	SET_SHOWN_IMAGE,
+	TOGGLE_SLIDER_MODAL
 
 } from '@constants/actionTypes';
 
@@ -41,8 +42,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		if(filtered_buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		if(filtered_rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		// if(filtered_buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		// if(filtered_rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
@@ -50,26 +51,29 @@ const PropertyPage = ({ match }) => {
 
 	useEffect(() => {
 
+		// if(location.includes('buy') && filtered_buy_properties.length > 0) filtered_buy_properties.filter(item => item.id === houseId && setProperty(item));
+		// if(location.includes('rent') && filtered_rent_properties.length > 0) filtered_rent_properties.filter(item => item.id === houseId && setProperty(item));
+
 		db.filter(item => item.id === houseId && setProperty(item));
 
-	}, [filtered_buy_properties, filtered_rent_properties]);
+		/// CHANGE HERE
+		// [filtered_buy_properties, filtered_rent_properties]
+	});
 
 	const defaultSliderState = {
 		// This is the image that we display it when we first enter on the page
 		// And when we click on the smaller image, display it on the big slider
-		shown_image: 0,
-		transition_time: 200,
+		shown_image: 3,
 		slider_modal_visible: false
 	}
 
 	const [slider_state, dispatch] = useReducer(PropertySliderReducer, defaultSliderState);
 
 	const setShownImage = val => dispatch({ type: SET_SHOWN_IMAGE, payload: val });
+	const incrementShownImage = val => dispatch({ type: INCREMENT_SHOWN_IMAGE });
+	const decrementShownImage = val => dispatch({ type: DECREMENT_SHOWN_IMAGE });
 
-	const toggleSliderModal = e => {
-
-		e.stopPropagation();
-	}
+	const toggleSliderModal = val => dispatch({ type: TOGGLE_SLIDER_MODAL, payload: val });
 
 	if(property !== undefined) {
 
@@ -83,9 +87,10 @@ const PropertyPage = ({ match }) => {
 						<ImageSliderSmall 
 							images={property.propertyImages}
 							shownImage={slider_state.shown_image}
-							transitionTime={slider_state.transition_time}
+							transitionTime={300}
 							setShownImage={setShownImage}
 							toggleSliderModal={toggleSliderModal}
+							sliderModalVisible={slider_state.slider_modal_visible}
 						/>
 
 						<PropertyDetails info={property} />
@@ -97,15 +102,15 @@ const PropertyPage = ({ match }) => {
 					</Col>	
 				</Row>
 
-				{defaultSliderState.slider_modal_visible && (
+				{slider_state.slider_modal_visible && (
 
 					<ImageSliderBig 
-						images={property.propertyImages}
-						shownImage={defaultSliderState.shown_image}
-						// setShownImage={setShownImage}
-						// transitionTime=
+						sliderModalVisible={slider_state.slider_modal_visible}
+						images={property.propertyImages.reviewImages}
+						shownImage={slider_state.shown_image}
+						transitionTime={500}
 						toggleSliderModal={toggleSliderModal}
-						sliderModalVisible={defaultSliderState.slider_modal_visible}
+						setShownImage={setShownImage}
 					/>
 
 				)}

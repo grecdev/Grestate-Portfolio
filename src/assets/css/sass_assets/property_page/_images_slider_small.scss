@@ -21,7 +21,7 @@
 		cursor: pointer;
 
 		.review-image {
-			transition: transform 2s ease-in-out;
+			transition: transform 350ms ease-in-out;
 
 			&:hover { opacity: 0.9 }
 		}
@@ -32,5 +32,19 @@
 			background: rgba($dark-1, .7);
 			color: $white;
 		}
+
+		> div {
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background: rgba(#000, 0.7);
+			color: $white;
+			font-size: 1.3rem;
+			opacity: 0;
+			transition: opacity 300ms ease-in-out;
+		}
+
+		&:hover > div { opacity: 1 }
 	}
 }

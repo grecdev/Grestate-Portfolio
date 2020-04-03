@@ -33,3 +33,4 @@ export const SET_POPUP_INFO = 'SET_POPUP_INFO';
 
 // Property Image Slider
 export const SET_SHOWN_IMAGE = 'SET_SHOWN_IMAGE';
+export const TOGGLE_SLIDER_MODAL = 'TOGGLE_SLIDER_MODAL';

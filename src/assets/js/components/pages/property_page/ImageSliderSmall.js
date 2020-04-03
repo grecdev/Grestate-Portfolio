@@ -21,7 +21,8 @@ const ImageSliderSmall = (props) => {
 		shownImage,
 		setShownImage,
 		transitionTime,
-		toggleSliderModal
+		toggleSliderModal,
+		sliderModalVisible
 
 	} = props;
 
@@ -32,23 +33,29 @@ const ImageSliderSmall = (props) => {
 			image.style.transition = 'none';
 			
 			setTimeout(() => image.style.transition = '', transitionTime);
+
+			let image_pos;
 		
 			const image_width = Math.ceil(image.getBoundingClientRect().width);
-			const image_pos = image_width * (index - shownImage);
+			
+			if(shownImage >= document.querySelectorAll('.review-image').length - 1) image_pos = image_width * (index - 2);
+			else image_pos = image_width * (index - shownImage);
 
 			image.style.transform = `translateY(${image_pos}px)`;
-			const current_pos = parseFloat(image.style.transform.match(/\d/g).join(''));
+			const current_pos = parseFloat(image.style.transform.match(/[\d\-]/g).join(''));
 			
 			if(current_pos < 0) image.style.transform = `translateY(${-image_width}px)`;
 			if(current_pos >= image_width) image.style.transform = `translateY(${image_width}px)`;
 		});
+
+		console.log(shownImage);
 	}
 
 	useEffect(() => {
 
 		displayImages();
 
-	} , []);
+	}, [shownImage]);
 
 	const changeImage = e => {
 
@@ -66,7 +73,7 @@ const ImageSliderSmall = (props) => {
 			document.querySelectorAll('.review-image').forEach((image, index) => {
 
 				const image_width = Math.ceil(image.getBoundingClientRect().width);
-				const current_pos = parseFloat(image.style.transform.match(/\d/g).join(''));
+				const current_pos = parseFloat(image.style.transform.match(/[\d\-]/g).join(''));
 
 				// Moving upwards
 				if(index < current_image) {
@@ -103,6 +110,13 @@ const ImageSliderSmall = (props) => {
 
 		e.stopPropagation();
 	}
+
+	const toggleSlider = e => {
+
+		if(e.currentTarget.tagName === 'DIV') toggleSliderModal(true);
+
+		e.stopPropagation();
+	}
 	
 	return (
 		<section id='images-slider-small'>
@@ -111,36 +125,32 @@ const ImageSliderSmall = (props) => {
 					{
 						images.reviewImages.map((image, index) => {
 
-							if(index < 3) {
+							if((shownImage >= 3 && index === 2) || (index === shownImage && index < 3)) return (
 
-								if(index === shownImage) {
+								<div
+									className="image-small rounded selected mb-3"
+									key={image}
+									onClick={throttleEvent(changeImage, transitionTime + 200)}
+									data-image-index={index}
+								>
+								<img className='rounded' src={getImage(image)} alt='image' />
+							</div>
 
-									return (
+							)
 
-										<div
-											className="image-small rounded selected mb-3"
-											key={image}
-											onClick={throttleEvent(changeImage, transitionTime + 200)}
-											data-image-index={index}
-										>
-											<img className='rounded' src={getImage(image)} alt='image' />
-										</div>
-										
-									)
+							if(index < 3) return (
 
-								} else return (
-
-									<div
-										className="image-small mb-3"
-										key={image}
-										onClick={throttleEvent(changeImage, transitionTime + 200)}
-										data-image-index={index}
-									>
-										<img className='rounded' src={getImage(image)} alt='image' />
-									</div>
-									
-								)
-							}
+								<div
+									className="image-small mb-3"
+									key={image}
+									onClick={throttleEvent(changeImage, transitionTime + 200)}
+									data-image-index={index}
+								>
+									<img className='rounded' src={getImage(image)} alt='image' />
+								</div>
+								
+							)
+							
 						})
 					}
 				</Col>
@@ -148,9 +158,13 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.reviewImages.map(item => <img key={item} className='review-image rounded position-absolute' src={getImage(item)} alt={item} />)}
+						{images.reviewImages.map(image => <img key={image} className='review-image rounded position-absolute' src={getImage(image)} alt={image} /> )}
 
-				    <p className="position-absolute px-3 py-1 rounded">{shownImage + 1} / {images.reviewImages.length}</p>
+				    <p className="position-absolute px-3 py-1 rounded">{shownImage >= 3 ? shownImage : shownImage + 1} / {images.reviewImages.length}</p>
+
+						<div className="rounded position-absolute d-flex flex-column justify-content-center align-items-center" onClick={toggleSlider}>
+							<p>See more images <i className="ml-2 fas fa-images"></i></p>
+						</div>
 					</div>
 				</Col>
 			</Row>
