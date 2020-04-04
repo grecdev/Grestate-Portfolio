@@ -21,8 +21,7 @@ const ImageSliderSmall = (props) => {
 		shownImage,
 		setShownImage,
 		transitionTime,
-		toggleSliderModal,
-		sliderModalVisible
+		toggleSliderModal
 
 	} = props;
 
@@ -53,9 +52,10 @@ const ImageSliderSmall = (props) => {
 
 		displayImages();
 
-	}, []);
+	}, [shownImage]);
 
-	// Less renders
+	// If we directly set the shown image it will re-render, and transitions won't work
+	// So that's why i used an internal state
 	let [imageCount, setImageCount] = useState(shownImage);
 
 	const changeImage = e => {
@@ -64,6 +64,7 @@ const ImageSliderSmall = (props) => {
 		const current_image = parseFloat(target.dataset.imageIndex);
 
 		setImageCount(current_image);
+		document.querySelector('.image-showcase > p span').textContent = current_image + 1;
 
 		if(target.classList.contains('image-small')) {
 
@@ -128,33 +129,25 @@ const ImageSliderSmall = (props) => {
 			<Row className='m-0'>
 				<Col className='d-flex flex-column justify-content-between align-items-start p-0 col-lg-3 mr-3'>
 					{
-						images.reviewImages.map((image, index) => {
+						images.map((image, index) => {
 
-							if(index === shownImage && index < 3) return (
+							let className = 'image-small mb-3';
 
-								<div
-									className="image-small rounded selected mb-3"
-									key={image}
-									onClick={throttleEvent(changeImage, transitionTime + 200)}
-									data-image-index={index}
-								>
-									<img className='rounded' src={getImage(image)} alt='image' />
-								</div>
+							if(index < 3) {
 
-							)
+								return (
 
-							if(index < 3) return (
-
-								<div
-									className="image-small mb-3"
-									key={image}
-									onClick={throttleEvent(changeImage, transitionTime + 200)}
-									data-image-index={index}
-								>
-									<img className='rounded' src={getImage(image)} alt='image' />
-								</div>
-								
-							)
+									<div
+										className={shownImage === index ? className += ' rounded selected' : className}
+										key={image}
+										onClick={throttleEvent(changeImage, transitionTime + 200)}
+										data-image-index={index}
+									>
+										<img className='rounded' src={getImage(image)} alt='image' />
+									</div>
+									
+								)
+							}
 							
 						})
 					}
@@ -163,15 +156,15 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.reviewImages.map((image, index) => <img
-							key={image}
-							data-image-index={index}
-							className='review-image rounded position-absolute'
-							src={getImage(image)} alt={image}
-						/>
+						{images.map((image, index) => <img
+								key={image}
+								data-image-index={index}
+								className='review-image rounded position-absolute'
+								src={getImage(image)} alt={image}
+							/>
 						)}
 
-				    <p className="position-absolute px-3 py-1 rounded">{imageCount >= 3 ? imageCount : imageCount + 1} / {images.reviewImages.length}</p>
+				    <p className="position-absolute px-3 py-1 rounded"><span>{shownImage + 1}</span> / {images.length}</p>
 
 						<div className="rounded position-absolute d-flex flex-column justify-content-center align-items-center" onClick={toggleSlider}>
 							<p>See more images <i className="ml-2 fas fa-images"></i></p>
@@ -184,10 +177,10 @@ const ImageSliderSmall = (props) => {
 }
 
 ImageSliderSmall.propTypes = {
-	images: PropTypes.object.isRequired,
-	setShownImage: PropTypes.func.isRequired,
+	images: PropTypes.array.isRequired,
 	shownImage: PropTypes.number.isRequired,
 	transitionTime: PropTypes.number.isRequired,
+	setShownImage: PropTypes.func.isRequired,
 	toggleSliderModal: PropTypes.func.isRequired
 }
 

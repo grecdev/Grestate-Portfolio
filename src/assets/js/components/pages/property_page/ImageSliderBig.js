@@ -39,15 +39,13 @@ const ImageSliderBig = (props) => {
 			if(current_pos < 0) image.style.transform = `translateX(${-image_width}px)`;
 			if(current_pos > 0) image.style.transform = `translateX(${image_width}px)`;
 		});
-
-		if(document.body.contains(document.querySelector('.selected'))) document.querySelector('.selected').classList.remove('selected');
 	}
 
 	useEffect(() => {
 
 		displayImages();
 
-		console.log('dd');
+		console.log('images big');
 
 	}, []);
 
@@ -141,12 +139,12 @@ const ImageSliderBig = (props) => {
 
 			toggleSliderModal(false);
 
-			document.querySelectorAll('#images-slider-big .image-gallery img').forEach((image, index) => {
+			let image = parseFloat(document.querySelector('.image-gallery > p span').textContent) - 1;
 
-				const current_pos = parseFloat(image.style.transform.match(/[\d\-]/g).join(''));
-	
-				if(current_pos === 0) setShownImage(index);
-			});
+			// Because on the property page we have displayed only 3 images in the left side
+			image >= 3 ? image = 2 : image;
+
+			setShownImage(image);
 		}
 
 		e.stopPropagation();
@@ -194,6 +192,14 @@ const ImageSliderBig = (props) => {
 			</div>
 		</section>
 	)
+}
+
+ImageSliderBig.propTypes = {
+	images: PropTypes.array.isRequired,
+	shownImage: PropTypes.number.isRequired,
+	transitionTime: PropTypes.number.isRequired,
+	setShownImage: PropTypes.func.isRequired,
+	toggleSliderModal: PropTypes.func.isRequired
 }
 
 export default ImageSliderBig;

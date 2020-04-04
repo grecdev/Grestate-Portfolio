@@ -63,7 +63,7 @@ const PropertyPage = ({ match }) => {
 	const defaultSliderState = {
 		// This is the image that we display it when we first enter on the page
 		// And when we click on the smaller image, display it on the big slider
-		shown_image: 2,
+		shown_image: 0,
 		slider_modal_visible: false
 	}
 
@@ -83,12 +83,11 @@ const PropertyPage = ({ match }) => {
 					<Col id='left-side' className='col-lg-8 p-0'>
 
 						<ImageSliderSmall 
-							images={property.propertyImages}
+							images={property.propertyImages.reviewImages}
 							shownImage={slider_state.shown_image}
 							transitionTime={300}
 							setShownImage={setShownImage}
 							toggleSliderModal={toggleSliderModal}
-							sliderModalVisible={slider_state.slider_modal_visible}
 						/>
 
 						<PropertyDetails info={property} />
@@ -103,12 +102,11 @@ const PropertyPage = ({ match }) => {
 				{slider_state.slider_modal_visible && (
 
 					<ImageSliderBig 
-						sliderModalVisible={slider_state.slider_modal_visible}
 						images={property.propertyImages.reviewImages}
 						shownImage={slider_state.shown_image}
 						transitionTime={500}
-						toggleSliderModal={toggleSliderModal}
 						setShownImage={setShownImage}
+						toggleSliderModal={toggleSliderModal}
 					/>
 
 				)}
