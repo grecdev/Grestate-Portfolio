@@ -10,10 +10,10 @@ const AgentListing = ({ agent }) => {
 		getImage
 	 	
 	} = useContext(GlobalContext);
-
+	
 	// If we use a img element the quality of image is bad
 	const bg_image = {
-		background: `url(${getImage('grecdev-avatar.jpeg')}) no-repeat center/cover`
+		background: `url(${getImage(agent.avatar)}) no-repeat center/cover`
 	}
 
 	const showNumber = e => {

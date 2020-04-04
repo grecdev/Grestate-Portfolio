@@ -27,35 +27,35 @@ const Testimonial = () => {
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Elif Mathews',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: 'testimonial-avatar-1.jpeg'
+			avatar: getImage('avatar-1.jpeg')
 		},
 		{
 			id: 2,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Dru Wood',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: 'testimonial-avatar-2.jpeg'
+			avatar: getImage('avatar-2.jpeg')
 		},
 		{
 			id: 3,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Willem Lugo',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: 'testimonial-avatar-3.jpeg'
+			avatar: getImage('avatar-3.jpeg')
 		},
 		{
 			id: 4,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Borys Redmond',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: 'testimonial-avatar-4.jpeg'
+			avatar: getImage('avatar-4.jpeg')
 		},
 		{
 			id: 5,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Tashan Barr',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: 'testimonial-avatar-5.jpeg'
+			avatar: getImage('avatar-5.jpeg')
 		}
 	];
 
@@ -143,10 +143,10 @@ const Testimonial = () => {
 
 								<div className="testimonial-box-profile d-flex align-items-center">
 									<picture>
-										<source srcSet={getImage(user.avatar)} type='image/jpeg' />
-										<source srcSet={getImage(user.avatar)} type='image/webp' />
+										<source srcSet={user.avatar} type='image/jpeg' />
+										<source srcSet={user.avatar} type='image/webp' />
 
-										<img src={getImage(user.avatar)} alt='avatar' className='mr-3' />
+										<img src={user.avatar} alt='avatar' className='mr-3' />
 									</picture>
 
 									<div className='d-flex flex-column'>
