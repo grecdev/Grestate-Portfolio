@@ -15,6 +15,7 @@ import {
 import ImageSliderSmall from '@components/pages/property_page/ImageSliderSmall';
 import ImageSliderBig from '@components/pages/property_page/ImageSliderBig';
 import PropertyDetails from '@components/pages/property_page/PropertyDetails';
+import AgentListing from '@components/pages/property_page/AgentListing';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -95,7 +96,7 @@ const PropertyPage = ({ match }) => {
 					</Col>
 
 					<Col id='right-side' className='col-lg-4 p-0'>
-						Right side
+						<AgentListing agent={property.listingAgent} />
 					</Col>	
 				</Row>
 

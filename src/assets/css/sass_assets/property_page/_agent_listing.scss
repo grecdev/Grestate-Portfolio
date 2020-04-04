@@ -1,0 +1,44 @@
+#property-page #right-side #agent-listing {
+
+	.agent-card-header div {
+		width: 100px;
+		height: 100px;
+	}
+
+	.agent-card-info {
+		background: $green-dark;
+		width: 90%;
+
+		.number p {
+
+			&:first-child { width: 100px }
+
+			&:last-child {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.agent-card-footer {
+		width: 100%;
+		background: $dark-2;
+
+		button:first-child {
+			background: $green-dark;
+			color: $white;
+			transition: all 100ms ease-in-out;
+
+			&:hover { background: lighten($green-dark, 10%)}
+		}
+
+		button:last-child {
+			background: none;
+			color: $white;
+			border: 1px solid transparent;
+			transition: border-color 100ms ease-in-out;
+
+			&:hover { border-color: $white !important }
+		}
+	}
+}
