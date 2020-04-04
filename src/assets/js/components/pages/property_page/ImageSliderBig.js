@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '@context/GlobalContext';
@@ -51,10 +51,10 @@ const ImageSliderBig = (props) => {
 
 	}, []);
 
-	let increment_count = shownImage;
-
+	let count = shownImage;
+	
 	const changeImage = e => {
-
+		
 		const target = e.currentTarget;
 		const toggle = target.dataset.eventToggle === 'true';
 		
@@ -62,14 +62,14 @@ const ImageSliderBig = (props) => {
 
 			if(target.id.includes('left')) {
 
-				if(increment_count === 3) increment_count = 0;
-				else increment_count++;
+				if(count === 3) count = 0;
+				else count++;
 			}
 
 			if(target.id.includes('right')) {
 
-				if(increment_count === 0) increment_count = document.querySelectorAll('#images-slider-big .image-gallery img').length - 1;
-				else increment_count--;
+				if(count === 0) count = document.querySelectorAll('#images-slider-big .image-gallery img').length - 1;
+				else count--;
 			}
 
 			document.querySelectorAll('#images-slider-big .image-gallery img').forEach((image, index) => {
@@ -80,7 +80,7 @@ const ImageSliderBig = (props) => {
 
 				if(target.id.includes('left')) {
 
-					if(index === increment_count) {
+					if(index === count) {
 						
 						if(current_pos < 0) {
 
@@ -103,7 +103,7 @@ const ImageSliderBig = (props) => {
 
 				if(target.id.includes('right')) {
 
-					if(index === increment_count) {
+					if(index === count) {
 
 						if(current_pos > 0) {
 
@@ -129,6 +129,8 @@ const ImageSliderBig = (props) => {
 
 			setTimeout(() => target.setAttribute('data-event-toggle', 'true'), transitionTime + 200);
 		}
+
+		document.querySelector('.image-gallery > p span').textContent = count + 1;
 
 		e.stopPropagation();
 	}
@@ -178,7 +180,7 @@ const ImageSliderBig = (props) => {
 
 				))}
 
-				<p className="position-absolute px-3 py-1 rounded">{shownImage + 1} / {images.length}</p>
+				<p className="position-absolute px-3 py-1 rounded"><span>{shownImage + 1}</span> / {images.length}</p>
 			</div>
 
 			<div 

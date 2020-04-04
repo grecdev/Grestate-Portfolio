@@ -1,8 +1,6 @@
 import {
 
 	SET_SHOWN_IMAGE,
-	INCREMENT_SHOWN_IMAGE,
-	DECREMENT_SHOWN_IMAGE,
 	TOGGLE_SLIDER_MODAL
 
 } from '@constants/actionTypes';

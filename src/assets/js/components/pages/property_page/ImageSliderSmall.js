@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '@context/GlobalContext';
@@ -32,7 +32,7 @@ const ImageSliderSmall = (props) => {
 
 			image.style.transition = 'none';
 			
-			setTimeout(() => image.style.transition = '', transitionTime);
+			setTimeout(() => image.style.transition = '', 1);
 
 			let image_pos;
 		
@@ -47,22 +47,23 @@ const ImageSliderSmall = (props) => {
 			if(current_pos < 0) image.style.transform = `translateY(${-image_width}px)`;
 			if(current_pos >= image_width) image.style.transform = `translateY(${image_width}px)`;
 		});
-
-		console.log(shownImage);
 	}
 
 	useEffect(() => {
 
 		displayImages();
 
-	}, [shownImage]);
+	}, []);
+
+	// Less renders
+	let [imageCount, setImageCount] = useState(shownImage);
 
 	const changeImage = e => {
 
 		const target = e.currentTarget;
 		const current_image = parseFloat(target.dataset.imageIndex);
 
-		setShownImage(current_image);
+		setImageCount(current_image);
 
 		if(target.classList.contains('image-small')) {
 
@@ -113,7 +114,11 @@ const ImageSliderSmall = (props) => {
 
 	const toggleSlider = e => {
 
-		if(e.currentTarget.tagName === 'DIV') toggleSliderModal(true);
+		if(e.currentTarget.tagName === 'DIV') {
+
+			toggleSliderModal(true);
+			setShownImage(imageCount);
+		}
 
 		e.stopPropagation();
 	}
@@ -125,7 +130,7 @@ const ImageSliderSmall = (props) => {
 					{
 						images.reviewImages.map((image, index) => {
 
-							if((shownImage >= 3 && index === 2) || (index === shownImage && index < 3)) return (
+							if(index === shownImage && index < 3) return (
 
 								<div
 									className="image-small rounded selected mb-3"
@@ -133,8 +138,8 @@ const ImageSliderSmall = (props) => {
 									onClick={throttleEvent(changeImage, transitionTime + 200)}
 									data-image-index={index}
 								>
-								<img className='rounded' src={getImage(image)} alt='image' />
-							</div>
+									<img className='rounded' src={getImage(image)} alt='image' />
+								</div>
 
 							)
 
@@ -158,9 +163,15 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.reviewImages.map(image => <img key={image} className='review-image rounded position-absolute' src={getImage(image)} alt={image} /> )}
+						{images.reviewImages.map((image, index) => <img
+							key={image}
+							data-image-index={index}
+							className='review-image rounded position-absolute'
+							src={getImage(image)} alt={image}
+						/>
+						)}
 
-				    <p className="position-absolute px-3 py-1 rounded">{shownImage >= 3 ? shownImage : shownImage + 1} / {images.reviewImages.length}</p>
+				    <p className="position-absolute px-3 py-1 rounded">{imageCount >= 3 ? imageCount : imageCount + 1} / {images.reviewImages.length}</p>
 
 						<div className="rounded position-absolute d-flex flex-column justify-content-center align-items-center" onClick={toggleSlider}>
 							<p>See more images <i className="ml-2 fas fa-images"></i></p>

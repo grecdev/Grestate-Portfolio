@@ -63,15 +63,13 @@ const PropertyPage = ({ match }) => {
 	const defaultSliderState = {
 		// This is the image that we display it when we first enter on the page
 		// And when we click on the smaller image, display it on the big slider
-		shown_image: 3,
+		shown_image: 2,
 		slider_modal_visible: false
 	}
 
 	const [slider_state, dispatch] = useReducer(PropertySliderReducer, defaultSliderState);
 
 	const setShownImage = val => dispatch({ type: SET_SHOWN_IMAGE, payload: val });
-	const incrementShownImage = val => dispatch({ type: INCREMENT_SHOWN_IMAGE });
-	const decrementShownImage = val => dispatch({ type: DECREMENT_SHOWN_IMAGE });
 
 	const toggleSliderModal = val => dispatch({ type: TOGGLE_SLIDER_MODAL, payload: val });
 
