@@ -1,0 +1,34 @@
+#search-property #search-map {
+	height: 73vh;
+
+	.mapboxgl-marker {
+		width: 25px;
+		height: 25px;
+
+		&:hover > .marker-info,
+		.marker-info:hover { display: block }
+
+		img { cursor: pointer }
+	}
+
+	.mapboxgl-popup-content {
+		cursor: auto;
+		user-select: text;
+	}
+
+	.mapboxgl-ctrl-geolocate { box-shadow: none }
+
+	.mapboxgl-user-location-dot {
+		background: $green-dark;
+		@include flex(column, center, center);
+
+		&::after {
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: $dark-1;
+		}
+
+		&::before { background: #FF5752 }
+	}
+}

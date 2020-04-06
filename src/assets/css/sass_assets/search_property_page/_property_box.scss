@@ -1,0 +1,52 @@
+#search-property #search-listings .property-box {
+	cursor: pointer;
+	transition: opacity 100ms ease-in-out;
+
+	&:hover, &.highlight-property { opacity: 0.8 }
+
+	.price {
+		color: $green-dark;
+		font-size: 1.2rem;
+	}
+
+	img {
+		width: 200px;
+		height: 150px;
+		box-shadow: 0 0 10px 0px $dark-2;
+	}
+
+	.features-preview {
+
+		p {
+			@include user-select;
+
+			&:hover + .pop-up { display: block !important }
+		}
+
+		.pop-up {
+			top: -50px;
+			left: -25px;
+			background: $green-light-1;
+			width: 116px;
+			border-radius: 10px;
+			@include user-select;
+
+			&::before {
+				content: '';
+				position: absolute;
+				bottom: -20px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-style: solid;
+				border-width: 10px 10px 10px 10px;
+				border-color: $green-light-1 transparent transparent transparent;
+				
+			}
+		}
+
+		> div:nth-child(2) .pop-up { left: -35px }
+		> div:last-child .pop-up { left: -20px }
+
+		.pop-up:hover { display: block !important }
+	}
+}

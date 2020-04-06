@@ -31,7 +31,7 @@ const ImageSliderSmall = (props) => {
 
 			image.style.transition = 'none';
 			
-			setTimeout(() => image.style.transition = '', 1);
+			setTimeout(() => image.style.transition = '', 100);
 
 			let image_pos;
 		
