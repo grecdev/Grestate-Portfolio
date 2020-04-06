@@ -24,22 +24,22 @@ const FilterProperties = ({ array }) => {
 
 	const applyFilter = e => {
 
+		let arr = [...array];
+
 		if(e.target.classList.contains('filter-type')) {
 
 			const filter_type = e.target.dataset.filterType;
 
 			setTitle(e.target.textContent);
 
-			let arr;
-
-			if(filter_type === 'price-ascending') arr = array.sort((a, b) => {
+			if(filter_type === 'price-ascending') arr = arr.sort((a, b) => {
 
 				if(location.includes('buy')) return parseFloat(a.propertyPrice) - parseFloat(b.propertyPrice);
 				if(location.includes('rental')) return parseFloat(a.propertyRent) - parseFloat(b.propertyRent);
 
 			});
 
-			if(filter_type === 'price-descending') arr = array.sort((a, b) => {
+			if(filter_type === 'price-descending') arr = arr.sort((a, b) => {
 
 				if(location.includes('buy')) return parseFloat(b.propertyPrice) - parseFloat(a.propertyPrice);
 				if(location.includes('rental')) return parseFloat(b.propertyRent) - parseFloat(a.propertyRent);
@@ -51,7 +51,8 @@ const FilterProperties = ({ array }) => {
 		
 		if(e.target.id.includes('reset')) {
 
-			filterProperty(arr, location);
+			setTitle('Not selected');
+			filterProperty([], location);
 		}
 		
 		e.stopPropagation();

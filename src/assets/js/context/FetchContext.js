@@ -9,8 +9,8 @@ import {
 	GET_DATABASE,
 	SET_BUY_PROPERTIES,
 	SET_RENTAL_PROPERTIES,
-	RESET_BUY_PROPERTIES,
-	RESET_RENTAL_PROPERTIES,
+	FILTER_BUY_PROPERTIES,
+	FILTER_RENTAL_PROPERTIES,
 	SET_LOADER
 
 } from '@constants/actionTypes';
@@ -25,6 +25,8 @@ const FetchContextProvider = (props) => {
 		db: [],
 		buy_properties: [],
 		rent_properties: [],
+		filtered_buy_properties: [],
+		filtered_rent_properties: [],
 		loader: false
 	}
 
@@ -32,6 +34,8 @@ const FetchContextProvider = (props) => {
 
 	// When we search from the form
 	const searchProperty = (data, target) => {
+
+		dispatch({ type: SET_LOADER, payload: true });
 		
 		target.name.includes('buy') && dispatch({ type: SET_BUY_PROPERTIES, payload: data });
 		target.name.includes('rent') && dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
@@ -42,8 +46,10 @@ const FetchContextProvider = (props) => {
 	// When we apply some filters on search property page
 	const filterProperty = (data, location) => {
 
-		if(location.includes('buy')) dispatch({ type: SET_BUY_PROPERTIES, payload: data });
-		if(location.includes('rent')) dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
+		dispatch({ type: SET_LOADER, payload: true });
+
+		if(location.includes('buy')) dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
+		if(location.includes('rent')) dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: data });
 
 		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
 	}
@@ -61,13 +67,11 @@ const FetchContextProvider = (props) => {
 				const response = JSON.parse(xhr.responseText);
 
 				xhr.status >= 400 ? reject(response) : resolve(response);
-
 			}
 
 			xhr.onerror = () => reject('Some error occurred');
 
 			xhr.send();
-
 		});
 	}
 
@@ -109,8 +113,17 @@ const FetchContextProvider = (props) => {
 
 		if(location !== undefined) {
 
-			if(!location.includes('buy')) dispatch({ type: RESET_BUY_PROPERTIES }); 
-			if(!location.includes('rent')) dispatch({ type: RESET_RENTAL_PROPERTIES });
+			dispatch({ type: SET_LOADER, payload: false });
+
+			if(!location.includes('buy')) {
+				dispatch({ type: SET_BUY_PROPERTIES, payload: [] });
+				dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
+			}
+
+			if(!location.includes('rent')) {
+				dispatch({ type: SET_RENTAL_PROPERTIES, payload: [] });
+				dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
+			}
 		}
 
 	}, [location]);

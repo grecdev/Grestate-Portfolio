@@ -3,8 +3,8 @@ import {
 	GET_DATABASE,
 	SET_BUY_PROPERTIES,
 	SET_RENTAL_PROPERTIES,
-	RESET_BUY_PROPERTIES,
-	RESET_RENTAL_PROPERTIES,
+	FILTER_BUY_PROPERTIES,
+	FILTER_RENTAL_PROPERTIES,
 	SET_LOADER
 	
 } from '@constants/actionTypes';
@@ -22,27 +22,25 @@ export default (state, action) => {
 		case SET_BUY_PROPERTIES:
 			return {
 				...state,
-				loader: true,
 				buy_properties: action.payload
 			}
 
 		case SET_RENTAL_PROPERTIES:
 			return {
 				...state,
-				loader: true,
 				rent_properties: action.payload
 			}
 
-		case RESET_BUY_PROPERTIES:
+		case FILTER_BUY_PROPERTIES:
 			return {
 				...state,
-				buy_properties: []
+				filtered_buy_properties: action.payload
 			}
 
-		case RESET_RENTAL_PROPERTIES:
+		case FILTER_RENTAL_PROPERTIES:
 			return {
 				...state,
-				rent_properties: []
+				filtered_rent_properties: action.payload
 			}
 
 		case SET_LOADER:

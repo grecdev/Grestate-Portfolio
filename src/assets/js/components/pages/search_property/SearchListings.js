@@ -20,18 +20,29 @@ const SearchListings = () => {
 	const {
 
 		buy_properties,
-		rent_properties
+		rent_properties,
+		filtered_buy_properties,
+		filtered_rent_properties
 
 	} = useContext(FetchContext);
 
-	const [arr, setArr] = useState([]);
+	let [arr, setArr] = useState([]);
 
 	useEffect(() => {
 
-		location.includes('buy') && setArr(buy_properties);
-		location.includes('rental') && setArr(rent_properties);
+		if(location.includes('buy')) {
 
-	}, [buy_properties, rent_properties]);
+			if(filtered_buy_properties.length === 0) setArr(buy_properties);
+			else setArr(filtered_buy_properties);
+		}
+
+		if(location.includes('rent')) {
+
+			if(filtered_rent_properties.length === 0) setArr(rent_properties);
+			else setArr(filtered_rent_properties);
+		}
+
+	}, [buy_properties, filtered_buy_properties, rent_properties, filtered_rent_properties]);
 	
 	return (
 		<Row id='search-listings' className='p-3 m-0 d-flex flex-column justify-content-start align-items-start'>
