@@ -30,13 +30,19 @@ const SearchPropertyPage = () => {
 
 				<Col className='col-lg-6 p-0 m-0'>
 
-					{loader ? (
+					{
+						loader && (
 
-						<div className="search-listings-loader d-flex flex-column justify-content-center align-items-center">
-							<div className='mx-auto'></div>
-						</div>
+							<div className="search-listings-loader d-flex flex-column justify-content-center align-items-center">
+								<div className='mx-auto'></div>
+							</div>
+							
+						)
+					}
 
-					) :  <SearchListings /> }
+					<div className={loader ? 'd-none' : 'd-block'}>
+						<SearchListings />
+					</div>
 
 				</Col>
 			</Row>

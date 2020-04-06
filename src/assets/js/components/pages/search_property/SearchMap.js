@@ -23,8 +23,8 @@ const SearchMap = () => {
 
 	const {
 
-		filtered_buy_properties,
-		filtered_rent_properties
+		buy_properties,
+		rent_properties
 
 	} = useContext(FetchContext);
 
@@ -55,8 +55,8 @@ const SearchMap = () => {
 
 	useEffect(() => {
 
-		location.includes('buy-properties') && setArr(filtered_buy_properties);
-		location.includes('rental-listings') && setArr(filtered_rent_properties);
+		location.includes('buy-properties') && setArr(buy_properties);
+		location.includes('rental-listings') && setArr(rent_properties);
 
 		const properties = arr.map(item => {
 
@@ -71,7 +71,7 @@ const SearchMap = () => {
 		if(arr.length > 0) dispatch({ type: SET_PROPERTIES, payload: properties });
 		else dispatch({ type: SET_PROPERTIES, payload: defaultData });
 
-	}, [filtered_buy_properties, filtered_rent_properties, arr]);
+	}, [buy_properties, rent_properties, arr]);
 
 	const [viewport, setViewport] = useState({
 		width: 759,

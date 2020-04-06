@@ -7,8 +7,8 @@ import FetchReducer from '@reducers/FetchReducer';
 import {
 
 	GET_DATABASE,
-	FILTER_BUY_PROPERTIES,
-	FILTER_RENTAL_PROPERTIES,
+	SET_BUY_PROPERTIES,
+	SET_RENTAL_PROPERTIES,
 	RESET_BUY_PROPERTIES,
 	RESET_RENTAL_PROPERTIES,
 	SET_LOADER
@@ -23,28 +23,29 @@ const FetchContextProvider = (props) => {
 
 	const defaultDatabaseState = {
 		db: [],
-		filtered_buy_properties: [],
-		filtered_rent_properties: [],
+		buy_properties: [],
+		rent_properties: [],
 		loader: false
 	}
 
 	const [state, dispatch] = useReducer(FetchReducer, defaultDatabaseState);
 
-	const filterDatabase = (data, target) => {
+	// When we search from the form
+	const searchProperty = (data, target) => {
 		
-		if(target.name.includes('buy')) {
+		target.name.includes('buy') && dispatch({ type: SET_BUY_PROPERTIES, payload: data });
+		target.name.includes('rent') && dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
 
-			dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
-	
-			setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
-		}
+		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+	}
 
-		if(target.name.includes('rent')) {
+	// When we apply some filters on search property page
+	const filterProperty = (data, location) => {
 
-			dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: data });
-	
-			setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
-		}
+		if(location.includes('buy')) dispatch({ type: SET_BUY_PROPERTIES, payload: data });
+		if(location.includes('rent')) dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
+
+		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
 	}
 
 	const getXhr = () => {
@@ -118,7 +119,8 @@ const FetchContextProvider = (props) => {
 
 		<FetchContext.Provider value={{
 			...state,
-			filterDatabase
+			searchProperty,
+			filterProperty
 		}}>
 			{children}
 		</FetchContext.Provider>

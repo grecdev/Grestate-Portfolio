@@ -56,7 +56,7 @@ const PropertyBox = ({ array }) => {
 
 			<div
 				key={uuidv4()}
-				className="property-box mx-3"
+				className="property-box"
 				data-property-id={item.id}
 				data-pin-index={index}
 				onMouseEnter={hightlightPin}

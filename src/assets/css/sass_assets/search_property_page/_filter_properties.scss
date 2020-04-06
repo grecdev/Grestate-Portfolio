@@ -1,3 +1,48 @@
 #search-property #filter-properties {
-	background: red;
+
+	> p { font-size: 1.3rem }
+
+	> div {
+		width: 60%;
+
+		div.dropdown {
+			margin: 0 1rem;
+	
+			#filter-dropdown {
+				background: $green-dark;
+				border: none;
+		
+				&:focus,
+				&:active { box-shadow: none }
+			}
+	
+			> div {
+				padding: 0;
+				top: 5px !important;
+	
+				span {
+					cursor: pointer;
+					color: $dark-1;
+					@include user-select;
+	
+					&:focus,
+					&:active {
+						background: #ccc;
+						outline: none;
+						border: none;
+					}
+				}
+			}
+		}
+
+		> button {
+			background: $dark-1;
+			color: $white;
+			outline: none;
+			padding: 6px 12px;
+			transition: background 100ms ease-in-out;
+
+			&:hover { background: lighten($dark-1, 10%) }
+		}
+	}
 }

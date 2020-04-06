@@ -19,8 +19,8 @@ const SearchListings = () => {
 
 	const {
 
-		filtered_buy_properties,
-		filtered_rent_properties
+		buy_properties,
+		rent_properties
 
 	} = useContext(FetchContext);
 
@@ -28,13 +28,13 @@ const SearchListings = () => {
 
 	useEffect(() => {
 
-		location.includes('buy-properties') && setArr(filtered_buy_properties);
-		location.includes('rental-listings') && setArr(filtered_rent_properties);
+		location.includes('buy') && setArr(buy_properties);
+		location.includes('rental') && setArr(rent_properties);
 
-	}, [filtered_buy_properties, filtered_rent_properties]);
+	}, [buy_properties, rent_properties]);
 	
 	return (
-		<Row id='search-listings' className='p-3 m-0 justify-content-between align-items-start'>
+		<Row id='search-listings' className='p-3 m-0 d-flex flex-column justify-content-start align-items-start'>
 
 			{
 				arr.length === 0 ? (
@@ -48,7 +48,10 @@ const SearchListings = () => {
 					<>
 						
 						<FilterProperties array={arr} />
-						<PropertyBox array={arr} />
+
+						<div className="w-100 d-flex flex-row justify-content-around align-items-center">
+							<PropertyBox array={arr} />
+						</div>
 
 					</>
 				)

@@ -40,9 +40,9 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 	const {
 
 		db,
-		filterDatabase,
-		filtered_buy_properties,
-		filtered_rent_properties
+		searchProperty,
+		buy_properties,
+		rent_properties
 		
 	} = useContext(FetchContext);
 
@@ -98,7 +98,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 		}
 
 		let submitted = false;
-		let arr = [...db];
+		let arr = db;
 
 		if(e.target.name.includes('buy')) {
 			
@@ -191,7 +191,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			}
 		}
 
-		filterDatabase(arr, e.target);
+		searchProperty(arr, e.target);
 		
 		const consoleStyle = 'background: #000; padding: 0.5rem; border: 2px dotted #11FF00';
 
@@ -206,11 +206,11 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		let city, property_type, budget;
 
-		if(filtered_buy_properties.length > 0) {
+		if(buy_properties.length > 0) {
 
-			city = filtered_buy_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
-			property_type = filtered_buy_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
-			budget = parseFloat(filtered_buy_properties[0].propertyPrice);
+			city = buy_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
+			property_type = buy_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
+			budget = parseFloat(buy_properties[0].propertyPrice);
 		
 			Array.from(document.querySelectorAll('#buy-budget option')).forEach(item => {
 
@@ -225,11 +225,11 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 			dispatch({type: SET_INPUT_VALUE, target: 'buy_budget', payload: budget });
 		}
 
-		if(filtered_rent_properties.length > 0) {
+		if(rent_properties.length > 0) {
 
-			city = filtered_rent_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
-			property_type = filtered_rent_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
-			budget = parseFloat(filtered_rent_properties[0].propertyRent);
+			city = rent_properties[0].addressCity.toLowerCase().replace(/ /g, '-');
+			property_type = rent_properties[0].propertyType.toLowerCase().replace(/ /g, '-');
+			budget = parseFloat(rent_properties[0].propertyRent);
 		
 			Array.from(document.querySelectorAll('#rent-budget option')).forEach(item => {
 
