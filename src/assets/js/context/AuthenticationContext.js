@@ -43,6 +43,25 @@ export class AuthenticationContextProvider extends Component {
 		e.stopPropagation();
 	}
 
+	socialAuthentication(e) {
+
+		const width = 570;
+		const height = 520;
+		const y = window.top.outerHeight / 2 + window.top.screenY - ( width / 2);
+    const x = window.top.outerWidth / 2 + window.top.screenX - ( height / 2);
+
+		const auth = {
+			facebook_url: 'https://www.facebook.com',
+			google_url: 'https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin',
+			features: `location=yes,height=570,width=520,scrollbars=yes,status=yes, top=${y}, left=${x}`
+		}
+
+		if(e.currentTarget.className.includes('facebook')) window.open(auth.facebook_url, '_blank', auth.features);
+		if(e.currentTarget.className.includes('google')) window.open(auth.google_url, '_blank', auth.features);
+
+		e.stopPropagation();
+	}
+
 	componentDidUpdate(prevState) {
 
 		if(prevState.login_enabled !== this.state.login_enabled || prevState.signup_enabled !== this.state.signup_enabled) {
@@ -57,7 +76,8 @@ export class AuthenticationContextProvider extends Component {
 		return (
 			<AuthenticationContext.Provider value={{
 				...this.state,
-				toggleModal: this.toggleModal.bind(this)
+				toggleModal: this.toggleModal.bind(this),
+				socialAuthentication: this.socialAuthentication.bind(this)
 			}}>
 				{this.props.children}
 			</AuthenticationContext.Provider>
