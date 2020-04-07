@@ -1,5 +1,11 @@
 #property-page #right-side #agent-listing {
 
+	> div:first-child {
+		position: relative;
+		top: 3px;
+		border-width: 2px !important;
+	}
+
 	.agent-card-header div {
 		width: 100px;
 		height: 100px;
@@ -23,6 +29,7 @@
 	.agent-card-footer {
 		width: 100%;
 		background: $dark-2;
+		position: relative;
 
 		button:first-child {
 			background: $green-dark;

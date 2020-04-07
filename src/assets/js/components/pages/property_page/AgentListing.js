@@ -45,27 +45,30 @@ const AgentListing = ({ agent }) => {
 	}, [number_visible]);
 
 	return (
-		<section id='agent-listing' className='border border-bottom-0 rounded d-flex flex-column justify-content-start align-items-center'>
-			
-			<div className="agent-card-header mb-3 py-4">
+		<section id='agent-listing'>
 
-				<div style={bg_image} className='rounded-circle mb-2 mx-auto'></div>
-				
-				<h3>{agent.name}</h3>
+			<div className='w-100 text-center d-flex flex-column justify-content-start align-items-center border rounded'>
+				<div className="agent-card-header py-4">
 
-			</div>
+					<div style={bg_image} className='rounded-circle mb-2 mx-auto'></div>
+					
+					<h3 className='m-0'>{agent.name}</h3>
 
-			<div className="agent-card-info mb-3 py-4 text-white text-center rounded">
-
-				
-				<div className="number d-flex flex-row justify-content-center align-items-center mb-3">
-					<p className='m-0'></p>
-					<p className='m-0 ml-3' onClick={showNumber}>Show number</p>
 				</div>
 
-				<p className='mb-0'>{agent.email}</p>
+				<div className="agent-card-info mb-3 py-4 text-white text-center rounded">
 
+					
+					<div className="number d-flex flex-row justify-content-center align-items-center mb-3">
+						<p className='m-0'></p>
+						<p className='m-0 ml-3' onClick={showNumber}>Show number</p>
+					</div>
+
+					<p className='mb-0'>{agent.email}</p>
+
+				</div>
 			</div>
+			
 
 			<div className="agent-card-footer py-4 px-5 d-flex flex-column justify-content-center align-items-stretch rounded-bottom">
 
