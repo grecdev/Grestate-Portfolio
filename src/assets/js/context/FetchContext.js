@@ -40,6 +40,9 @@ const FetchContextProvider = (props) => {
 		target.name.includes('buy') && dispatch({ type: SET_BUY_PROPERTIES, payload: data });
 		target.name.includes('rent') && dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
 
+		dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
+		dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
+
 		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
 	}
 
@@ -116,11 +119,13 @@ const FetchContextProvider = (props) => {
 			dispatch({ type: SET_LOADER, payload: false });
 
 			if(!location.includes('buy')) {
+				
 				dispatch({ type: SET_BUY_PROPERTIES, payload: [] });
 				dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
 			}
 
 			if(!location.includes('rent')) {
+
 				dispatch({ type: SET_RENTAL_PROPERTIES, payload: [] });
 				dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
 			}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { GlobalContext } from '@context/GlobalContext';
 import { FetchContext } from '@context/FetchContext';
@@ -16,11 +16,16 @@ const FilterProperties = ({ array }) => {
 
 	const {
 
-		filterProperty
+		filterProperty,
+		filtered_buy_properties,
+		filtered_rent_properties,
+		buy_properties,
+		rent_properties
  
 	} = useContext(FetchContext);
 
-	const [title, setTitle] = useState('Not selected');
+	const default_text = 'Not selected';
+	const [text, setText] = useState(default_text);
 
 	const applyFilter = e => {
 
@@ -30,7 +35,7 @@ const FilterProperties = ({ array }) => {
 
 			const filter_type = e.target.dataset.filterType;
 
-			setTitle(e.target.textContent);
+			setText(e.target.textContent);
 
 			if(filter_type === 'price-ascending') arr = arr.sort((a, b) => {
 
@@ -46,17 +51,26 @@ const FilterProperties = ({ array }) => {
 				
 			});
 
+			if(filter_type === 'lot-size-ascending') arr = arr.sort((a, b) => a.propertySize - b.propertySize);
+			if(filter_type === 'lot-size-descending') arr = arr.sort((a, b) => b.propertySize - a.propertySize);
+
 			filterProperty(arr, location);
 		}
 		
 		if(e.target.id.includes('reset')) {
 
-			setTitle('Not selected');
+			setText(default_text);
 			filterProperty([], location);
 		}
 		
 		e.stopPropagation();
 	}
+
+	useEffect(() => {
+
+		setText(default_text);
+		
+	}, [buy_properties, rent_properties]);
 
 	return (
 		<div id="filter-properties" className='w-100 mb-5 d-flex justify-content-between align-items-center'>
@@ -67,14 +81,14 @@ const FilterProperties = ({ array }) => {
 
 				<p className='m-0'>Sort by:</p>
 
-				<DropdownButton id="filter-dropdown" title={title} onClick={applyFilter}>
+				<DropdownButton id="filter-dropdown" title={text} onClick={applyFilter}>
 					<Dropdown.Item as='span' data-filter-type='price-ascending' className='filter-type'>Price (Low to High)</Dropdown.Item>
 					<Dropdown.Item as='span' data-filter-type='price-descending' className='filter-type'>Price (High to Low)</Dropdown.Item>
 					<Dropdown.Item as='span' data-filter-type='lot-size-ascending' className='filter-type'>Lot Size (Low to High)</Dropdown.Item>
 					<Dropdown.Item as='span' data-filter-type='lot-size-descending' className='filter-type'>Lot Size (High to Low)</Dropdown.Item>
 				</DropdownButton>
 
-				<button type='button' id='reset-filters' className='rounded border-0' onClick={applyFilter}>Remove filters</button>
+				{filtered_buy_properties.length > 0 || filtered_rent_properties.length > 0 ? <button type='button' id='reset-filters' className='rounded border-0' onClick={applyFilter}>Remove filters</button> : null}
 			</div>
 
 		</div>
