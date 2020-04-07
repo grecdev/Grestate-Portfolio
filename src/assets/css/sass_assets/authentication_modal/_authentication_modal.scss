@@ -18,4 +18,108 @@
 		color: $white;
 		outline: none;
 	}
+
+	> div {
+		color: $dark-1;
+		background: $white;
+		width: 30%;
+
+		.form-header a {
+			border-bottom: 3px solid transparent;
+			transition: background 150ms ease-in-out;
+			@include user-select;
+
+			&.active-modal {
+				border-color: $green-dark;
+				font-weight: bold;
+			}
+
+			&:not(.active-modal):hover {
+				background: #eee;
+				cursor: pointer;
+			}
+		}
+
+		.form-control:focus {
+			border-color: $green-dark;
+			box-shadow: none;
+		}
+
+		.form-body {
+
+			> button {
+				border: none;
+
+				&:focus,
+				&:active { box-shadow: none }
+			}
+
+			#login-auth {
+				width: 70%;
+				background: $green-dark;
+
+				&:hover { background: lighten($green-dark, 10%) }
+			}
+		}
+
+		form > p {
+			font-size: .9rem;
+
+			&::before,
+			&::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 100px;
+				height: 1px;
+				background: #6c757d;
+			}
+
+			&::before { left: 70px }
+			&::after { right: 70px }
+		}
+
+		.form-footer {
+		
+			button {
+				width: 70%;
+				transition: background 250ms ease-in-out;
+
+				&:active,
+				&:focus {
+					outline: none;
+					box-shadow: none;
+				}
+
+				span {
+					border-top-left-radius: 0.25rem;
+					border-bottom-left-radius: 0.25rem;
+					width: 13%;
+				}
+
+				&.facebook-signin {
+					background: #39579a;
+					color: $white;
+					
+					span { background: #466bbf }
+
+					&:hover { background: #466bbf }
+				}
+
+				&.google-signin {
+					background: $white;
+					border: 1px solid $dark-1;
+
+					&:hover { background: darken($white, 5%) }
+
+					span {
+						border-right: 1px solid $dark-1;
+						padding: 0.5rem;
+					}
+				}
+			}
+		}
+
+	}
 }

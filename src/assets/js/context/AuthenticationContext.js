@@ -1,7 +1,6 @@
-import React, { Component, createContext } from 'react'
+import React, { Component, createContext } from 'react';
 
 export const AuthenticationContext = createContext();
-
 export class AuthenticationContextProvider extends Component {
 
 	state = {
@@ -32,7 +31,7 @@ export class AuthenticationContextProvider extends Component {
 			}
 		}
 
-		if(e.target.classList.contains('close-modal') || e.target.parentElement.classList.contains('close-modal') || e.target.id === 'authentication-modal') {
+		if(e.target.classList.contains('close-modal') || e.target.parentElement.classList.contains('close-modal') || e.target.id === 'authentication-modal' || (e.currentTarget.tagName === 'A' && e.currentTarget.getAttribute('href').includes('forgot'))) {
 			
 			this.setState(prevState => ({
 				...prevState,
