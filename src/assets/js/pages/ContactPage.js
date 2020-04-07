@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ContactLocation from '@components/pages/contact/ContactLocation';
-import ContactInfo from '@components/pages/contact/ContactInfo';
+import ContactLocation from '@components/contact/ContactLocation';
+import ContactInfo from '@components/contact/ContactInfo';
 
 const ContactPage = () => {
 	return (

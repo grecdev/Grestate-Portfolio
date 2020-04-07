@@ -21,14 +21,17 @@ import App from './App';
 import { HashRouter as Router } from 'react-router-dom';
 
 import GlobalContextProvider from '@context/GlobalContext';
-import FetchContexTProvider from '@context/FetchContext';
+import FetchContextProvider from '@context/FetchContext';
+import AuthenticationContextProvider from '@context/AuthenticationContext';
 
 ReactDOM.render(
 	<Router>
 		<GlobalContextProvider>
-			<FetchContexTProvider>
-				<App />
-			</FetchContexTProvider>
+			<FetchContextProvider>
+				<AuthenticationContextProvider>
+					<App />
+				</AuthenticationContextProvider>
+			</FetchContextProvider>
 		</GlobalContextProvider>
 	</Router>
 	, document.getElementById('root'));

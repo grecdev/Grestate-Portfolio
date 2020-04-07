@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+
+import { AuthenticationContext } from '@context/AuthenticationContext';
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 
 const Header = () => {
+
+	const {
+
+		toggleModal
+
+	} = useContext(AuthenticationContext);
+
 	return (
-		<header>
+		<header onClick={toggleModal} >
 			<Navbar id='desktop-navbar' className='justify-content-between align-items-center'>
 				<NavLink className='navbar-brand p-0 m-0' exact to='/'>Gr<span>estate</span></NavLink>
 

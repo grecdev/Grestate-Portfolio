@@ -1,7 +1,9 @@
 "use strict";
 
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Switch, Route } from 'react-router-dom';
+
+import { AuthenticationContext } from '@context/AuthenticationContext';
 
 import Header from '@components/global_layout/Header';
 import Footer from '@components/global_layout/Footer';
@@ -15,7 +17,16 @@ const ContactPage = lazy(() => import('./pages/ContactPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const PropertyPage = lazy(() => import('./pages/PropertyPage'));
 
+import AuthenticationModal from '@components/authentication/AuthenticationModal';
+
 const App = () => {
+
+	const {
+
+		login_enabled,
+		signup_enabled
+
+	} = useContext(AuthenticationContext);
 
 	return (
 		<>
@@ -34,6 +45,8 @@ const App = () => {
 
 					<Route component={NotFoundPage} />
 				</Switch>
+
+				{ login_enabled || signup_enabled ? <AuthenticationModal /> : null }
 
 				<ResetScroll />
 

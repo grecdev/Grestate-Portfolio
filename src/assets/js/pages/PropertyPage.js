@@ -12,10 +12,10 @@ import {
 
 } from '@constants/actionTypes';
 
-import ImageSliderSmall from '@components/pages/property_page/ImageSliderSmall';
-import ImageSliderBig from '@components/pages/property_page/ImageSliderBig';
-import PropertyDetails from '@components/pages/property_page/PropertyDetails';
-import AgentListing from '@components/pages/property_page/AgentListing';
+import ImageSliderSmall from '@components/property_page/ImageSliderSmall';
+import ImageSliderBig from '@components/property_page/ImageSliderBig';
+import PropertyDetails from '@components/property_page/PropertyDetails';
+import AgentListing from '@components/property_page/AgentListing';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';

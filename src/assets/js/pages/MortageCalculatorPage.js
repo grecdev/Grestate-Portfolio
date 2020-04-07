@@ -1,9 +1,9 @@
 import React, { useState }from 'react';
 
-import MortageShowcase from '@components/pages/mortage_calculator/MortageShowcase';
-import MortageInfo from '@components/pages/mortage_calculator/MortageInfo';
-import MortageChart from '@components/pages/mortage_calculator/MortageChart';
-import MortageCalculator from '@components/pages/mortage_calculator/MortageCalculator';
+import MortageShowcase from '@components/mortage_calculator/MortageShowcase';
+import MortageInfo from '@components/mortage_calculator/MortageInfo';
+import MortageChart from '@components/mortage_calculator/MortageChart';
+import MortageCalculator from '@components/mortage_calculator/MortageCalculator';
 
 import Row from 'react-bootstrap/Row';
 

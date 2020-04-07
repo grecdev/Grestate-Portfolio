@@ -54,7 +54,7 @@ const ContactInfo = () => {
 					</Form.Group>
 
 					<Form.Group controlId="message">
-						<Form.Label>Some information about your message</Form.Label>
+						<Form.Label>Your message</Form.Label>
 						<Form.Control as="textarea" rows="3" />
 					</Form.Group>
 
