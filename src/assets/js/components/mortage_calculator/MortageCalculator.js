@@ -84,6 +84,12 @@ const MortageCalculator = ({getTotalPayment}) => {
 	
 		if (e.target.id === 'home-price') {
 
+			if(convertToNumber(homePrice) > 999999999) {
+
+				console.log('Maximum home price');
+				return;
+			}
+
 			// Formatted number
 			dispatch({type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
 

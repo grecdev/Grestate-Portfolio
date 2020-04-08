@@ -33,8 +33,8 @@ const MortageChart = ({payment}) => {
 	const options = {
 		width: 450,
 		height: 330,
-		donut:true,
-		donutWidth: 50
+		donut: true,
+		donutWidth: 40
 	}
 
 	useEffect(() => {
