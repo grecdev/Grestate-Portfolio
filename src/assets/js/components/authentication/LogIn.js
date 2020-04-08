@@ -33,7 +33,7 @@ const LogIn = () => {
 
 				<Form.Row className='form-body flex-column px-4 pt-5'>
 					<Form.Group as={Col} controlId="login-email" className='mb-4'>
-						<Form.Control type="email" placeholder="Enter email" />
+						<Form.Control type="text" placeholder="Enter email" />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="login-password" className='mb-4'>

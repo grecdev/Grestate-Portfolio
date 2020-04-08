@@ -4,15 +4,16 @@ export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
 	state = {
-		login_enabled: true,
+		login_enabled: false,
 		signup_enabled: false
 	}
 
 	toggleModal(e) {
 
-		if(e.target.tagName === 'BUTTON') {
+		// Clicking on the header links or buttons inside the modal
+		if(e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
 
-			if(e.target.textContent.toLowerCase().includes('login')) {
+			if(e.target.textContent.toLowerCase().replace(/ /g, '').includes('login')) {
 				
 				this.setState(prevState => ({
 					...prevState,

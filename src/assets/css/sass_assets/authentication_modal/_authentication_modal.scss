@@ -49,16 +49,13 @@
 
 			> button {
 				border: none;
-
-				&:focus,
-				&:active { box-shadow: none }
-			}
-
-			#login-auth {
 				width: 70%;
 				background: $green-dark;
 
 				&:hover { background: lighten($green-dark, 10%) }
+
+				&:focus,
+				&:active { box-shadow: none }
 			}
 		}
 
@@ -74,6 +71,11 @@
 				width: 100px;
 				height: 1px;
 				background: #6c757d;
+			}
+
+			&.or::before,
+			&.or::after {
+				height: 0.5px;
 			}
 
 			&::before { left: 70px }
