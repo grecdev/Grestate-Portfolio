@@ -77,9 +77,9 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 		const homePrice = document.getElementById('home-price').value;
 		const downPayment = document.getElementById('down-payment').value;
-		const downPaymentPercent = document.getElementById('down-payment-percent').value;
+		const downPaymentPercent = document.getElementById('down-payment-percent').value.replace(/\,/g, '.');
 		const loanProgram = document.getElementById('loan-program').value;
-		const interestRate = document.getElementById('interest-rate').value;
+		const interestRate = document.getElementById('interest-rate').value.replace(/\,/g, '.');
 		const months = parseFloat(loanProgram) * 12;
 	
 		if (e.target.id === 'home-price') {
