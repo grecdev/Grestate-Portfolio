@@ -1,11 +1,14 @@
 import React, { Component, createContext } from 'react';
 
+import fire_auth from '../FireAuth';
+
 export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
 	state = {
 		login_enabled: false,
-		signup_enabled: false
+		signup_enabled: false,
+		user: {}
 	}
 
 	toggleModal(e) {
@@ -63,6 +66,51 @@ export class AuthenticationContextProvider extends Component {
 		e.stopPropagation();
 	}
 
+	authListener() {
+
+		fire_auth.auth().onAuthStateChanged(user => {
+
+			console.log(user);
+
+			if(user) {
+
+				this.setState(prevState => ({...prevState, user: user }));
+				// localStorage.setItem('user', user.uid);
+
+				this.setState(prevState => ({
+					...prevState,
+					login_enabled: false,
+					signup_enabled: false
+				}));
+
+			} else {
+
+				this.setState(prevState => ({...prevState, user: null  }));
+				// localStorage.removeItem('user');
+
+			}
+		})
+	}
+
+	signOut() {
+		
+		fire_auth.auth().signOut().then(() => {
+
+			console.log('user signed out');
+
+		}).catch(err => {
+			
+			console.log(err);
+
+		});
+	}
+
+	componentDidMount() {
+
+		this.authListener();
+		
+	}
+
 	componentDidUpdate(prevState) {
 
 		if(prevState.login_enabled !== this.state.login_enabled || prevState.signup_enabled !== this.state.signup_enabled) {
@@ -78,7 +126,9 @@ export class AuthenticationContextProvider extends Component {
 			<AuthenticationContext.Provider value={{
 				...this.state,
 				toggleModal: this.toggleModal.bind(this),
-				socialAuthentication: this.socialAuthentication.bind(this)
+				socialAuthentication: this.socialAuthentication.bind(this),
+				authListener: this.authListener.bind(this),
+				signOut: this.signOut.bind(this)
 			}}>
 				{this.props.children}
 			</AuthenticationContext.Provider>

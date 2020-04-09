@@ -1,8 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
+
+import AuthenticationReducer from '@reducers/AuthenticationReducer';
+import {
+
+	HANDLE_LOGIN_INPUT
+
+} from '@constants/actionTypes';
 
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
@@ -23,9 +30,36 @@ const LogIn = () => {
 
 	} = useContext(GlobalContext);
 
+	const defaultLoginState = {
+		login_email: '',
+		login_password: ''
+	}
+
+	const [state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);
+
+	const handleChange = e => {
+
+		dispatch({ type: HANDLE_LOGIN_INPUT, target: e.target.id.replace(/\-/g, '_'), payload: e.target.value });
+
+		e.stopPropagation();
+	}
+
+	const login = e => {
+
+		e.preventDefault();
+		e.stopPropagation();
+
+		firebase.auth().signInWithEmailAndPassword(state.login_email, state.login_password)
+		.then(user => {})
+		.catch(error => {
+
+			console.log(error.code, error.message);
+		});
+	}
+
 	return (
 		<div id='login-modal' className='rounded'>
-			<Form name='login'>
+			<Form name='login' onSubmit={login}>
 				<div className="form-header d-flex flex-row justify-content-between align-items-center">
 					<a className='w-50 py-3 text-center active-modal'>Log in</a>
 					<a className='w-50 py-3 text-center'>Sign up</a>
@@ -33,14 +67,14 @@ const LogIn = () => {
 
 				<Form.Row className='form-body flex-column px-4 pt-5'>
 					<Form.Group as={Col} controlId="login-email" className='mb-4'>
-						<Form.Control type="text" placeholder="Enter email" />
+						<Form.Control type="text" placeholder="Enter email" value={state.login_email} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="login-password" className='mb-4'>
-						<Form.Control type="password" placeholder="Password" />
+						<Form.Control type="password" placeholder="Password" value={state.login_password} onChange={handleChange} />
 					</Form.Group>
 
-					<Button id='login-auth' className='mx-auto mb-3 py-2'>Log in</Button>
+					<Button id='login-auth' type='submit' className='mx-auto mb-3 py-2'>Log in</Button>
 					<Link 
 						to='forgot-password'
 						className='mx-auto text-decoration-underline text-secondary'

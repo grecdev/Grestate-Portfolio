@@ -52,7 +52,7 @@ const SignUp = () => {
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="confirm-password">
-						<Form.Control type="password" placeholder="Password" />
+						<Form.Control type="password" placeholder="Confirm Password" />
 					</Form.Group>
 				</Form.Row>
 

@@ -15,8 +15,6 @@ const AuthenticationModal = () => {
 
 	} = useContext(AuthenticationContext);
 
-	// const 
-
 	return (
 		<section id='authentication-modal' className='d-flex flex-column justify-content-center align-items-center' onClick={toggleModal}>
 

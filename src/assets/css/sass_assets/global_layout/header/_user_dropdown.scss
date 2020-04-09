@@ -1,0 +1,34 @@
+header #desktop-navbar #user-dropdown {
+	
+	i {
+		font-size: 1.3rem;
+		cursor: pointer;
+		transition: color 100ms ease-in-out;
+		padding: 0.3rem 1rem;
+
+		&:hover { color: lighten($dark-1, 10%) }
+	}
+
+	#user-dropdown-menu {
+		top: 60px;
+		right: 0;
+		background: $green-dark;
+		width: 150px;
+		transition: all 250ms ease-in-out;
+		transform: scale(0.8);
+		opacity: 0;
+		visibility: hidden;
+
+		button {
+			background: $dark-1;
+			
+			&:hover { background: lighten($dark-1, 10%) }
+		}
+
+		&.dropdown-visible {
+			opacity: 1;
+			visibility: visible;
+			transform: scale(1);
+		}
+	}
+}

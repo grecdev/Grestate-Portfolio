@@ -1,7 +1,7 @@
 import {
 
-	SET_INPUT_VALUE,
-	RESET_INPUTS,
+	HANDLE_PROPERTY_INPUT,
+	RESET_PROPERTY_INPUTS,
 	RESET_BUY_INPUTS,
 	RESET_RENT_INPUTS
 
@@ -11,13 +11,13 @@ export default (state, action) => {
 
 	switch(action.type) {
 
-		case SET_INPUT_VALUE:
+		case HANDLE_PROPERTY_INPUT:
 			return {
 				...state,
 				[action.target]: action.payload
 			}
 
-		case RESET_INPUTS:
+		case RESET_PROPERTY_INPUTS:
 			return {
 				state: action.payload
 			}

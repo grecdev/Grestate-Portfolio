@@ -8,7 +8,8 @@
 @import "./chartist/chartist";
 
 // Global layout
-@import './sass_assets/global_layout/header';
+@import './sass_assets/global_layout/header/header';
+@import './sass_assets/global_layout/header/user_dropdown';
 @import './sass_assets/global_layout/property_form';
 @import './sass_assets/global_layout/section_header';
 @import './sass_assets/global_layout/showcase_header';

@@ -11,15 +11,15 @@ import PropTypes from 'prop-types';
 import { GlobalContext } from '@context/GlobalContext';
 import { FetchContext } from '@context/FetchContext';
 
-import InputReducer from '@reducers/InputReducer';
+import PropertyFormReducer from '@reducers/PropertyFormReducer';
 import {
 
-	SET_INPUT_VALUE,
-	RESET_INPUTS,
+	HANDLE_PROPERTY_INPUT,
+	RESET_PROPERTY_INPUTS,
 	RESET_BUY_INPUTS,
   RESET_RENT_INPUTS
 
-} from '../../../constants/actionTypes';
+} from '@constants/actionTypes';
 
 import DynamicOptions from './DynamicOptions';
 
@@ -55,14 +55,14 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 		rent_budget: ''
 	};
 
-	const [state, dispatch] = useReducer(InputReducer, defaultInputState);
+	const [state, dispatch] = useReducer(PropertyFormReducer, defaultInputState);
 
 	const handleChange = e => {
 
 		const target = e.target.id.replace(/\-/g, '_');
 		const value = e.target.value;
 
-		dispatch({type: SET_INPUT_VALUE, target: target, payload: value });
+		dispatch({type: HANDLE_PROPERTY_INPUT, target: target, payload: value });
 
 		e.stopPropagation();
 	}
@@ -75,7 +75,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 
 		document.querySelector(`form[name="${formType}"]`).classList.replace('d-none', 'd-block');
 
-		dispatch({type: RESET_INPUTS, payload: defaultInputState });
+		dispatch({type: RESET_PROPERTY_INPUTS, payload: defaultInputState });
 
 		e.stopPropagation();
 	}
@@ -220,9 +220,9 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				if(item_value_start <= budget && item_value_end >= budget) budget = item.value;
 			});
 
-			dispatch({type: SET_INPUT_VALUE, target: 'city_buy', payload: city });
-			dispatch({type: SET_INPUT_VALUE, target: 'property_type_buy', payload: property_type });
-			dispatch({type: SET_INPUT_VALUE, target: 'buy_budget', payload: budget });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'city_buy', payload: city });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'property_type_buy', payload: property_type });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'buy_budget', payload: budget });
 		}
 
 		if(rent_properties.length > 0) {
@@ -239,9 +239,9 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 				if(item_value_start <= budget && item_value_end >= budget) budget = item.value;
 			});
 
-			dispatch({type: SET_INPUT_VALUE, target: 'city_rent', payload: city });
-			dispatch({type: SET_INPUT_VALUE, target: 'property_type_rent', payload: property_type });
-			dispatch({type: SET_INPUT_VALUE, target: 'rent_budget', payload: budget });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'city_rent', payload: city });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'property_type_rent', payload: property_type });
+			dispatch({type: HANDLE_PROPERTY_INPUT, target: 'rent_budget', payload: budget });
 		}
 
 		!location.includes('buy') && dispatch({ type: RESET_BUY_INPUTS });
