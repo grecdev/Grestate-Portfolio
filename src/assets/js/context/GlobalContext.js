@@ -88,11 +88,25 @@ const GlobalContextProvider = (props) => {
 		e.stopPropagation();
 	}
 
+	// Outer click for different elements, so we can close them
+	const clickEvent = e => {
+
+		if(!e.target.closest('#user-dropdown') && document.body.contains(document.getElementById('user-dropdown-menu'))) document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');
+
+		e.stopPropagation();
+	}
+
 	useEffect(() => {
 
+		document.addEventListener('mousedown', clickEvent, true);
 		window.addEventListener('scroll', scrollEvent, true);
 
-		return () => window.removeEventListener('scroll', scrollEvent);
+		return () => {
+
+			window.removeEventListener('scroll', scrollEvent);
+			document.removeEventListener('click', clickEvent, true);
+
+		}
 
 	}, []);
 
@@ -102,7 +116,7 @@ const GlobalContextProvider = (props) => {
 
 		window.scrollTo(0, 0);
 
-		dispatch({type: CHANGE_LOCATION, payload: location.pathname });
+		dispatch({ type: CHANGE_LOCATION, payload: location.pathname });
 
 	}, [location.pathname]);
 

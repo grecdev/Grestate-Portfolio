@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 
-import Header from '@components/global_layout/Header';
+import Header from '@components/global_layout/header';
 import Footer from '@components/global_layout/Footer';
 import ResetScroll from '@components/global_layout/ResetScroll';
 
