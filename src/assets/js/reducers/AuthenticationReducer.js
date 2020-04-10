@@ -1,8 +1,7 @@
 import {
 
 	HANDLE_LOGIN_INPUT,
-	HANDLE_SIGNUP_INPUT,
-	RESET_AUTHENTICATION_INPUTS
+	HANDLE_SIGNUP_INPUT
 
 } from '@constants/actionTypes';
 
@@ -21,12 +20,6 @@ export default (state, action) => {
 			return {
 				...state,
 				[action.target]: action.payload
-			}
-		}
-
-		case RESET_AUTHENTICATION_INPUTS: {
-			return {
-				state: action.payload
 			}
 		}
 

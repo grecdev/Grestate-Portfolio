@@ -11,6 +11,8 @@ import {
 
 } from '@constants/actionTypes';
 
+import AuthLoader from './AuthLoader';
+
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -20,7 +22,9 @@ const LogIn = () => {
 	const {
 
 		toggleModal,
-		socialAuthentication
+		socialAuthentication,
+		loginAuth,
+		auth_loader
 
 	} = useContext(AuthenticationContext);
 
@@ -49,12 +53,7 @@ const LogIn = () => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		firebase.auth().signInWithEmailAndPassword(state.login_email, state.login_password)
-		.then(user => {})
-		.catch(error => {
-
-			console.log(error.code, error.message);
-		});
+		loginAuth(state.login_email, state.login_password);
 	}
 
 	return (
@@ -65,7 +64,7 @@ const LogIn = () => {
 					<a className='w-50 py-3 text-center'>Sign up</a>
 				</div>
 
-				<Form.Row className='form-body flex-column px-4 pt-5'>
+				<Form.Row className='form-body flex-column align-items-center px-4 pt-5'>
 					<Form.Group as={Col} controlId="login-email" className='mb-4'>
 						<Form.Control type="text" placeholder="Enter email" value={state.login_email} onChange={handleChange} />
 					</Form.Group>
@@ -74,14 +73,20 @@ const LogIn = () => {
 						<Form.Control type="password" placeholder="Password" value={state.login_password} onChange={handleChange} />
 					</Form.Group>
 
-					<Button id='login-auth' type='submit' className='mx-auto mb-3 py-2'>Log in</Button>
-					<Link 
-						to='forgot-password'
-						className='mx-auto text-decoration-underline text-secondary'
-						onClick={toggleModal}
-					>
-						Forgot Password ?
-					</Link>
+					<div className='w-100 d-flex flex-column align-items-center'>
+						{auth_loader ? <AuthLoader /> : (
+							<>
+								<Button id='login-auth' type='submit' className='mx-auto mb-3 py-2'>Log in</Button>
+								<Link 
+									to='forgot-password'
+									className='mx-auto text-decoration-underline text-secondary'
+									onClick={toggleModal}
+								>
+									Forgot Password ?
+								</Link>
+							</>
+						)}
+					</div>
 					
 				</Form.Row>
 

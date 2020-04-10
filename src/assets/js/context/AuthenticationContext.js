@@ -6,9 +6,10 @@ export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
 	state = {
-		login_enabled: false,
+		login_enabled: true,
 		signup_enabled: false,
-		user: {}
+		user: {},
+		auth_loader: false
 	}
 
 	toggleModal(e) {
@@ -66,16 +67,52 @@ export class AuthenticationContextProvider extends Component {
 		e.stopPropagation();
 	}
 
+	signUpAuth(email, password) {
+
+		console.log('Sign up loader');
+
+		fire_auth.auth().createUserWithEmailAndPassword(email, password)
+		.then(user => {
+
+			console.log('Remove signup loader');
+			console.log('Succesfully registered');
+		})
+		.catch(err => console.log(err.message));
+	}
+
+	loginAuth(email, password) {
+
+		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+		
+		fire_auth.auth().signInWithEmailAndPassword(email, password)
+		.then(user => {
+
+			this.setState(prevState => ({ ...prevState, auth_loader: false }));
+			console.log('Remove login loader');
+			console.log('User has logged in');
+		})
+		.catch(error => {
+			
+			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+			console.log('Remove login loader');
+			console.log(error.message);
+		});
+	}
+
+	signOutAuth() {
+		
+		fire_auth.auth().signOut()
+		.then(() => console.log('User signed out'))
+		.catch(err => console.log(err));
+	}
+
 	authListener() {
 
 		fire_auth.auth().onAuthStateChanged(user => {
 
-			console.log(user);
-
 			if(user) {
 
-				this.setState(prevState => ({...prevState, user: user }));
-				// localStorage.setItem('user', user.uid);
+				this.setState(prevState => ({ ...prevState, user: user }));
 
 				this.setState(prevState => ({
 					...prevState,
@@ -83,32 +120,13 @@ export class AuthenticationContextProvider extends Component {
 					signup_enabled: false
 				}));
 
-			} else {
-
-				this.setState(prevState => ({...prevState, user: null  }));
-				// localStorage.removeItem('user');
-
-			}
+			} else this.setState(prevState => ({ ...prevState, user: null  }));
 		})
-	}
-
-	signOut() {
-		
-		fire_auth.auth().signOut().then(() => {
-
-			console.log('user signed out');
-
-		}).catch(err => {
-			
-			console.log(err);
-
-		});
 	}
 
 	componentDidMount() {
 
 		this.authListener();
-		
 	}
 
 	componentDidUpdate(prevState) {
@@ -126,9 +144,11 @@ export class AuthenticationContextProvider extends Component {
 			<AuthenticationContext.Provider value={{
 				...this.state,
 				toggleModal: this.toggleModal.bind(this),
-				socialAuthentication: this.socialAuthentication.bind(this),
+				socialAuthentication: this.socialAuthentication,
 				authListener: this.authListener.bind(this),
-				signOut: this.signOut.bind(this)
+				signUpAuth: this.signUpAuth,
+				loginAuth: this.loginAuth.bind(this),
+				signOutAuth: this.signOutAuth
 			}}>
 				{this.props.children}
 			</AuthenticationContext.Provider>

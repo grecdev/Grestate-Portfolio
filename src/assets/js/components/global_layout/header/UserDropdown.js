@@ -9,7 +9,7 @@ const UserDropdown = () => {
 
 	const {
 
-		signOut
+		signOutAuth
 
 	} = useContext(AuthenticationContext);
 
@@ -35,7 +35,7 @@ const UserDropdown = () => {
 					type='button'
 					id='logout-btn'
 					className='text-white border-0 shadow-none nav-link mx-3 w-100'
-					onClick={signOut}
+					onClick={signOutAuth}
 				>
 					Log out
 				</Button>

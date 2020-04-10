@@ -46,7 +46,6 @@ const GlobalContextProvider = (props) => {
 
 			setCounter(false);
 			document.querySelectorAll('.counter').forEach(counter => counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6));
-
 		}
 	}
 

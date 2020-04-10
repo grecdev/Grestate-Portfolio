@@ -47,15 +47,19 @@
 
 		.form-body {
 
-			> button {
-				border: none;
-				width: 70%;
-				background: $green-dark;
+			div:last-child {
+				min-height: 80px;
 
-				&:hover { background: lighten($green-dark, 10%) }
-
-				&:focus,
-				&:active { box-shadow: none }
+				button {
+					border: none;
+					width: 70%;
+					background: $green-dark;
+	
+					&:hover { background: lighten($green-dark, 10%) }
+	
+					&:focus,
+					&:active { box-shadow: none }
+				}
 			}
 		}
 
