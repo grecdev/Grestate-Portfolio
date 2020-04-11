@@ -16,7 +16,7 @@ const AuthenticationModal = () => {
 	} = useContext(AuthenticationContext);
 
 	return (
-		<section id='authentication-modal' className='d-flex flex-column justify-content-center align-items-center' onClick={toggleModal}>
+		<section id='authentication-modal' className='py-4 d-flex flex-column justify-content-stretch align-items-center overflow-auto' onClick={toggleModal}>
 
 			<button className='close-modal position-absolute border-0' aria-label='close authentication modal'><i className="fas fa-times"></i></button>
 

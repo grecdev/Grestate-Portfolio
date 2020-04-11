@@ -8,6 +8,8 @@
 	background: rgba(#000, 0.8);
 	color: $white;
 
+	.auth-loader { min-height: 80px }
+
 	> .close-modal {
 		top: 20px;
 		right: 20px;
@@ -47,19 +49,15 @@
 
 		.form-body {
 
-			div:last-child {
-				min-height: 80px;
+			button {
+				border: none;
+				width: 70%;
+				background: $green-dark;
 
-				button {
-					border: none;
-					width: 70%;
-					background: $green-dark;
-	
-					&:hover { background: lighten($green-dark, 10%) }
-	
-					&:focus,
-					&:active { box-shadow: none }
-				}
+				&:hover { background: lighten($green-dark, 10%) }
+
+				&:focus,
+				&:active { box-shadow: none }
 			}
 		}
 
@@ -73,14 +71,12 @@
 				top: 50%;
 				transform: translateY(-50%);
 				width: 100px;
-				height: 1px;
+				height: .5px;
 				background: #6c757d;
 			}
 
 			&.or::before,
-			&.or::after {
-				height: 0.5px;
-			}
+			&.or::after { height: 1px }
 
 			&::before { left: 70px }
 			&::after { right: 70px }

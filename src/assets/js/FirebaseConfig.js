@@ -11,7 +11,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const fire_auth = firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+export const firebase_auth = firebase.initializeApp(firebaseConfig);
+export const firebase_db = firebase.firestore();
 
-export default fire_auth;
+firebase.analytics();

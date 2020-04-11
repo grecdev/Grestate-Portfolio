@@ -1,13 +1,13 @@
 import React, { Component, createContext } from 'react';
 
-import fire_auth from '../FireAuth';
+import { firebase_auth, firebase_db } from '../firebaseConfig';
 
 export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
 	state = {
-		login_enabled: true,
-		signup_enabled: false,
+		login_enabled: false,
+		signup_enabled: true,
 		user: {},
 		auth_loader: false
 	}
@@ -22,7 +22,8 @@ export class AuthenticationContextProvider extends Component {
 				this.setState(prevState => ({
 					...prevState,
 					login_enabled: true,
-					signup_enabled: false
+					signup_enabled: false,
+					auth_loader: false
 				}));
 			}
 
@@ -31,7 +32,8 @@ export class AuthenticationContextProvider extends Component {
 				this.setState(prevState => ({
 					...prevState,
 					login_enabled: false,
-					signup_enabled: true
+					signup_enabled: true,
+					auth_loader: false
 				}));
 			}
 		}
@@ -41,7 +43,8 @@ export class AuthenticationContextProvider extends Component {
 			this.setState(prevState => ({
 				...prevState,
 				login_enabled: false,
-				signup_enabled: false
+				signup_enabled: false,
+				auth_loader: false
 			}));
 		}
 
@@ -67,60 +70,92 @@ export class AuthenticationContextProvider extends Component {
 		e.stopPropagation();
 	}
 
-	signUpAuth(email, password) {
+	signUpAuth(data) {
 
-		console.log('Sign up loader');
+		const {
 
-		fire_auth.auth().createUserWithEmailAndPassword(email, password)
-		.then(user => {
+			signup_first_name,
+			signup_last_name,
+			signup_email,
+			signup_confirm_password,
+			signup_age,
+			signup_gender
 
-			console.log('Remove signup loader');
-			console.log('Succesfully registered');
+		} = data;
+
+		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+
+		firebase_auth.auth().createUserWithEmailAndPassword(signup_email, signup_confirm_password)
+		.then(response => {
+
+			firebase_db.collection('users').doc(response.user.uid).set({
+				age: signup_age,
+				gender: signup_gender
+			})
+			
+			response.user.updateProfile({
+				displayName: `${signup_last_name} ${signup_first_name}`
+			});
+
+			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 		})
-		.catch(err => console.log(err.message));
+		.catch(err => {
+
+			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+			console.log(err.message);
+		});
 	}
 
 	loginAuth(email, password) {
 
 		this.setState(prevState => ({ ...prevState, auth_loader: true }));
 		
-		fire_auth.auth().signInWithEmailAndPassword(email, password)
+		firebase_auth.auth().signInWithEmailAndPassword(email, password)
 		.then(user => {
 
-			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 			console.log('Remove login loader');
 			console.log('User has logged in');
+
+			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 		})
 		.catch(error => {
 			
-			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
 			console.log('Remove login loader');
+
+			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
 			console.log(error.message);
 		});
 	}
 
 	signOutAuth() {
 		
-		fire_auth.auth().signOut()
+		firebase_auth.auth().signOut()
 		.then(() => console.log('User signed out'))
 		.catch(err => console.log(err));
 	}
 
 	authListener() {
 
-		fire_auth.auth().onAuthStateChanged(user => {
+		firebase_auth.auth().onAuthStateChanged(user => {
 
 			if(user) {
 
-				this.setState(prevState => ({ ...prevState, user: user }));
+				this.setState(prevState => ({ ...prevState, user }));
 
-				this.setState(prevState => ({
-					...prevState,
-					login_enabled: false,
-					signup_enabled: false
-				}));
+				// This will be used on the My account page
+				firebase_db.collection('users').get()
+				.then(res => {
 
-			} else this.setState(prevState => ({ ...prevState, user: null  }));
+					res.forEach(doc => {
+
+						if(doc.exists && user.uid === doc.id) console.log(doc.data());
+					})
+
+				})
+				.catch(err => console.log(err));
+
+			}
+			else this.setState(prevState => ({ ...prevState, user: null  }));
 		})
 	}
 
@@ -146,7 +181,7 @@ export class AuthenticationContextProvider extends Component {
 				toggleModal: this.toggleModal.bind(this),
 				socialAuthentication: this.socialAuthentication,
 				authListener: this.authListener.bind(this),
-				signUpAuth: this.signUpAuth,
+				signUpAuth: this.signUpAuth.bind(this),
 				loginAuth: this.loginAuth.bind(this),
 				signOutAuth: this.signOutAuth
 			}}>

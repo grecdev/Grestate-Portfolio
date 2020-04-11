@@ -10,6 +10,8 @@ import {
 
 } from '@constants/actionTypes';
 
+import AuthLoader from './AuthLoader';
+
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -19,22 +21,26 @@ const SignUp = () => {
 	const {
 
 		socialAuthentication,
-		signUpAuth
+		signUpAuth,
+		auth_loader
 
 	} = useContext(AuthenticationContext);
 
 	const {
 
-		getImage
+		getImage,
+		disableLetters
 
 	} = useContext(GlobalContext);
 
 	const defaultSignupState = {
-		first_name: '',
-		last_name: '',
+		signup_first_name: '',
+		signup_last_name: '',
 		signup_email: '',
 		signup_password: '',
-		confirm_password: ''
+		signup_confirm_password: '',
+		signup_age: '',
+		signup_gender: 'Pick your gender'
 	};
 
 	const [state, dispatch] = useReducer(AuthenticationReducer, defaultSignupState);
@@ -44,7 +50,7 @@ const SignUp = () => {
 		e.stopPropagation();
 		e.preventDefault();
 
-		signUpAuth(state.signup_email, state.confirm_password);
+		signUpAuth(state);
 	}
 
 	const handleChange = e => {
@@ -63,12 +69,12 @@ const SignUp = () => {
 				</div>
 
 				<Form.Row className='form-body px-4 pt-5'>
-					<Form.Group as={Col} controlId="first-name" className='mb-4'>
-						<Form.Control type="text" placeholder="First Name" value={state.first_name} onChange={handleChange} />
+					<Form.Group as={Col} controlId="signup-first-name" className='mb-4'>
+						<Form.Control type="text" placeholder="First Name" value={state.signup_first_name} onChange={handleChange} />
 					</Form.Group>
 
-					<Form.Group as={Col} controlId="last-name" className='mb-4'>
-						<Form.Control type="text" placeholder="Last Name" value={state.last_name} onChange={handleChange} />
+					<Form.Group as={Col} controlId="signup-last-name" className='mb-4'>
+						<Form.Control type="text" placeholder="Last Name" value={state.signup_last_name} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 
@@ -78,21 +84,35 @@ const SignUp = () => {
 					</Form.Group>
 				</Form.Row>
 
+				<Form.Row className='form-body px-4'>
+					<Form.Group as={Col} controlId="signup-age" className='mb-4'>
+						<Form.Control type="text" placeholder="How old are you ?" value={state.signup_age} onKeyDown={disableLetters} onChange={handleChange} />
+					</Form.Group>
+
+					<Form.Group as={Col} controlId="signup-gender" className='mb-4'>
+						<Form.Control as='select' value={state.signup_gender} onChange={handleChange} >
+							<option disabled>Pick your gender</option>
+							<option value='male'>Male</option>
+							<option value='female'>Female</option>
+						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+
 				<Form.Row className='form-body px-4 mb-3 flex-column'>
 					<Form.Group as={Col} controlId="signup-password">
 						<Form.Control type="password" placeholder="Password, at least 8 characters" value={state.signup_password} onChange={handleChange} />
 					</Form.Group>
 
-					<Form.Group as={Col} controlId="confirm-password">
-						<Form.Control type="password" placeholder="Confirm Password" value={state.confirm_password} onChange={handleChange} />
+					<Form.Group as={Col} controlId="signup-confirm-password">
+						<Form.Control type="password" placeholder="Confirm Password" value={state.signup_confirm_password} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 
-				<Form.Row className='form-body px-4 flex-column'>
-					<Button id='signup-auth' type='submit' className='mx-auto py-2'>Sign up</Button>
+				<Form.Row className='form-body px-4 flex-column align-items-center'>
+					{auth_loader ? <AuthLoader /> : <Button id='signup-auth' type='submit' className='mx-auto py-2'>Sign up</Button> }
 				</Form.Row>
 
-				<p className='or my-5 text-center text-secondary position-relative'>or</p>
+				<p className='or my-4 text-center text-secondary position-relative'>or</p>
 
 				<Form.Row className='form-footer d-flex flex-column justify-content-center align-items-center px-4 pb-4'>
 					<button 
