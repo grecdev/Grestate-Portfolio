@@ -16,6 +16,7 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const PropertyPage = lazy(() => import('./pages/PropertyPage'));
+const MyAccountPage = lazy(() => import('./pages/MyAccountPage'));
 
 import AuthenticationModal from '@components/authentication/AuthenticationModal';
 
@@ -42,6 +43,7 @@ const App = () => {
 					<Route exact strict path='/contact' component={ContactPage} />
 					<Route exact strict path='/buy-properties/:house' component={PropertyPage} />
 					<Route exact strict path='/rental-listings/:house' component={PropertyPage} />
+					<Route exact strict path='/my-account' component={MyAccountPage} />
 
 					<Route component={NotFoundPage} />
 				</Switch>

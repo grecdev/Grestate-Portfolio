@@ -9,7 +9,8 @@ const UserDropdown = () => {
 
 	const {
 
-		signOutAuth
+		signOutAuth,
+		user
 
 	} = useContext(AuthenticationContext);
 
@@ -28,8 +29,8 @@ const UserDropdown = () => {
 			<i onClick={toggleDropdown} className="fas fa-user"></i>
 
 			<div id="user-dropdown-menu" className='position-absolute d-flex flex-column justify-content-around align-items-center p-3'>
-				<p className='m-0 text-white'>Name</p>
-				<p className='text-white'>email</p>
+				<p className='mb-2 text-white'>{user.displayName}</p>
+				<p className='text-white'>{user.email}</p>
 				<Link to='my-account' className='text-white mb-3'>My Account</Link>
 				<Button 
 					type='button'

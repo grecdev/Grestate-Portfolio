@@ -7,9 +7,10 @@ export class AuthenticationContextProvider extends Component {
 
 	state = {
 		login_enabled: false,
-		signup_enabled: true,
+		signup_enabled: false,
 		user: {},
-		auth_loader: false
+		auth_loader: false,
+		user_data: {}
 	}
 
 	toggleModal(e) {
@@ -148,7 +149,7 @@ export class AuthenticationContextProvider extends Component {
 
 					res.forEach(doc => {
 
-						if(doc.exists && user.uid === doc.id) console.log(doc.data());
+						if(doc.exists && user.uid === doc.id) this.setState(prevState => ({ ...prevState, user_data: doc.data() }))
 					})
 
 				})
