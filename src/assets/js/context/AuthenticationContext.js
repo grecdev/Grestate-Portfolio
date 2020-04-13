@@ -8,7 +8,6 @@ export class AuthenticationContextProvider extends Component {
 	state = {
 		login_enabled: false,
 		signup_enabled: false,
-		user: {},
 		auth_loader: false,
 		user_data: {}
 	}
@@ -80,7 +79,9 @@ export class AuthenticationContextProvider extends Component {
 			signup_email,
 			signup_confirm_password,
 			signup_age,
-			signup_gender
+			signup_gender,
+			signup_address,
+			signup_city,
 
 		} = data;
 
@@ -90,13 +91,14 @@ export class AuthenticationContextProvider extends Component {
 		.then(response => {
 
 			firebase_db.collection('users').doc(response.user.uid).set({
+				first_name: signup_first_name,
+				last_name: signup_last_name,
 				age: signup_age,
-				gender: signup_gender
+				gender: signup_gender,
+				email: signup_email,
+				address: signup_address,
+				city: signup_city
 			})
-			
-			response.user.updateProfile({
-				displayName: `${signup_last_name} ${signup_first_name}`
-			});
 
 			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 		})
@@ -135,13 +137,122 @@ export class AuthenticationContextProvider extends Component {
 		.catch(err => console.log(err));
 	}
 
+	deleteUser() {
+
+		firebase_db.collection("users").doc(this.state.uid).delete()
+		.then(() => console.log("Document successfully deleted!"))
+		.catch(err => console.error(err));
+		
+		firebase_auth.auth().currentUser.delete()
+		.then(() => {
+
+			console.log('user succesfully deleted');
+		})
+		.catch(err => {
+
+			console.log(err.message);
+		});
+	}
+
+	updateUser(state) {
+
+		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+
+		const {
+
+			account_first_name,
+			account_last_name,
+			account_age,
+			account_gender,
+			account_address,
+			account_city,
+			account_email,
+			account_current_password,
+			account_new_password
+
+		} = state;
+
+		const current_user = firebase_auth.auth().currentUser;
+
+		if(account_current_password.length > 0) {
+
+			const credentials = firebase.auth.EmailAuthProvider.credential(
+				current_user.email, 
+				account_current_password
+				);
+			
+			current_user.reauthenticateWithCredential(credentials).then(() => {
+				
+				// User re-authenticated.
+				console.log('User re-authenticated');
+	
+				// Change email
+				if(account_email.length > 0) {
+	
+					firebase_auth.auth().currentUser.updateEmail(account_email).then(() => {
+		
+						console.log('Email succesfully changed');
+		
+						this.setState(prevState => ({ ...prevState, auth_loader: false }));
+			
+					}).catch(err => {
+			
+						console.log(err);
+		
+						setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+					});
+				}
+	
+				// Change password
+				if(account_new_password.length > 0) {
+					
+					current_user.updatePassword(account_new_password).then(() => {
+		
+						console.log('Password changed');
+			
+						this.setState(prevState => ({ ...prevState, auth_loader: false }));
+		
+					}).catch(err => {
+	
+						console.log(err);
+		
+						setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+					});
+				}
+	
+			}).catch(err => {
+	
+				// Re-authentication failed
+				console.log(err.message);
+			});
+		}
+
+
+		firebase_db.collection('users').doc(current_user.uid).set({
+			first_name: account_first_name,
+			last_name: account_last_name,
+			age: account_age,
+			gender: account_gender,
+			email: account_email,
+			address: account_address,
+			city: account_city
+		})
+		.then(() => {
+
+			console.log('profile succesfully updated');
+			this.setState(prevState => ({ ...prevState, auth_loader: false }));
+		})
+		.catch(err => {
+
+			console.log(err);
+		})
+	}
+
 	authListener() {
 
 		firebase_auth.auth().onAuthStateChanged(user => {
 
 			if(user) {
-
-				this.setState(prevState => ({ ...prevState, user }));
 
 				// This will be used on the My account page
 				firebase_db.collection('users').get()
@@ -156,7 +267,7 @@ export class AuthenticationContextProvider extends Component {
 				.catch(err => console.log(err));
 
 			}
-			else this.setState(prevState => ({ ...prevState, user: null  }));
+			else this.setState(prevState => ({ ...prevState, user_data: null  }));
 		})
 	}
 
@@ -184,7 +295,9 @@ export class AuthenticationContextProvider extends Component {
 				authListener: this.authListener.bind(this),
 				signUpAuth: this.signUpAuth.bind(this),
 				loginAuth: this.loginAuth.bind(this),
-				signOutAuth: this.signOutAuth
+				signOutAuth: this.signOutAuth,
+				deleteUser: this.deleteUser.bind(this),
+				updateUser: this.updateUser.bind(this)
 			}}>
 				{this.props.children}
 			</AuthenticationContext.Provider>

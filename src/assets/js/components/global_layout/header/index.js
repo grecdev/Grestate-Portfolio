@@ -14,7 +14,7 @@ const Header = () => {
 	const {
 
 		toggleModal,
-		user
+		user_data
 
 	} = useContext(AuthenticationContext);
 
@@ -40,7 +40,7 @@ const Header = () => {
 						<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/mortage-calculator'>Mortage Calculator</NavLink>
 					</Nav.Item>
 
-					{ user ? <UserDropdown /> : (
+					{ user_data ? <UserDropdown /> : (
 					<>
 						<Nav.Item>
 							<Button type='button' id='login-btn' className='shadow-none nav-link mx-3'>Login</Button>

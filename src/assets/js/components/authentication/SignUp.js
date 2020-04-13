@@ -40,7 +40,9 @@ const SignUp = () => {
 		signup_password: '',
 		signup_confirm_password: '',
 		signup_age: '',
-		signup_gender: 'Pick your gender'
+		signup_gender: 'Pick your gender',
+		signup_address: '',
+		signup_city: '',
 	};
 
 	const [state, dispatch] = useReducer(AuthenticationReducer, defaultSignupState);
@@ -95,6 +97,16 @@ const SignUp = () => {
 							<option value='male'>Male</option>
 							<option value='female'>Female</option>
 						</Form.Control>
+					</Form.Group>
+				</Form.Row>
+
+				<Form.Row className='form-body px-4'>
+					<Form.Group as={Col} controlId="signup-city" className='mb-4'>
+						<Form.Control type="text" placeholder="City" value={state.signup_city} onChange={handleChange} />
+					</Form.Group>
+
+					<Form.Group as={Col} controlId="signup-address" className='mb-4'>
+						<Form.Control type='text' placeholder='Address' value={state.signup_address} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 

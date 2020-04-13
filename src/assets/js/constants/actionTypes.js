@@ -35,6 +35,7 @@ export const SET_POPUP_INFO = 'SET_POPUP_INFO';
 export const SET_SHOWN_IMAGE = 'SET_SHOWN_IMAGE';
 export const TOGGLE_SLIDER_MODAL = 'TOGGLE_SLIDER_MODAL';
 
-// Authentication Reducer
+// Authentication / Account Reducer
 export const HANDLE_LOGIN_INPUT = 'HANDLE_LOGIN_INPUT';
 export const HANDLE_SIGNUP_INPUT = 'HANDLE_SIGNUP_INPUT';
+export const HANDLE_ACCOUNT_INPUT = 'HANDLE_ACCOUNT_INPUT';
