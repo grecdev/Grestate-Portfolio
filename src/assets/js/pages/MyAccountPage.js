@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
@@ -6,7 +6,8 @@ import { GlobalContext } from '@context/GlobalContext';
 import AuthenticationReducer from '@reducers/AuthenticationReducer';
 import {
 
-	HANDLE_ACCOUNT_INPUT
+	HANDLE_ACCOUNT_INPUT,
+	SET_ACCOUNT_INPUTS
 
 } from '@constants/actionTypes';
 
@@ -33,118 +34,100 @@ const MyAccountPage = () => {
 
 	} = useContext(GlobalContext);
 
-	let defaultPlaceholderState = {
-		account_first_name: '',
-		account_last_name: '',
-		account_email: '',
-		account_age: '',
-		account_address: '',
-		account_city: '',
-	}
-
-	const [placeholderState, setPlaceholder] = useState(defaultPlaceholderState);
-	
-	useEffect(() => {
-
-		if(!user_data) changePage('/');
-		else {
-
-			if(Object.keys(user_data).length > 0) {
-	
-				setPlaceholder(prevState => ({
-					...prevState,
-					account_first_name: user_data.first_name,
-					account_last_name: user_data.last_name,
-					account_age: user_data.age,
-					account_gender: user_data.gender,
-					account_email: user_data.email,
-					account_address: user_data.address,
-					account_city: user_data.city
-				}));
-			}
-		}
-		
-	}, [user_data]);
-
 	const defaultAccountState = {
-		account_first_name: '',
-		account_last_name: '',
-		account_email: '',
-		account_current_password: '',
-		account_new_password: '',
-		account_age: '',
-		account_gender: '',
-		account_address: '',
-		account_city: ''
+		first_name: '',
+		last_name: '',
+		address: '',
+		city: '',
+		age: '',
+		gender: '',
+		email: '',
+		current_password: '',
+		new_password: ''
 	}
 
 	const [state, dispatch] = useReducer(AuthenticationReducer, defaultAccountState);
 
 	const handleChange = e => {
 
-		dispatch({ type: HANDLE_ACCOUNT_INPUT, target: e.target.id.replace(/\-/g, '_'), payload: e.target.value })
+		// Remove the `account-` string from id and replace `-` with `_`
+		// To match the key from state
+		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
+
+		dispatch({ type: HANDLE_ACCOUNT_INPUT, target, payload: e.target.value });
 
 		e.stopPropagation();
 	}
 
 	const manageUser = e => {
 
-		// if(state.account_current_password.length === 0) return;
-
 		if(e.target.id.includes('update')) {
 
 			console.log('update user');
+
 			updateUser(state);
 		}
 
 		if(e.target.id.includes('delete')) deleteUser();
 
-
 		e.stopPropagation();
 	}
+
+	useEffect(() => {
+
+		if(!user_data) changePage('/');
+		else {
+
+			// When the data fetch is completed get the user data and set it on the inputs
+			// Depends on the firebase servers
+			if(Object.keys(user_data).length > 0) dispatch({ type: SET_ACCOUNT_INPUTS, payload: user_data });
+		}		
+		
+	}, [user_data]);
 
 	return user_data ? (
 
 		<main id='my-account'>
 			<Container className='py-3'>
 				<h1 className='text-center'>Personal Information</h1>
+				<h6 className='m-0 text-center text-secondary font-italic'>Joined on {user_data.date_joined}</h6>
 
 				<hr/>
 
 				<Form name='account-form'>
 					<Form.Row className='mb-3'>
-						<Form.Group as={Col} controlId="account-first-name">
-							<Form.Label>First Name</Form.Label>
-							<Form.Control type="text" placeholder={placeholderState.account_first_name} value={state.account_first_name} onChange={handleChange} />
-						</Form.Group>
-
 						<Form.Group as={Col} controlId="account-last-name">
 							<Form.Label>Last Name</Form.Label>
-							<Form.Control type="text" placeholder={placeholderState.account_last_name} value={state.account_last_name} onChange={handleChange} />
+							<Form.Control type="text" value={state.last_name} onChange={handleChange} />
+						</Form.Group>
+
+						<Form.Group as={Col} controlId="account-first-name">
+							<Form.Label>First Name</Form.Label>
+							<Form.Control type="text" value={state.first_name} onChange={handleChange} />
 						</Form.Group>
 					</Form.Row>
 
 					<Form.Row className='mb-3'>
 						<Form.Group as={Col} controlId="account-address">
 							<Form.Label>Address</Form.Label>
-							<Form.Control type='text' placeholder={placeholderState.account_address} value={state.account_address} onChange={handleChange} />
+							<Form.Control type='text' value={state.address} onChange={handleChange} />
 						</Form.Group>
 					</Form.Row>
 
 					<Form.Row className='mb-3'>
-						<Form.Group as={Col} controlId="formGridCity">
+						<Form.Group as={Col} controlId="account-city">
 							<Form.Label>City</Form.Label>
-							<Form.Control type='text' placeholder={placeholderState.account_city} value={state.account_city} onChange={handleChange}/>
+							<Form.Control type='text' value={state.city} onChange={handleChange}/>
 						</Form.Group>
 
 						<Form.Group as={Col} controlId="account-age" className='mb-4'>
 							<Form.Label>Age</Form.Label>
-							<Form.Control type='text' placeholder={placeholderState.account_age} value={state.account_age} onChange={handleChange} />
+							<Form.Control type='text' value={state.age} onChange={handleChange} />
 						</Form.Group>
 
 						<Form.Group as={Col} controlId="account-gender" className='mb-4'>
 							<Form.Label>Pick your gender</Form.Label>
-							<Form.Control as='select' value={state.account_gender} onChange={handleChange} >
+							<Form.Control as='select' value={state.gender} onChange={handleChange} >
 								<option value='male'>Male</option>
 								<option value='female'>Female</option>
 							</Form.Control>
@@ -154,17 +137,17 @@ const MyAccountPage = () => {
 					<Form.Row className='mb-3'>
 						<Form.Group as={Col} controlId="account-email">
 							<Form.Label>Email</Form.Label>
-							<Form.Control type="text" placeholder={placeholderState.account_email} value={state.account_email} onChange={handleChange} />
+							<Form.Control type="text" value={state.email} onChange={handleChange} />
 						</Form.Group>
 
 						<Form.Group as={Col} controlId="account-current-password">
 							<Form.Label>Current Password</Form.Label>
-							<Form.Control type="password" placeholder="Current Password" value={state.account_current_password} onChange={handleChange} />
+							<Form.Control type="password" value={state.current_password} onChange={handleChange} />
 						</Form.Group>
 
 						<Form.Group as={Col} controlId="account-new-password">
 							<Form.Label>New Password</Form.Label>
-							<Form.Control type="password" placeholder="New Password" value={state.account_new_password} onChange={handleChange} />
+							<Form.Control type="password" value={state.new_password} onChange={handleChange} />
 						</Form.Group>
 					</Form.Row>
 

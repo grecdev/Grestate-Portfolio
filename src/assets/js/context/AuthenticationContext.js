@@ -72,33 +72,30 @@ export class AuthenticationContextProvider extends Component {
 
 	signUpAuth(data) {
 
-		const {
-
-			signup_first_name,
-			signup_last_name,
-			signup_email,
-			signup_confirm_password,
-			signup_age,
-			signup_gender,
-			signup_address,
-			signup_city,
-
-		} = data;
-
 		this.setState(prevState => ({ ...prevState, auth_loader: true }));
 
-		firebase_auth.auth().createUserWithEmailAndPassword(signup_email, signup_confirm_password)
+		const date = new Date();
+
+		const joined = {
+			day: date.getDate(),
+			month: date.getMonth() + 1,
+			year: date.getFullYear(),
+			time: date.toLocaleTimeString()
+		}
+
+		firebase_auth.auth().createUserWithEmailAndPassword(data.email, data.confirm_password)
 		.then(response => {
 
 			firebase_db.collection('users').doc(response.user.uid).set({
-				first_name: signup_first_name,
-				last_name: signup_last_name,
-				age: signup_age,
-				gender: signup_gender,
-				email: signup_email,
-				address: signup_address,
-				city: signup_city
-			})
+				first_name: data.first_name,
+				last_name: data.last_name,
+				age: data.age,
+				gender: data.gender,
+				city: data.city,
+				address: data.address,
+				email: data.email,
+				date_joined: `${joined.day}/${joined.month}/${joined.year} at ${joined.time}`
+			});
 
 			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 		})
@@ -119,7 +116,7 @@ export class AuthenticationContextProvider extends Component {
 			console.log('Remove login loader');
 			console.log('User has logged in');
 
-			this.setState(prevState => ({ ...prevState, auth_loader: false }));
+			this.setState(prevState => ({ ...prevState, login_enabled: false }));
 		})
 		.catch(error => {
 			
@@ -154,32 +151,18 @@ export class AuthenticationContextProvider extends Component {
 		});
 	}
 
-	updateUser(state) {
+	updateUser(data) {
 
 		this.setState(prevState => ({ ...prevState, auth_loader: true }));
 
-		const {
-
-			account_first_name,
-			account_last_name,
-			account_age,
-			account_gender,
-			account_address,
-			account_city,
-			account_email,
-			account_current_password,
-			account_new_password
-
-		} = state;
-
 		const current_user = firebase_auth.auth().currentUser;
 
-		if(account_current_password.length > 0) {
+		if(data.current_password.length > 0) {
 
 			const credentials = firebase.auth.EmailAuthProvider.credential(
 				current_user.email, 
-				account_current_password
-				);
+				data.current_password
+			);
 			
 			current_user.reauthenticateWithCredential(credentials).then(() => {
 				
@@ -187,9 +170,9 @@ export class AuthenticationContextProvider extends Component {
 				console.log('User re-authenticated');
 	
 				// Change email
-				if(account_email.length > 0) {
+				if(data.email.length > 0) {
 	
-					firebase_auth.auth().currentUser.updateEmail(account_email).then(() => {
+					current_user.updateEmail(data.email).then(() => {
 		
 						console.log('Email succesfully changed');
 		
@@ -204,9 +187,9 @@ export class AuthenticationContextProvider extends Component {
 				}
 	
 				// Change password
-				if(account_new_password.length > 0) {
+				if(data.new_password.length > 0) {
 					
-					current_user.updatePassword(account_new_password).then(() => {
+					current_user.updatePassword(new_password).then(() => {
 		
 						console.log('Password changed');
 			
@@ -227,15 +210,15 @@ export class AuthenticationContextProvider extends Component {
 			});
 		}
 
-
 		firebase_db.collection('users').doc(current_user.uid).set({
-			first_name: account_first_name,
-			last_name: account_last_name,
-			age: account_age,
-			gender: account_gender,
-			email: account_email,
-			address: account_address,
-			city: account_city
+			first_name: data.first_name,
+			last_name: data.last_name,
+			age: data.age,
+			gender: data.gender,
+			city: data.city,
+			address: data.address,
+			email: data.email,
+			date_joined: data.date_joined
 		})
 		.then(() => {
 
@@ -252,11 +235,12 @@ export class AuthenticationContextProvider extends Component {
 
 		firebase_auth.auth().onAuthStateChanged(user => {
 
+			console.log(user);
+
 			if(user) {
 
 				// This will be used on the My account page
-				firebase_db.collection('users').get()
-				.then(res => {
+				firebase_db.collection('users').onSnapshot(res => {
 
 					res.forEach(doc => {
 
@@ -264,10 +248,8 @@ export class AuthenticationContextProvider extends Component {
 					})
 
 				})
-				.catch(err => console.log(err));
 
-			}
-			else this.setState(prevState => ({ ...prevState, user_data: null  }));
+			} else this.setState(prevState => ({ ...prevState, user_data: null  }));
 		})
 	}
 
