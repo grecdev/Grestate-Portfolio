@@ -9,7 +9,8 @@ export class AuthenticationContextProvider extends Component {
 		login_enabled: false,
 		signup_enabled: false,
 		auth_loader: false,
-		user_data: {}
+		user_data: {},
+		unsubscribe: undefined
 	}
 
 	toggleModal(e) {
@@ -133,6 +134,8 @@ export class AuthenticationContextProvider extends Component {
 
 	signOutAuth() {
 
+		this.state.unsubscribe();
+		
 		firebase_auth.auth().signOut()
 		.then(() => console.log('User signed out'))
 		.catch(err => console.log(err));
@@ -215,7 +218,7 @@ export class AuthenticationContextProvider extends Component {
 			});
 		}
 
-		firebase_db.collection('users').doc(current_user.uid).set({
+		firebase_db.collection('users').doc(current_user.uid).update({
 			first_name: data.first_name,
 			last_name: data.last_name,
 			age: data.age,
@@ -230,11 +233,10 @@ export class AuthenticationContextProvider extends Component {
 			console.log('profile succesfully updated');
 			this.setState(prevState => ({ ...prevState, auth_loader: false }));
 		})
-		.catch(err => {
-
-			console.log(err);
-		})
+		.catch(err => console.log(err))
 	}
+
+	
 
 	authListener() {
 
@@ -242,11 +244,13 @@ export class AuthenticationContextProvider extends Component {
 
 			if(user) {
 
-				firebase_db.collection('users').doc(user.uid).onSnapshot(doc => {
+				const unsubscribe = firebase_db.collection('users').doc(user.uid).onSnapshot(doc => {
 
 					doc.exists && this.setState(prevState => ({ ...prevState, user_data: doc.data() }));
-	
+		
 				});
+
+				this.setState(prevState => ({ ...prevState, unsubscribe }));
 
 			} else this.setState(prevState => ({ ...prevState, user_data: null }));
 
@@ -277,7 +281,7 @@ export class AuthenticationContextProvider extends Component {
 				authListener: this.authListener.bind(this),
 				signUpAuth: this.signUpAuth.bind(this),
 				loginAuth: this.loginAuth.bind(this),
-				signOutAuth: this.signOutAuth,
+				signOutAuth: this.signOutAuth.bind(this),
 				deleteUser: this.deleteUser.bind(this),
 				updateUser: this.updateUser.bind(this)
 			}}>
