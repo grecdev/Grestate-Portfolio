@@ -70,7 +70,7 @@ export class AuthenticationContextProvider extends Component {
 		e.stopPropagation();
 	}
 
-	signUpAuth(data) {
+	signUpAuth(signup_state) {
 
 		this.setState(prevState => ({ ...prevState, auth_loader: true }));
 
@@ -83,17 +83,17 @@ export class AuthenticationContextProvider extends Component {
 			time: date.toLocaleTimeString()
 		}
 
-		firebase_auth.auth().createUserWithEmailAndPassword(data.email, data.confirm_password)
+		firebase_auth.auth().createUserWithEmailAndPassword(signup_state.email, signup_state.confirm_password)
 		.then(response => {
 
 			firebase_db.collection('users').doc(response.user.uid).set({
-				first_name: data.first_name,
-				last_name: data.last_name,
-				age: data.age,
-				gender: data.gender,
-				city: data.city,
-				address: data.address,
-				email: data.email,
+				first_name: signup_state.first_name,
+				last_name: signup_state.last_name,
+				age: signup_state.age,
+				gender: signup_state.gender,
+				city: signup_state.city,
+				address: signup_state.address,
+				email: signup_state.email,
 				date_joined: `${joined.day}/${joined.month}/${joined.year} at ${joined.time}`
 			});
 
@@ -116,7 +116,11 @@ export class AuthenticationContextProvider extends Component {
 			console.log('Remove login loader');
 			console.log('User has logged in');
 
-			this.setState(prevState => ({ ...prevState, login_enabled: false }));
+			this.setState(prevState => ({
+				...prevState,
+				login_enabled: false,
+				auth_loader: false
+			}));
 		})
 		.catch(error => {
 			
@@ -128,10 +132,11 @@ export class AuthenticationContextProvider extends Component {
 	}
 
 	signOutAuth() {
-		
+
 		firebase_auth.auth().signOut()
 		.then(() => console.log('User signed out'))
 		.catch(err => console.log(err));
+
 	}
 
 	deleteUser() {
@@ -235,22 +240,17 @@ export class AuthenticationContextProvider extends Component {
 
 		firebase_auth.auth().onAuthStateChanged(user => {
 
-			console.log(user);
-
 			if(user) {
 
-				// This will be used on the My account page
-				firebase_db.collection('users').onSnapshot(res => {
+				firebase_db.collection('users').doc(user.uid).onSnapshot(doc => {
 
-					res.forEach(doc => {
+					doc.exists && this.setState(prevState => ({ ...prevState, user_data: doc.data() }));
+	
+				});
 
-						if(doc.exists && user.uid === doc.id) this.setState(prevState => ({ ...prevState, user_data: doc.data() }))
-					})
+			} else this.setState(prevState => ({ ...prevState, user_data: null }));
 
-				})
-
-			} else this.setState(prevState => ({ ...prevState, user_data: null  }));
-		})
+		});
 	}
 
 	componentDidMount() {

@@ -45,20 +45,20 @@ const SignUp = () => {
 		confirm_password: '123456',
 	};
 
-	const [state, dispatch] = useReducer(AuthenticationReducer, defaultSignupState);
+	const [signup_state, dispatch] = useReducer(AuthenticationReducer, defaultSignupState);
 
 	const signUp = e => {
 
 		e.stopPropagation();
 		e.preventDefault();
 
-		signUpAuth(state);
+		signUpAuth(signup_state);
 	}
 
 	const handleChange = e => {
 
 		// Remove the `signup-` string from id and replace `-` with `_`
-		// To match the key from state
+		// To match the key from signup_state
 		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
 
 		dispatch({ type: HANDLE_SIGNUP_INPUT, target, payload: e.target.value });
@@ -76,21 +76,21 @@ const SignUp = () => {
 
 				<Form.Row className='form-body px-4 pt-5'>
 					<Form.Group as={Col} controlId="signup-last-name" className='mb-4'>
-						<Form.Control type="text" placeholder="Last Name" value={state.last_name} onChange={handleChange} />
+						<Form.Control type="text" placeholder="Last Name" value={signup_state.last_name} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="signup-first-name" className='mb-4'>
-						<Form.Control type="text" placeholder="First Name" value={state.first_name} onChange={handleChange} />
+						<Form.Control type="text" placeholder="First Name" value={signup_state.first_name} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row className='form-body px-4'>
 					<Form.Group as={Col} controlId="signup-age" className='mb-4'>
-						<Form.Control type="text" placeholder="How old are you ?" value={state.age} onKeyDown={disableLetters} onChange={handleChange} />
+						<Form.Control type="text" placeholder="How old are you ?" value={signup_state.age} onKeyDown={disableLetters} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="signup-gender" className='mb-4'>
-						<Form.Control as='select' value={state.gender} onChange={handleChange} >
+						<Form.Control as='select' value={signup_state.gender} onChange={handleChange} >
 							<option disabled>Pick your gender</option>
 							<option value='male'>Male</option>
 							<option value='female'>Female</option>
@@ -100,27 +100,27 @@ const SignUp = () => {
 
 				<Form.Row className='form-body px-4'>
 					<Form.Group as={Col} controlId="signup-city" className='mb-4'>
-						<Form.Control type="text" placeholder="City" value={state.city} onChange={handleChange} />
+						<Form.Control type="text" placeholder="City" value={signup_state.city} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="signup-address" className='mb-4'>
-						<Form.Control type='text' placeholder='Address' value={state.address} onChange={handleChange} />
+						<Form.Control type='text' placeholder='Address' value={signup_state.address} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row className='form-body px-4'>
 					<Form.Group as={Col} controlId="signup-email" className='mb-4'>
-						<Form.Control type="text" placeholder="Email" value={state.email} onChange={handleChange} />
+						<Form.Control type="text" placeholder="Email" value={signup_state.email} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row className='form-body px-4 mb-3 flex-column'>
 					<Form.Group as={Col} controlId="signup-password">
-						<Form.Control type="password" placeholder="Password, at least 8 characters" value={state.password} onChange={handleChange} />
+						<Form.Control type="password" placeholder="Password, at least 8 characters" value={signup_state.password} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="signup-confirm-password">
-						<Form.Control type="password" placeholder="Confirm Password" value={state.confirm_password} onChange={handleChange} />
+						<Form.Control type="password" placeholder="Confirm Password" value={signup_state.confirm_password} onChange={handleChange} />
 					</Form.Group>
 				</Form.Row>
 

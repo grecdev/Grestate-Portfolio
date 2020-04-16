@@ -39,12 +39,12 @@ const LogIn = () => {
 		password: '123456'
 	}
 
-	const [state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);
+	const [login_state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);
 
 	const handleChange = e => {
 
 		// Remove the `login-` string from id and replace `-` with `_`
-		// To match the key from state
+		// To match the key from login_state
 		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
 
 		dispatch({ type: HANDLE_LOGIN_INPUT, target, payload: e.target.value });
@@ -57,7 +57,7 @@ const LogIn = () => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		loginAuth(state.email, state.password);
+		loginAuth(login_state.email, login_state.password);
 	}
 
 	return (
@@ -70,11 +70,11 @@ const LogIn = () => {
 
 				<Form.Row className='form-body flex-column align-items-center px-4 pt-5'>
 					<Form.Group as={Col} controlId="login-email" className='mb-4'>
-						<Form.Control type="text" placeholder="Enter email" value={state.email} onChange={handleChange} />
+						<Form.Control type="text" placeholder="Enter email" value={login_state.email} onChange={handleChange} />
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="login-password" className='mb-4'>
-						<Form.Control type="password" placeholder="Password" value={state.password} onChange={handleChange} />
+						<Form.Control type="password" placeholder="Password" value={login_state.password} onChange={handleChange} />
 					</Form.Group>
 
 					<div className='w-100 d-flex flex-column align-items-center'>
