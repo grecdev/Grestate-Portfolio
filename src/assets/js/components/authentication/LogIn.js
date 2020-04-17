@@ -60,6 +60,11 @@ const LogIn = () => {
 		loginAuth(login_state.email, login_state.password);
 	}
 
+	const regexValidation = e => {
+
+		console.log(e.target, 'From login');
+	}
+
 	return (
 		<div id='login-modal' className='rounded'>
 			<Form name='login' onSubmit={login}>
@@ -70,11 +75,23 @@ const LogIn = () => {
 
 				<Form.Row className='form-body flex-column align-items-center px-4 pt-5'>
 					<Form.Group as={Col} controlId="login-email" className='mb-4'>
-						<Form.Control type="text" placeholder="Enter email" value={login_state.email} onChange={handleChange} />
+						<Form.Control 
+							type="text"
+							placeholder="Enter email"
+							value={login_state.email}
+							onChange={handleChange}
+							onBlur={regexValidation}
+						/>
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="login-password" className='mb-4'>
-						<Form.Control type="password" placeholder="Password" value={login_state.password} onChange={handleChange} />
+						<Form.Control
+							type="password"
+							placeholder="Password"
+							value={login_state.password}
+							onChange={handleChange}
+							onBlur={regexValidation}
+						/>
 					</Form.Group>
 
 					<div className='w-100 d-flex flex-column align-items-center'>

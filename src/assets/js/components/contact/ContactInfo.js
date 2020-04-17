@@ -34,7 +34,7 @@ const ContactInfo = () => {
 
 			<div id="contact-form-modal" className="position-fixed d-none flex-column justify-content-center align-items-center" onClick={toggleModal}>
 
-				<Form name='contact-form' className='p-4 position-relative d-flex flex-column border-0'>
+				<Form name='contact-form' className='p-4 position-relative d-flex flex-column border-0 bg-white'>
 					<button id='close-form-modal' type='button' role='close modal' className='mb-3'><i className="fas fa-times"></i></button>
 
 					<Form.Row>

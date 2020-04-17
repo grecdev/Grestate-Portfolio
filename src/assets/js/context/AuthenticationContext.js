@@ -20,33 +20,30 @@ export class AuthenticationContextProvider extends Component {
 
 			if(e.target.textContent.toLowerCase().replace(/ /g, '').includes('login')) {
 				
-				this.setState(prevState => ({
-					...prevState,
+				this.setState({
 					login_enabled: true,
 					signup_enabled: false,
 					auth_loader: false
-				}));
+				});
 			}
 
 			if(e.target.textContent.toLowerCase().includes('sign up')) {
 
-				this.setState(prevState => ({
-					...prevState,
+				this.setState({
 					login_enabled: false,
 					signup_enabled: true,
 					auth_loader: false
-				}));
+				});
 			}
 		}
 
 		if(e.target.classList.contains('close-modal') || e.target.parentElement.classList.contains('close-modal') || e.target.id === 'authentication-modal' || (e.currentTarget.tagName === 'A' && e.currentTarget.getAttribute('href').includes('forgot'))) {
 			
-			this.setState(prevState => ({
-				...prevState,
+			this.setState({
 				login_enabled: false,
 				signup_enabled: false,
 				auth_loader: false
-			}));
+			});
 		}
 
 		e.stopPropagation();
@@ -73,7 +70,7 @@ export class AuthenticationContextProvider extends Component {
 
 	signUpAuth(signup_state) {
 
-		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+		this.setState({ auth_loader: true });
 
 		const date = new Date();
 
@@ -98,18 +95,18 @@ export class AuthenticationContextProvider extends Component {
 				date_joined: `${joined.day}/${joined.month}/${joined.year} at ${joined.time}`
 			});
 
-			this.setState(prevState => ({ ...prevState, auth_loader: false }));
+			this.setState({ auth_loader: false });
 		})
 		.catch(err => {
 
-			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+			setTimeout(() => this.setState({ auth_loader: false }), 500);
 			console.log(err.message);
 		});
 	}
 
 	loginAuth(email, password) {
 
-		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+		this.setState({ auth_loader: true });
 		
 		firebase_auth.auth().signInWithEmailAndPassword(email, password)
 		.then(user => {
@@ -117,17 +114,16 @@ export class AuthenticationContextProvider extends Component {
 			console.log('Remove login loader');
 			console.log('User has logged in');
 
-			this.setState(prevState => ({
-				...prevState,
+			this.setState({
 				login_enabled: false,
 				auth_loader: false
-			}));
+			});
 		})
 		.catch(error => {
 			
 			console.log('Remove login loader');
 
-			setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+			setTimeout(() => this.setState({ auth_loader: false }), 500);
 			console.log(error.message);
 		});
 	}
@@ -161,7 +157,7 @@ export class AuthenticationContextProvider extends Component {
 
 	updateUser(data) {
 
-		this.setState(prevState => ({ ...prevState, auth_loader: true }));
+		this.setState({ auth_loader: true });
 
 		const current_user = firebase_auth.auth().currentUser;
 
@@ -184,13 +180,13 @@ export class AuthenticationContextProvider extends Component {
 		
 						console.log('Email succesfully changed');
 		
-						this.setState(prevState => ({ ...prevState, auth_loader: false }));
+						this.setState({ auth_loader: false });
 			
 					}).catch(err => {
 			
 						console.log(err);
 		
-						setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+						setTimeout(() => this.setState({ auth_loader: false }), 500);
 					});
 				}
 	
@@ -201,13 +197,13 @@ export class AuthenticationContextProvider extends Component {
 		
 						console.log('Password changed');
 			
-						this.setState(prevState => ({ ...prevState, auth_loader: false }));
+						this.setState({ auth_loader: false });
 		
 					}).catch(err => {
 	
 						console.log(err);
 		
-						setTimeout(() => this.setState(prevState => ({ ...prevState, auth_loader: false })), 500);
+						setTimeout(() => this.setState({ auth_loader: false }), 500);
 					});
 				}
 	
@@ -231,12 +227,10 @@ export class AuthenticationContextProvider extends Component {
 		.then(() => {
 
 			console.log('profile succesfully updated');
-			this.setState(prevState => ({ ...prevState, auth_loader: false }));
+			this.setState({ auth_loader: false });
 		})
 		.catch(err => console.log(err))
 	}
-
-	
 
 	authListener() {
 
@@ -246,13 +240,13 @@ export class AuthenticationContextProvider extends Component {
 
 				const unsubscribe = firebase_db.collection('users').doc(user.uid).onSnapshot(doc => {
 
-					doc.exists && this.setState(prevState => ({ ...prevState, user_data: doc.data() }));
+					doc.exists && this.setState({ user_data: doc.data() });
 		
 				});
 
-				this.setState(prevState => ({ ...prevState, unsubscribe }));
+				this.setState({ unsubscribe });
 
-			} else this.setState(prevState => ({ ...prevState, user_data: null }));
+			} else this.setState({ user_data: null });
 
 		});
 	}

@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '@context/GlobalContext';
@@ -69,12 +69,19 @@ const MortageCalculator = ({getTotalPayment}) => {
 		return parseFloat(str).toLocaleString();
 	}
 
+	const [calculator_regex, setCalculatorRegex] = useState({
+		alert_message: '',
+		input: {}
+	});
+
 	const calculateLoan = e => {
 
 		let ecuation;
 
-		const isEmpty = e.target.value.length === 0;
+		const { value, id } = e.target;
 
+		const isEmpty = value.length === 0;
+		const target = id.replace(/\-/g, '_');
 		const homePrice = document.getElementById('home-price').value;
 		const downPayment = document.getElementById('down-payment').value;
 		const downPaymentPercent = document.getElementById('down-payment-percent').value.replace(/\,/g, '.');
@@ -82,16 +89,37 @@ const MortageCalculator = ({getTotalPayment}) => {
 		const interestRate = document.getElementById('interest-rate').value.replace(/\,/g, '.');
 		const months = parseFloat(loanProgram) * 12;
 	
-		if (e.target.id === 'home-price') {
+		if (id === 'home-price') {
 
-			if(convertToNumber(homePrice) > 999999999) {
+			/*
+				I did this because when i have multiple inputs, only one alert is shown
+				So i will have only 1 state value and it will change based on the input id
 
-				console.log('Maximum home price');
-				return;
-			}
+				so i can access it by input.[target] in the JSX
+			*/
+			if(convertToNumber(value) > 1000000000) {
+
+				setCalculatorRegex({
+					alert_message: 'Maximum home price exceeded',
+					input: { [target]: true }
+				});
+
+				return
+
+				// Here we always remove the message so it's ok to set only the input
+			} else setCalculatorRegex({ input: { [target]: false } });
+
+			if(isEmpty) {
+
+				setCalculatorRegex({
+					alert_message: 'Invalid home price',
+					input: { [target]: true }
+				});
+
+			} else setCalculatorRegex({ input: { [target]: false } });
 
 			// Formatted number
-			dispatch({type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
+			dispatch({ type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
 
 			// Find out the down payment according to percentage
 			if(downPaymentPercent.length > 0) {
@@ -106,20 +134,27 @@ const MortageCalculator = ({getTotalPayment}) => {
 			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
 		}
 
-		if(e.target.id === 'down-payment') {
-
-			// If home price is invalid don't type
-			if(homePrice.length === 0) {
-				
-				console.log('invalid home price');
-				return;
-			}
+		if(id === 'down-payment') {
 
 			if(convertToNumber(downPayment) > convertToNumber(homePrice)) {
 
-				console.log('Down payment must be less than home price');
+				setCalculatorRegex({
+					alert_message: 'Down payment must be less than home price',
+					input: { [target]: true }
+				});
+
 				return;
-			}
+
+			} else setCalculatorRegex({ input: { [target]: false } });
+
+			if(isEmpty) {
+
+				setCalculatorRegex({
+					alert_message: 'Invalid down payment',
+					input: { [target]: true }
+				});
+
+			} else setCalculatorRegex({ input: { [target]: false } });
 
 			if(downPayment.length === 0) calculateTotalPayment(0, 0, 0, 0);
 			else calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
@@ -134,21 +169,27 @@ const MortageCalculator = ({getTotalPayment}) => {
 			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
 		}
 
-		if(e.target.id === 'down-payment-percent') {
-
-			// If home price is invalid don't type
-			if(homePrice.length === 0) {
-				
-				console.log('invalid home price');
-				return;
-			}
+		if(id === 'down-payment-percent') {
 
 			if(convertToNumber(downPaymentPercent) > 100) {
 
-				console.log('Down payment must be less than home price');
+				setCalculatorRegex({
+					alert_message: 'Down payment must be less than home price',
+					input: { [target]: true }
+				});
 
 				return;
-			}
+
+			} else setCalculatorRegex({ input: { [target]: false } });
+
+			if(isEmpty) {
+
+				setCalculatorRegex({
+					alert_message: 'Invalid down payment',
+					input: { [target]: true }
+				});
+
+			} else setCalculatorRegex({ input: { [target]: false } });
 
 			// Formatted number
 			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: downPaymentPercent });
@@ -163,21 +204,34 @@ const MortageCalculator = ({getTotalPayment}) => {
 			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
 		}
 
-		if (e.target.id === 'loan-program') {
+		if (id === 'loan-program') {
 
 			dispatch({ type: SET_LOAN_PROGRAM, payload: loanProgram });
 
 			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
 		}
 
-		if(e.target.id === 'interest-rate') {
+		if(id === 'interest-rate') {
 
 			if(convertToNumber(interestRate) > 100) {
 
-				console.log('Interest rate can\'t be higher than 100');
+				setCalculatorRegex({
+					alert_message: 'Interest rate can\'t be higher than 100',
+					input: { [target]: true }
+				});
 
 				return;
-			}
+
+			} else setCalculatorRegex({ input: { [target]: false } });
+
+			if(isEmpty) {
+
+				setCalculatorRegex({
+					alert_message: 'Invalid interest rate',
+					input: { [target]: true }
+				});
+
+			} else setCalculatorRegex({ input: { [target]: false } });
 
 			dispatch({ type: SET_INTEREST_RATE, payload: interestRate });
 
@@ -199,32 +253,58 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 		<Col className='mortage-inputs p-0'>
 
-			<div className="mortage-input-box d-flex flex-column my-4">
+			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='home-price'>Home price</label>
 
-				<div className='position-relative'>
-					<input type="text" id='home-price' className='input-field input-left disable-letters' value={state.home_price} onChange={calculateLoan} onKeyDown={disableLetters} />
-					<span className='position-absolute input-sign left d-flex flex-column justify-content-center align-items-center'>$</span>
-				</div>
+					<div className='position-relative'>
+						<input 
+							type="text" 
+							id='home-price' 
+							className='input-field input-left disable-letters' 
+							value={state.home_price} 
+							onChange={calculateLoan} 
+							onKeyDown={disableLetters}
+						/>
+						<span className='position-absolute input-sign left d-flex flex-column justify-content-center align-items-center'>$</span>
+					</div>
+
+					{calculator_regex.input.home_price && <RegexAlert text={calculator_regex.alert_message}/>}
 			</div>
 
-			<div className="mortage-input-box d-flex flex-column my-4">
+			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='down-payment'>Down payment</label>
 
 				<Row className='m-0'>
 					<div className='position-relative'>
-						<input type="text" id='down-payment' className='input-field input-left' value={state.down_payment} onChange={calculateLoan} onKeyDown={disableLetters} />
+						<input 
+							type="text" 
+							id='down-payment' 
+							className='input-field input-left' 
+							value={state.down_payment} 
+							onChange={calculateLoan} 
+							onKeyDown={disableLetters}
+						/>
 						<span className='position-absolute input-sign left d-flex flex-column justify-content-center align-items-center'>$</span>
 					</div>
 
 					<div className='position-relative'>
-						<input type="text" id='down-payment-percent' className='input-field input-right' value={state.down_payment_percent} onChange={calculateLoan} onKeyDown={disableLetters} />
+						<input 
+							type="text" 
+							id='down-payment-percent' 
+							className='input-field input-right' 
+							value={state.down_payment_percent} 
+							onChange={calculateLoan} 
+							onKeyDown={disableLetters}
+						/>
 						<span className='position-absolute input-sign right d-flex flex-column justify-content-center align-items-center'>%</span>
 					</div>
 				</Row>
+
+				{calculator_regex.input.down_payment && <RegexAlert text={calculator_regex.alert_message}/>}
+				{calculator_regex.input.down_payment_percent && <RegexAlert text={calculator_regex.alert_message}/>}
 			</div>
 
-			<div className="mortage-input-box d-flex flex-column my-4">
+			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='loan-program'>Loan Program</label>
 
 				<select id="loan-program" className='p-1' value={state.loan_program} onChange={calculateLoan}>
@@ -234,17 +314,18 @@ const MortageCalculator = ({getTotalPayment}) => {
 				</select>
 			</div>
 
-			<div className="mortage-input-box d-flex flex-column my-4">
+			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='interest-rate'>Interest Rate</label>
 
 				<div className='position-relative'>
 					<input type="text" id='interest-rate' className='input-field input-right disable-letters' value={state.interest_rate} onChange={calculateLoan} onKeyDown={disableLetters} />
 					<span className='position-absolute input-sign right d-flex flex-column justify-content-center align-items-center'>%</span>
 				</div>
+
+				{calculator_regex.input.interest_rate && <RegexAlert text={calculator_regex.alert_message}/>}
 			</div>
 
 		</Col>
-
 	)
 }
 
