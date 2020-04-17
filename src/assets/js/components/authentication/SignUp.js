@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
@@ -10,6 +10,7 @@ import {
 
 } from '@constants/actionTypes';
 
+import RegexAlert from '@components/global_layout/RegexAlert';
 import AuthLoader from './AuthLoader';
 
 import Form from 'react-bootstrap/Form';
@@ -66,6 +67,72 @@ const SignUp = () => {
 		e.stopPropagation();
 	}
 
+	const [signup_regex, setSignupRegex] = useState({
+		alert_message: '',
+		input: {}
+	})
+
+	const signupValidation = e => {
+
+		const {
+
+			id,
+			placeholder,
+			value
+
+		} = e.target;
+
+		const target = id.replace(/\-/g, '_');
+
+		const regex = {
+			name: /^[aA-zZ \-]{3,}$/g,
+		}
+
+		if(id.includes('first-name')) {
+
+			// if(!value.match(regex.name)) {
+
+			// 	/*
+			// 		I did this because when i have multiple inputs, only one alert is shown
+			// 		So i will have only 1 state value and it will change based on the input id
+
+			// 		so i can access it by input.[target] in the JSX
+			// 	*/
+			// 	setSignupRegex({
+			// 		alert_message: `Invalid ${placeholder}`,
+			// 		input: { [target]: true }
+			// 	})
+
+			// 	// Here we always remove the message so it's ok to set only the input
+			// } else setSignupRegex({ input: { [target]: false }})
+
+		}
+
+		console.log(target);
+
+		if(id.includes('last-name')) {
+
+			// if(!value.match(regex.name)) {
+
+			// 	/*
+			// 		I did this because when i have multiple inputs, only one alert is shown
+			// 		So i will have only 1 state value and it will change based on the input id
+
+			// 		so i can access it by input.[target] in the JSX
+			// 	*/
+			// 	setSignupRegex({
+			// 		alert_message: `Invalid ${placeholder}`,
+			// 		input: { [target]: true }
+			// 	})
+
+			// 	// Here we always remove the message so it's ok to set only the input
+			// } else setSignupRegex({ input: { [target]: false }})
+
+		}
+
+		e.stopPropagation();
+	}
+
 	return (
 		<div id='login-modal' className='rounded'>
 			<Form name='login' onSubmit={signUp} >
@@ -74,53 +141,103 @@ const SignUp = () => {
 					<a className='w-50 py-3 text-center active-modal'>Sign up</a>
 				</div>
 
-				<Form.Row className='form-body px-4 pt-5'>
-					<Form.Group as={Col} controlId="signup-last-name" className='mb-4'>
-						<Form.Control type="text" placeholder="Last Name" value={signup_state.last_name} onChange={handleChange} />
+				<Form.Row className='flex-column form-body px-4 pt-5'>
+					<Form.Row className='py-2'>
+						<Form.Group as={Col} controlId="signup-last-name" className='m-0'>
+							<Form.Control 
+								type="text" 
+								placeholder="Last Name" 
+								value={signup_state.last_name} 
+								onChange={handleChange}
+								onBlur={signupValidation} 
+							/>
+						</Form.Group>
+
+						<Form.Group as={Col} controlId="signup-first-name" className='m-0'>
+							<Form.Control 
+								type="text" 
+								placeholder="First Name" 
+								value={signup_state.first_name} 
+								onChange={handleChange}
+								onBlur={signupValidation}
+							/>
+						</Form.Group>
+					</Form.Row>
+
+					{signup_regex.input.signup_last_name && <RegexAlert text={signup_regex.alert_message} danger={true} />}
+					{signup_regex.input.signup_first_name && <RegexAlert text={signup_regex.alert_message} danger={true} />}
+				</Form.Row>
+
+				<Form.Row className='flex-column form-body px-4'>
+					<Form.Row className='py-2'>
+						<Form.Group as={Col} controlId="signup-age" className='m-0'>
+							<Form.Control 
+								type="text" 
+								placeholder="How old are you ?" 
+								value={signup_state.age} 
+								onKeyDown={disableLetters} 
+								onChange={handleChange}
+							/>
+						</Form.Group>
+
+						<Form.Group as={Col} controlId="signup-gender" className='m-0'>
+							<Form.Control as='select' value={signup_state.gender} onChange={handleChange} >
+								<option disabled>Pick your gender</option>
+								<option value='male'>Male</option>
+								<option value='female'>Female</option>
+							</Form.Control>
+						</Form.Group>
+					</Form.Row>
+				</Form.Row>
+
+				<Form.Row className='form-body px-4'>
+					<Form.Group as={Col} controlId="signup-city">
+						<Form.Control 
+							type="text" 
+							placeholder="City" 
+							value={signup_state.city} 
+							onChange={handleChange} 
+						/>
 					</Form.Group>
 
-					<Form.Group as={Col} controlId="signup-first-name" className='mb-4'>
-						<Form.Control type="text" placeholder="First Name" value={signup_state.first_name} onChange={handleChange} />
+					<Form.Group as={Col} controlId="signup-address">
+						<Form.Control 
+							type='text' 
+							placeholder='Address' 
+							value={signup_state.address} 
+							onChange={handleChange} 
+						/>
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row className='form-body px-4'>
-					<Form.Group as={Col} controlId="signup-age" className='mb-4'>
-						<Form.Control type="text" placeholder="How old are you ?" value={signup_state.age} onKeyDown={disableLetters} onChange={handleChange} />
-					</Form.Group>
-
-					<Form.Group as={Col} controlId="signup-gender" className='mb-4'>
-						<Form.Control as='select' value={signup_state.gender} onChange={handleChange} >
-							<option disabled>Pick your gender</option>
-							<option value='male'>Male</option>
-							<option value='female'>Female</option>
-						</Form.Control>
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row className='form-body px-4'>
-					<Form.Group as={Col} controlId="signup-city" className='mb-4'>
-						<Form.Control type="text" placeholder="City" value={signup_state.city} onChange={handleChange} />
-					</Form.Group>
-
-					<Form.Group as={Col} controlId="signup-address" className='mb-4'>
-						<Form.Control type='text' placeholder='Address' value={signup_state.address} onChange={handleChange} />
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row className='form-body px-4'>
-					<Form.Group as={Col} controlId="signup-email" className='mb-4'>
-						<Form.Control type="text" placeholder="Email" value={signup_state.email} onChange={handleChange} />
+					<Form.Group as={Col} controlId="signup-email">
+						<Form.Control 
+							type="text" 
+							placeholder="Email" 
+							value={signup_state.email} 
+							onChange={handleChange} 
+						/>
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row className='form-body px-4 mb-3 flex-column'>
 					<Form.Group as={Col} controlId="signup-password">
-						<Form.Control type="password" placeholder="Password, at least 8 characters" value={signup_state.password} onChange={handleChange} />
+						<Form.Control 
+							type="password" 
+							placeholder="Password, at least 8 characters" 
+							value={signup_state.password} 
+							onChange={handleChange} 
+						/>
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="signup-confirm-password">
-						<Form.Control type="password" placeholder="Confirm Password" value={signup_state.confirm_password} onChange={handleChange} />
+						<Form.Control 
+							type="password" 
+							placeholder="Confirm Password" 
+							value={signup_state.confirm_password} 
+							onChange={handleChange} 
+						/>
 					</Form.Group>
 				</Form.Row>
 

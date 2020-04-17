@@ -70,8 +70,10 @@ const MortageCalculator = ({getTotalPayment}) => {
 	}
 
 	const [calculator_regex, setCalculatorRegex] = useState({
-		alert_message: '',
-		input: {}
+		home_price: false,
+		down_payment: false,
+		down_payment_percent: false,
+		interest_rate: false
 	});
 
 	const calculateLoan = e => {
@@ -91,32 +93,20 @@ const MortageCalculator = ({getTotalPayment}) => {
 	
 		if (id === 'home-price') {
 
-			/*
-				I did this because when i have multiple inputs, only one alert is shown
-				So i will have only 1 state value and it will change based on the input id
+			if(convertToNumber(value) > 1000000000 || isEmpty) {
 
-				so i can access it by input.[target] in the JSX
-			*/
-			if(convertToNumber(value) > 1000000000) {
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
 
-				setCalculatorRegex({
-					alert_message: 'Maximum home price exceeded',
-					input: { [target]: true }
-				});
+				setTimeout(() => {
 
-				return
+					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
-				// Here we always remove the message so it's ok to set only the input
-			} else setCalculatorRegex({ input: { [target]: false } });
+				}, 2000);
 
-			if(isEmpty) {
+				// So we can type when the input will be empty
+				if(convertToNumber(value) > 1000000000) return;
 
-				setCalculatorRegex({
-					alert_message: 'Invalid home price',
-					input: { [target]: true }
-				});
-
-			} else setCalculatorRegex({ input: { [target]: false } });
+			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
 			// Formatted number
 			dispatch({ type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
@@ -136,25 +126,20 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 		if(id === 'down-payment') {
 
-			if(convertToNumber(downPayment) > convertToNumber(homePrice)) {
+			if(convertToNumber(downPayment) > convertToNumber(homePrice) || isEmpty) {
 
-				setCalculatorRegex({
-					alert_message: 'Down payment must be less than home price',
-					input: { [target]: true }
-				});
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
 
-				return;
+				setTimeout(() => {
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
-			if(isEmpty) {
+				}, 2000);
 
-				setCalculatorRegex({
-					alert_message: 'Invalid down payment',
-					input: { [target]: true }
-				});
+				// So we can type when the input will be empty
+				if(convertToNumber(downPayment) > convertToNumber(homePrice)) return;
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
 			if(downPayment.length === 0) calculateTotalPayment(0, 0, 0, 0);
 			else calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
@@ -173,23 +158,18 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 			if(convertToNumber(downPaymentPercent) > 100) {
 
-				setCalculatorRegex({
-					alert_message: 'Down payment must be less than home price',
-					input: { [target]: true }
-				});
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
 
-				return;
+				setTimeout(() => {
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
-			if(isEmpty) {
+				}, 2000);
 
-				setCalculatorRegex({
-					alert_message: 'Invalid down payment',
-					input: { [target]: true }
-				});
+				// So we can type when the input will be empty
+				if(convertToNumber(downPaymentPercent) > 100) return;
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
 			// Formatted number
 			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: downPaymentPercent });
@@ -211,27 +191,22 @@ const MortageCalculator = ({getTotalPayment}) => {
 			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
 		}
 
-		if(id === 'interest-rate') {
+		if(id === 'interest-rate') {	
 
-			if(convertToNumber(interestRate) > 100) {
+			if(convertToNumber(interestRate) > 100 || isEmpty) {
 
-				setCalculatorRegex({
-					alert_message: 'Interest rate can\'t be higher than 100',
-					input: { [target]: true }
-				});
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
 
-				return;
+				setTimeout(() => {
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
-			if(isEmpty) {
+				}, 2000);
 
-				setCalculatorRegex({
-					alert_message: 'Invalid interest rate',
-					input: { [target]: true }
-				});
+				// So we can type when the input will be empty
+				if(convertToNumber(interestRate) > 100) return;
 
-			} else setCalculatorRegex({ input: { [target]: false } });
+				} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
 
 			dispatch({ type: SET_INTEREST_RATE, payload: interestRate });
 
@@ -268,7 +243,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 						<span className='position-absolute input-sign left d-flex flex-column justify-content-center align-items-center'>$</span>
 					</div>
 
-					{calculator_regex.input.home_price && <RegexAlert text={calculator_regex.alert_message}/>}
+					{calculator_regex.home_price && <RegexAlert text='Invalid home price' danger={true} />}
 			</div>
 
 			<div className="mortage-input-box d-flex flex-column my-3">
@@ -300,8 +275,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 					</div>
 				</Row>
 
-				{calculator_regex.input.down_payment && <RegexAlert text={calculator_regex.alert_message}/>}
-				{calculator_regex.input.down_payment_percent && <RegexAlert text={calculator_regex.alert_message}/>}
+				{calculator_regex.down_payment || calculator_regex.down_payment_percent ? <RegexAlert text='Invalid Down payment' danger={true} /> : null}
 			</div>
 
 			<div className="mortage-input-box d-flex flex-column my-3">
@@ -322,7 +296,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 					<span className='position-absolute input-sign right d-flex flex-column justify-content-center align-items-center'>%</span>
 				</div>
 
-				{calculator_regex.input.interest_rate && <RegexAlert text={calculator_regex.alert_message}/>}
+				{calculator_regex.interest_rate && <RegexAlert text='Invalid Interest rate' danger={true} />}
 			</div>
 
 		</Col>
