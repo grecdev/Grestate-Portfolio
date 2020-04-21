@@ -47,3 +47,7 @@ input.input-field { cursor: pointer }
 	&-md { max-width: 1200px }
 	&-lg { max-width: 1500px }
 }
+
+.input-field {
+	cursor: initial !important;
+}

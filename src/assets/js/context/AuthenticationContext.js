@@ -7,10 +7,11 @@ export class AuthenticationContextProvider extends Component {
 
 	state = {
 		login_enabled: false,
-		signup_enabled: false,
+		signup_enabled: true,
 		auth_loader: false,
 		user_data: {},
-		unsubscribe: undefined
+		unsubscribe: undefined,
+		authentication_regex: undefined
 	}
 
 	toggleModal(e) {
@@ -100,6 +101,7 @@ export class AuthenticationContextProvider extends Component {
 		.catch(err => {
 
 			setTimeout(() => this.setState({ auth_loader: false }), 500);
+
 			console.log(err.message);
 		});
 	}

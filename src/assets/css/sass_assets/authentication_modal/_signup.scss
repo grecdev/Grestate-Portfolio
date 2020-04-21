@@ -1,0 +1,24 @@
+#signup-modal {
+
+	.password-strength {
+		
+		div {
+			height: 3px;
+			width: 32%;
+			transform: scaleX(0);
+			transition: all 1s ease-in-out;
+			transform-origin: left center;
+			visibility: hidden;
+
+			&.show {
+				transform: scaleX(1);
+				transition: all 1s ease-in-out;
+				visibility: visible;
+			}
+		}
+		
+		div:first-child { background: #E21D1D }
+		div:nth-child(2) { background: #E7E014 }
+		div:last-child { background: #14E723 }
+	}
+}

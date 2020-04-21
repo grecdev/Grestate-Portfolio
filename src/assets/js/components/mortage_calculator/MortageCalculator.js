@@ -70,10 +70,10 @@ const MortageCalculator = ({getTotalPayment}) => {
 	}
 
 	const [calculator_regex, setCalculatorRegex] = useState({
-		home_price: false,
-		down_payment: false,
-		down_payment_percent: false,
-		interest_rate: false
+		home_price: undefined,
+		down_payment: undefined,
+		down_payment_percent: undefined,
+		interest_rate: undefined
 	});
 
 	const calculateLoan = e => {
@@ -93,20 +93,12 @@ const MortageCalculator = ({getTotalPayment}) => {
 	
 		if (id === 'home-price') {
 
-			if(convertToNumber(value) > 1000000000 || isEmpty) {
+			if(convertToNumber(value) > 1000000000) {
 
-				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Maximum home price exceeded' }));
 
-				setTimeout(() => {
-
-					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
-
-				}, 2000);
-
-				// So we can type when the input will be empty
-				if(convertToNumber(value) > 1000000000) return;
-
-			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
+				return	
+			}
 
 			// Formatted number
 			dispatch({ type: SET_HOME_PRICE, payload: formatNumber(homePrice) });
@@ -119,27 +111,30 @@ const MortageCalculator = ({getTotalPayment}) => {
 			}
 
 			// Reset all inputs
-			if(isEmpty) dispatch({type: RESET_MORTAGE_INPUTS});
+			if(isEmpty) {
+
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Invalid Home price' }));
+
+				dispatch({ type: RESET_MORTAGE_INPUTS });
+
+			} else {
+
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: undefined }));
+			}
 			
-			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
+			calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);			
 		}
 
 		if(id === 'down-payment') {
 
-			if(convertToNumber(downPayment) > convertToNumber(homePrice) || isEmpty) {
+			if(convertToNumber(downPayment) > convertToNumber(homePrice)) {
 
-				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Down payment must be less than home price' }));
 
-				setTimeout(() => {
+				setTimeout(() => setCalculatorRegex(prevState => ({ ...prevState, [target]: undefined })), 3000);
 
-					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
-
-				}, 2000);
-
-				// So we can type when the input will be empty
-				if(convertToNumber(downPayment) > convertToNumber(homePrice)) return;
-
-			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
+				return;
+			}
 
 			if(downPayment.length === 0) calculateTotalPayment(0, 0, 0, 0);
 			else calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
@@ -149,27 +144,33 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 			// Find out the down payment percentage value according to down payment sum
 			ecuation = (convertToNumber(downPayment) / convertToNumber(homePrice)) * 100;
-			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: ecuation})
+			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: ecuation});
 
-			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
+			if(isEmpty) {
+
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Invalid down payment' }));
+
+				dispatch({type: RESET_DOWN_PAYMENT });
+
+			} else {
+
+				setCalculatorRegex(prevState => ({
+					...prevState, [target]: undefined,
+					home_price: undefined
+				}));
+			}
 		}
 
 		if(id === 'down-payment-percent') {
 
 			if(convertToNumber(downPaymentPercent) > 100) {
+			
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Down payment percent must be less than 100%' }));
 
-				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
+				setTimeout(() => setCalculatorRegex(prevState => ({ ...prevState, [target]: undefined })), 3000);
 
-				setTimeout(() => {
-
-					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
-
-				}, 2000);
-
-				// So we can type when the input will be empty
-				if(convertToNumber(downPaymentPercent) > 100) return;
-
-			} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
+				return;
+			}
 
 			// Formatted number
 			dispatch({type: SET_DOWN_PAYMENT_PERCENT, payload: downPaymentPercent });
@@ -181,7 +182,19 @@ const MortageCalculator = ({getTotalPayment}) => {
 			if(downPaymentPercent.length === 0) calculateTotalPayment(0, 0, 0, 0);
 			else calculateTotalPayment(convertToNumber(homePrice), ecuation, convertToNumber(interestRate), months);
 
-			if(isEmpty) dispatch({type: RESET_DOWN_PAYMENT});
+			if(isEmpty) {
+				
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Invalid down payment percent' }));
+				dispatch({type: RESET_DOWN_PAYMENT});
+
+			} else {
+
+				setCalculatorRegex(prevState => ({
+					...prevState,
+					[target]: undefined,
+					home_price: undefined
+				}));
+			}
 		}
 
 		if (id === 'loan-program') {
@@ -191,22 +204,19 @@ const MortageCalculator = ({getTotalPayment}) => {
 			calculateTotalPayment(convertToNumber(homePrice), convertToNumber(downPayment), convertToNumber(interestRate), months);
 		}
 
-		if(id === 'interest-rate') {	
+		if(id === 'interest-rate') {
 
-			if(convertToNumber(interestRate) > 100 || isEmpty) {
+			if(convertToNumber(interestRate) > 100) {
 
-				setCalculatorRegex(prevState => ({ ...prevState, [target]: true }));
+				setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Interest rate must be less than 100%' }));
 
-				setTimeout(() => {
+				setTimeout(() => setCalculatorRegex(prevState => ({ ...prevState, [target]: undefined })), 3000);
 
-					setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
+				return;
+			}
 
-				}, 2000);
-
-				// So we can type when the input will be empty
-				if(convertToNumber(interestRate) > 100) return;
-
-				} else setCalculatorRegex(prevState => ({ ...prevState, [target]: false }));
+			if(isEmpty) setCalculatorRegex(prevState => ({ ...prevState, [target]: 'Invalid Interest rate' }));
+			else setCalculatorRegex(prevState => ({ ...prevState, [target]: undefined }));
 
 			dispatch({ type: SET_INTEREST_RATE, payload: interestRate });
 
@@ -243,7 +253,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 						<span className='position-absolute input-sign left d-flex flex-column justify-content-center align-items-center'>$</span>
 					</div>
 
-					{calculator_regex.home_price && <RegexAlert text='Invalid home price' danger={true} />}
+					{calculator_regex.home_price && <RegexAlert text={calculator_regex.home_price} danger={true} />}
 			</div>
 
 			<div className="mortage-input-box d-flex flex-column my-3">
@@ -275,7 +285,8 @@ const MortageCalculator = ({getTotalPayment}) => {
 					</div>
 				</Row>
 
-				{calculator_regex.down_payment || calculator_regex.down_payment_percent ? <RegexAlert text='Invalid Down payment' danger={true} /> : null}
+				{calculator_regex.down_payment && <RegexAlert text={calculator_regex.down_payment} danger={true} />}
+				{calculator_regex.down_payment_percent && <RegexAlert text={calculator_regex.down_payment_percent} danger={true} />}
 			</div>
 
 			<div className="mortage-input-box d-flex flex-column my-3">
@@ -296,7 +307,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 					<span className='position-absolute input-sign right d-flex flex-column justify-content-center align-items-center'>%</span>
 				</div>
 
-				{calculator_regex.interest_rate && <RegexAlert text='Invalid Interest rate' danger={true} />}
+				{calculator_regex.interest_rate && <RegexAlert text={calculator_regex.interest_rate} danger={true} />}
 			</div>
 
 		</Col>
