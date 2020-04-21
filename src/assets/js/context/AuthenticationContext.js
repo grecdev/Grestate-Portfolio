@@ -7,7 +7,7 @@ export class AuthenticationContextProvider extends Component {
 
 	state = {
 		login_enabled: false,
-		signup_enabled: true,
+		signup_enabled: false,
 		auth_loader: false,
 		user_data: {},
 		unsubscribe: undefined,
@@ -71,7 +71,7 @@ export class AuthenticationContextProvider extends Component {
 
 	signUpAuth(signup_state) {
 
-		this.setState({ auth_loader: true });
+		this.setState({ auth_loader: true, authentication_regex: undefined});
 
 		const date = new Date();
 
@@ -96,13 +96,12 @@ export class AuthenticationContextProvider extends Component {
 				date_joined: `${joined.day}/${joined.month}/${joined.year} at ${joined.time}`
 			});
 
-			this.setState({ auth_loader: false });
+			this.setState({ auth_loader: false, signup_enabled: false });
 		})
 		.catch(err => {
 
-			setTimeout(() => this.setState({ auth_loader: false }), 500);
-
-			console.log(err.message);
+			err && this.setState({ authentication_regex: err.message, auth_loader: false });
+			
 		});
 	}
 

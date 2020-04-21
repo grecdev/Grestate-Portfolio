@@ -2,7 +2,6 @@ import {
 
 	HANDLE_LOGIN_INPUT,
 	HANDLE_SIGNUP_INPUT,
-	RESET_SIGNUP_INPUTS,
 	HANDLE_ACCOUNT_INPUT,
 	SET_ACCOUNT_INPUTS
 
@@ -24,10 +23,6 @@ export default (state, action) => {
 				...state,
 				[action.target]: action.payload
 			}
-		}
-
-		case RESET_SIGNUP_INPUTS: {
-			return action.payload
 		}
 
 		case HANDLE_ACCOUNT_INPUT: {

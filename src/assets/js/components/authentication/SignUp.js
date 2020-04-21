@@ -3,11 +3,13 @@ import React, { useContext, useReducer, useState } from 'react';
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
 
+import RegexReducer from '@reducers/RegexReducer';
 import AuthenticationReducer from '@reducers/AuthenticationReducer';
 import {
 
 	HANDLE_SIGNUP_INPUT,
-	RESET_SIGNUP_INPUTS
+	SET_REGEX_ALERT,
+	RESET_REGEX_ALERT
 
 } from '@constants/actionTypes';
 
@@ -37,18 +39,18 @@ const SignUp = () => {
 	} = useContext(GlobalContext);
 
 	const defaultSignupState = {
-		first_name: 'Grecu',
-		last_name: 'Alexandru',
-		age: '21',
+		first_name: '',
+		last_name: '',
+		age: '',
 		gender: 'Choose your gender',
-		city: 'Bucharest',
-		address: 'Rahova',
-		email: 'user@gmail.com',
-		password: 'Logiteck1',
-		confirm_password: 'Logiteck1'
+		city: '',
+		address: '',
+		email: '',
+		password: '',
+		confirm_password: ''
 	};
 
-	const [signup_state, dispatch] = useReducer(AuthenticationReducer, defaultSignupState);
+	const [signup_state, dispatch_signupState] = useReducer(AuthenticationReducer, defaultSignupState);
 
 	const signUp = e => {
 
@@ -64,19 +66,24 @@ const SignUp = () => {
 
 			signUpAuth(signup_state);
 
-			dispatch({ type: RESET_SIGNUP_INPUTS, payload: defaultSignupState });
-
 			submit = true;
 
 		} else {
 
 			inputs_available.forEach(input => {
 
-				!input.classList.contains('correct-validation') && input.classList.add(...alert_danger);
-				
+				if(!input.classList.contains('correct-validation')) {
+
+					input.classList.add(...alert_danger);
+
+					setTimeout(() => input.classList.remove(...alert_danger), 2500);
+				}
 			});
 
-			setSignupRegex(prevState => ({ ...prevState, global: 'All inputs are required' }));
+			dispatch_signupRegex({ type: RESET_REGEX_ALERT, payload: defaultRegexState });
+			dispatch_signupRegex({ type: SET_REGEX_ALERT, target: 'global' , payload: 'All inputs are required' });
+
+			setTimeout(() => dispatch_signupRegex({ type: SET_REGEX_ALERT, target: 'global' , payload: undefined }), 2500)
 
 			submit = false;
 		}
@@ -94,12 +101,12 @@ const SignUp = () => {
 		// Remove the `signup-` string from id and replace `-` with `_`
 		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
 
-		dispatch({ type: HANDLE_SIGNUP_INPUT, target, payload: e.target.value });
+		dispatch_signupState({ type: HANDLE_SIGNUP_INPUT, target, payload: e.target.value });
 		
 		e.stopPropagation();
 	}
 
-	const [signup_regex, setSignupRegex] = useState({
+	const defaultRegexState = {
 		last_name: undefined,
 		first_name: undefined,
 		age: undefined,
@@ -108,7 +115,9 @@ const SignUp = () => {
 		password: undefined,
 		confirm_password: undefined,
 		global: undefined
-	})
+	};
+
+	const [signup_regex, dispatch_signupRegex] = useReducer(RegexReducer, defaultRegexState);
 
 	const signupValidation = e => {
 
@@ -139,9 +148,9 @@ const SignUp = () => {
 
 		if(id.includes('name')) {
 
-			if(!value.match(regex.name)) setSignupRegex(prevState => ({ ...prevState, [target]: `Invalid ${placeholder}` }));
+			if(!value.match(regex.name)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: `${placeholder} is required` }));
+			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
 			if(isEmpty || !value.match(regex.name)) {
 
@@ -151,7 +160,7 @@ const SignUp = () => {
 
 			if(!isEmpty && value.match(regex.name)) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
 
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
@@ -160,18 +169,20 @@ const SignUp = () => {
 
 		if(id.includes('age')) {
 
-			if(value.match(regex.age) || isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: 'Invalid age' }));
+			if(value.match(regex.age) || isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid age` });
 
-			if(parseFloat(value) < 18) setSignupRegex(prevState => ({ ...prevState, [target]: 'Must be over 18 years old' }));
+			if(parseFloat(value) < 18) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Must be over 18 years old' });
+			if(parseFloat(value) > 100) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Don\'t you think you are to old ?' });
 
-			if(value.match(regex.age) || parseFloat(value) < 18 || isEmpty) {
+			if(value.match(regex.age) || parseFloat(value) < 18 || parseFloat(value) > 100 || isEmpty) {
 
 				e.target.classList.remove('correct-validation');
 				e.target.classList.add(...alert_danger);
 
 			} else {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 			}
@@ -181,14 +192,15 @@ const SignUp = () => {
 
 			if(!value.match(regex.gender)) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: 'Need to select a gender' }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Need to select a gender' });
 
 				e.target.classList.remove('correct-validation');
 				e.target.classList.add(...alert_danger);
 
 			} else {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.remove(...alert_danger);
 				e.target.classList.add('correct-validation');
 			}
@@ -196,9 +208,9 @@ const SignUp = () => {
 
 		if(id.includes('city')) {
 
-			if(!value.match(regex.city)) setSignupRegex(prevState => ({ ...prevState, [target]: `Invalid ${placeholder}` }));
+			if(!value.match(regex.city)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: `${placeholder} is required` }));
+			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
 			if(isEmpty || !value.match(regex.city)) {
 
@@ -208,7 +220,8 @@ const SignUp = () => {
 
 			if(!isEmpty && value.match(regex.city)) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 			}
@@ -216,9 +229,9 @@ const SignUp = () => {
 		
 		if(id.includes('address')) {
 
-			if(!value.match(regex.address)) setSignupRegex(prevState => ({ ...prevState, [target]: `Invalid ${placeholder}` }));
+			if(!value.match(regex.address)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: `${placeholder} is required` }));
+			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
 			if(isEmpty || !value.match(regex.address)) {
 
@@ -228,7 +241,8 @@ const SignUp = () => {
 
 			if(!isEmpty && value.match(regex.address)) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 			}
@@ -236,9 +250,9 @@ const SignUp = () => {
 
 		if(id.includes('email')) {
 
-			if(!value.match(regex.email)) setSignupRegex(prevState => ({ ...prevState, [target]: `Invalid ${placeholder}` }));
+			if(!value.match(regex.email)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: `${placeholder} is required` }));
+			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
 			if(isEmpty || !value.match(regex.email)) {
 
@@ -248,7 +262,8 @@ const SignUp = () => {
 
 			if(!isEmpty && value.match(regex.email)) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 			}
@@ -288,11 +303,12 @@ const SignUp = () => {
 
 			if(signup_state.password === signup_state.confirm_password) {
 
-				setSignupRegex(prevState => ({ ...prevState, [target]: undefined }));
+				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 
-			} else setSignupRegex(prevState => ({ ...prevState, [target]: 'Password does not match' }));
+			} else dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Password does not match' });
 
 			if(isEmpty || signup_state.password !== signup_state.confirm_password) {
 
@@ -300,7 +316,7 @@ const SignUp = () => {
 				e.target.classList.add(...alert_danger);
 			}
 
-			if(isEmpty) setSignupRegex(prevState => ({ ...prevState, [target]: 'You need to confirm password' }));
+			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'You need to confirm password' });
 		}
 
 		e.stopPropagation();
