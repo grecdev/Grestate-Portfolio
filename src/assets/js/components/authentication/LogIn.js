@@ -37,8 +37,8 @@ const LogIn = () => {
 	} = useContext(GlobalContext);
 
 	const defaultLoginState = {
-		email: 'user@gmail.com',
-		password: 'Logiteck1'
+		email: '',
+		password: ''
 	}
 
 	const [login_state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);

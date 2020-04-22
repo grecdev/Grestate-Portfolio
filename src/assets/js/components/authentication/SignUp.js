@@ -274,7 +274,7 @@ const SignUp = () => {
 			const div = document.createElement('div');
 
 			// So we display only one error
-			document.body.contains(document.querySelector('.password-regex')) && document.querySelector('.password-regex').remove();
+			document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
 
 			if(!value.match(regex.password)) {
 
@@ -293,7 +293,7 @@ const SignUp = () => {
 
 			} else {
 
-				document.body.contains(document.querySelector('.password-regex')) && document.querySelector('.password-regex').remove();
+				document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
 				e.target.classList.add('correct-validation');
 				e.target.classList.remove(...alert_danger);
 			}

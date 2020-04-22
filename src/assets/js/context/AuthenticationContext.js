@@ -127,7 +127,7 @@ export class AuthenticationContextProvider extends Component {
 		
 			err && this.setState({ auth_loader: false });
 
-			err.code.includes('wrong-password') && this.setState({ authentication_regex: err.message });
+			err.code.includes('wrong-password') && this.setState({ authentication_regex: 'The password is invalid' });
 			err.code.includes('user-not-found') && this.setState({ authentication_regex: 'The user has not been found in our database' });
 		});
 	}
@@ -140,6 +140,82 @@ export class AuthenticationContextProvider extends Component {
 		.then(() => console.log('User signed out'))
 		.catch(err => console.log(err));
 
+	}
+
+	updateUser(data) {
+
+		this.setState({ auth_loader: true, authentication_regex: undefined });
+
+		const current_user = firebase_auth.auth().currentUser;
+
+		const credentials = firebase.auth.EmailAuthProvider.credential(
+			current_user.email, 
+			data.current_password
+		);
+		
+		current_user.reauthenticateWithCredential(credentials).then(() => {
+			
+			// User re-authenticated.
+			console.log('User re-authenticated');
+
+			firebase_db.collection('users').doc(current_user.uid).update({
+				first_name: data.first_name,
+				last_name: data.last_name,
+				age: data.age,
+				gender: data.gender,
+				city: data.city,
+				address: data.address,
+				email: data.email,
+				date_joined: data.date_joined
+			})
+			.then(() => console.log('profile succesfully updated'))
+			.catch(err => console.log(err));
+
+			// Change email
+			if(data.email.length > 0) {
+
+				current_user.updateEmail(data.email).then(() => {
+	
+					console.log('Email succesfully changed');
+	
+					this.setState({ auth_loader: false });
+		
+				}).catch(err => {
+		
+					err && this.setState({ auth_loader: false, authentication_regex: err.message});
+
+				});
+			}
+
+			// Change password
+			if(data.new_password.length > 0) {
+				
+				current_user.updatePassword(data.new_password).then(() => {
+	
+					console.log('Password changed');
+		
+					this.setState({ auth_loader: false });
+	
+				}).catch(err => {
+
+					err && this.setState({ auth_loader: false, authentication_regex: err.message});
+
+				});
+			}
+
+			this.setState({ authentication_regex: 'Profile successfully updated', auth_loader: false });
+
+			setTimeout(() => this.setState({ authentication_regex: undefined }), 3000);
+
+		// Re-authentication failed	
+		}).catch(err => {
+
+			err && this.setState({ auth_loader: false });
+
+			if(err.code.includes('wrong-password')) this.setState({ authentication_regex: 'The password is invalid' });
+			else this.setState({ authentication_regex: err.message });
+
+		});
 	}
 
 	deleteUser() {
@@ -157,83 +233,6 @@ export class AuthenticationContextProvider extends Component {
 
 			console.log(err.message);
 		});
-	}
-
-	updateUser(data) {
-
-		this.setState({ auth_loader: true });
-
-		const current_user = firebase_auth.auth().currentUser;
-
-		if(data.current_password.length > 0) {
-
-			const credentials = firebase.auth.EmailAuthProvider.credential(
-				current_user.email, 
-				data.current_password
-			);
-			
-			current_user.reauthenticateWithCredential(credentials).then(() => {
-				
-				// User re-authenticated.
-				console.log('User re-authenticated');
-	
-				// Change email
-				if(data.email.length > 0) {
-	
-					current_user.updateEmail(data.email).then(() => {
-		
-						console.log('Email succesfully changed');
-		
-						this.setState({ auth_loader: false });
-			
-					}).catch(err => {
-			
-						console.log(err);
-		
-						setTimeout(() => this.setState({ auth_loader: false }), 500);
-					});
-				}
-	
-				// Change password
-				if(data.new_password.length > 0) {
-					
-					current_user.updatePassword(new_password).then(() => {
-		
-						console.log('Password changed');
-			
-						this.setState({ auth_loader: false });
-		
-					}).catch(err => {
-	
-						console.log(err);
-		
-						setTimeout(() => this.setState({ auth_loader: false }), 500);
-					});
-				}
-	
-			}).catch(err => {
-	
-				// Re-authentication failed
-				console.log(err.message);
-			});
-		}
-
-		firebase_db.collection('users').doc(current_user.uid).update({
-			first_name: data.first_name,
-			last_name: data.last_name,
-			age: data.age,
-			gender: data.gender,
-			city: data.city,
-			address: data.address,
-			email: data.email,
-			date_joined: data.date_joined
-		})
-		.then(() => {
-
-			console.log('profile succesfully updated');
-			this.setState({ auth_loader: false });
-		})
-		.catch(err => console.log(err))
 	}
 
 	authListener() {
