@@ -24,7 +24,8 @@ export class AuthenticationContextProvider extends Component {
 				this.setState({
 					login_enabled: true,
 					signup_enabled: false,
-					auth_loader: false
+					auth_loader: false,
+					authentication_regex: undefined
 				});
 			}
 
@@ -33,7 +34,8 @@ export class AuthenticationContextProvider extends Component {
 				this.setState({
 					login_enabled: false,
 					signup_enabled: true,
-					auth_loader: false
+					auth_loader: false,
+					authentication_regex: undefined
 				});
 			}
 		}
@@ -43,7 +45,8 @@ export class AuthenticationContextProvider extends Component {
 			this.setState({
 				login_enabled: false,
 				signup_enabled: false,
-				auth_loader: false
+				auth_loader: false,
+				authentication_regex: undefined
 			});
 		}
 
@@ -120,12 +123,12 @@ export class AuthenticationContextProvider extends Component {
 				auth_loader: false
 			});
 		})
-		.catch(error => {
-			
-			console.log('Remove login loader');
+		.catch(err => {
+		
+			err && this.setState({ auth_loader: false });
 
-			setTimeout(() => this.setState({ auth_loader: false }), 500);
-			console.log(error.message);
+			err.code.includes('wrong-password') && this.setState({ authentication_regex: err.message });
+			err.code.includes('user-not-found') && this.setState({ authentication_regex: 'The user has not been found in our database' });
 		});
 	}
 

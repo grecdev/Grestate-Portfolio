@@ -13,7 +13,10 @@ header {
 
 	#mobile-navbar { display: none }
 
-	nav .navbar-nav .nav-item a.nav-link.page-active { color: $dark-1 }
+	nav .navbar-nav .nav-item a.nav-link.page-active {
+		color: $dark-1;
+		font-weight: bold;
+	}
 
 	nav .navbar-nav .nav-item a.nav-link:not(.page-active):hover { color: $green-light-1 }
 

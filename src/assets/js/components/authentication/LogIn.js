@@ -12,6 +12,7 @@ import {
 } from '@constants/actionTypes';
 
 import AuthLoader from './AuthLoader';
+import RegexAlert from '@components/global_layout/RegexAlert';
 
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
@@ -24,7 +25,8 @@ const LogIn = () => {
 		toggleModal,
 		socialAuthentication,
 		loginAuth,
-		auth_loader
+		auth_loader,
+		authentication_regex
 
 	} = useContext(AuthenticationContext);
 
@@ -36,7 +38,7 @@ const LogIn = () => {
 
 	const defaultLoginState = {
 		email: 'user@gmail.com',
-		password: '123456'
+		password: 'Logiteck1'
 	}
 
 	const [login_state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);
@@ -60,11 +62,6 @@ const LogIn = () => {
 		loginAuth(login_state.email, login_state.password);
 	}
 
-	const regexValidation = e => {
-
-		console.log(e.target, 'From login');
-	}
-
 	return (
 		<div id='login-modal' className='rounded'>
 			<Form name='login' onSubmit={login}>
@@ -80,7 +77,6 @@ const LogIn = () => {
 							placeholder="Enter email"
 							value={login_state.email}
 							onChange={handleChange}
-							onBlur={regexValidation}
 						/>
 					</Form.Group>
 
@@ -90,14 +86,17 @@ const LogIn = () => {
 							placeholder="Password"
 							value={login_state.password}
 							onChange={handleChange}
-							onBlur={regexValidation}
 						/>
 					</Form.Group>
 
 					<div className='w-100 d-flex flex-column align-items-center'>
+
 						{auth_loader ? <AuthLoader /> : (
 							<>
-								<Button id='login-auth' type='submit' className='mx-auto mb-3 py-2'>Log in</Button>
+
+								{authentication_regex && <RegexAlert text={authentication_regex} danger={true} />}
+
+								<Button id='login-auth' type='submit' className={`mx-auto mb-3 py-2 ${authentication_regex && 'mt-3'}`}>Log in</Button>
 								<Link 
 									to='forgot-password'
 									className='mx-auto text-decoration-underline text-secondary'
