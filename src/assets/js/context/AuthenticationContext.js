@@ -149,7 +149,7 @@ export class AuthenticationContextProvider extends Component {
 		const current_user = firebase_auth.auth().currentUser;
 
 		const credentials = firebase.auth.EmailAuthProvider.credential(
-			current_user.email, 
+			current_user.email,
 			data.current_password
 		);
 		
@@ -176,8 +176,6 @@ export class AuthenticationContextProvider extends Component {
 
 				current_user.updateEmail(data.email).then(() => {
 	
-					console.log('Email succesfully changed');
-	
 					this.setState({ auth_loader: false });
 		
 				}).catch(err => {
@@ -191,8 +189,6 @@ export class AuthenticationContextProvider extends Component {
 			if(data.new_password.length > 0) {
 				
 				current_user.updatePassword(data.new_password).then(() => {
-	
-					console.log('Password changed');
 		
 					this.setState({ auth_loader: false });
 	
@@ -213,25 +209,57 @@ export class AuthenticationContextProvider extends Component {
 			err && this.setState({ auth_loader: false });
 
 			if(err.code.includes('wrong-password')) this.setState({ authentication_regex: 'The password is invalid' });
-			else this.setState({ authentication_regex: err.message });
 
+			if(err.code.includes('too-many-requests')) {
+
+				this.setState({ authentication_regex: `${err.message.slice(0, err.message.length - 1)} in 15 seconds.`, auth_loader: false });
+
+				setTimeout(() => this.setState({ authentication_regex: undefined }), 15000);
+			}
 		});
 	}
 
-	deleteUser() {
+	deleteUser(password) {
 
-		firebase_db.collection("users").doc(this.state.uid).delete()
-		.then(() => console.log("Document successfully deleted!"))
-		.catch(err => console.error(err));
+		const current_user = firebase_auth.auth().currentUser;
+
+		const credentials = firebase.auth.EmailAuthProvider.credential(
+			current_user.email,
+			password
+		);
+
+		this.setState({ auth_loader: true, authentication_regex: undefined });
 		
-		firebase_auth.auth().currentUser.delete()
-		.then(() => {
+		current_user.reauthenticateWithCredential(credentials).then(() => {
 
-			console.log('user succesfully deleted');
-		})
-		.catch(err => {
+			// User re-authenticated.
 
-			console.log(err.message);
+			firebase_db.collection("users").doc(current_user.uid).delete()
+			.then(() => console.log("Document successfully deleted!"))
+			.catch(err => console.error(err));
+			
+			current_user.delete()
+			.then(() => {
+
+				console.log('user succesfully deleted');
+
+			})
+			.catch(err => {
+
+				console.log(err.message);
+			});
+
+			// An re-authentication error happened.
+		}).catch(err => {
+
+			if(err.code.includes('wrong-password')) this.setState({ authentication_regex: 'Wrong password', auth_loader: false });
+			
+			if(err.code.includes('too-many-requests')) {
+
+				this.setState({ authentication_regex: `${err.message.slice(0, err.message.length - 1)} in 15 seconds.`, auth_loader: false });
+
+				setTimeout(() => this.setState({ authentication_regex: undefined }), 15000);
+			}
 		});
 	}
 

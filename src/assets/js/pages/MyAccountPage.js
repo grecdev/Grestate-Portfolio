@@ -69,6 +69,8 @@ const MyAccountPage = () => {
 		const inputs_available = document.querySelectorAll('form[name="account-form"] .input-field');
 		const inputs_correct = document.querySelectorAll('form[name="account-form"] .correct-validation');
 
+		dispatch_account_regex({ type: RESET_REGEX_ALERT, payload: defaultRegexState });
+
 		if(e.target.id.includes('update')) {
 
 			inputs_available.forEach(input => {
@@ -87,14 +89,34 @@ const MyAccountPage = () => {
 
 			} else {
 
-				dispatch_account_regex({ type: RESET_REGEX_ALERT, payload: defaultRegexState });
 				dispatch_account_regex({ type: SET_REGEX_ALERT, target: 'global', payload: 'All inputs are required' });
 
 				setTimeout(() => dispatch_account_regex({ type: SET_REGEX_ALERT, target: 'global', payload: undefined }), 3000);
 			}
 		}
 
-		if(e.target.id.includes('delete')) deleteUser();
+		if(e.target.id.includes('delete')) {
+
+			if(account_state.current_password.length > 0) {
+
+				console.log(authentication_regex);
+
+				deleteUser(account_state.current_password);
+
+			} else {
+
+				document.getElementById('account-current-password').classList.add(...alert_danger);
+
+				dispatch_account_regex({ type: SET_REGEX_ALERT, target: 'current_password', payload: 'You need to insert your password' });
+
+				setTimeout(() => {
+
+					document.getElementById('account-current-password').classList.remove(...alert_danger);
+
+				}, 3000);
+			}
+
+		}
 
 		e.stopPropagation();
 	}
@@ -447,7 +469,7 @@ const MyAccountPage = () => {
 						</Form.Group>
 					</Form.Row>
 
-					{authentication_regex && <RegexAlert text={authentication_regex} danger={authentication_regex.includes('success') ? false : true} />}
+					{authentication_regex && <RegexAlert text={authentication_regex} danger={authentication_regex.includes('successfully') ? false : true} />}
 					{account_regex.global && <RegexAlert text={account_regex.global} danger={true} />}
 
 					<Form.Row className={`justify-content-center ${account_regex.global || authentication_regex ? 'mt-4': ''}`}>
@@ -458,6 +480,7 @@ const MyAccountPage = () => {
 								className='btn btn-dark w-25 px-3 py-2 mx-3' 
 								type='button'
 								onClick={manageUser}
+								disabled={authentication_regex && authentication_regex.includes('login attempts') ? true : false}
 								>
 									Update account
 							</button>
@@ -467,6 +490,7 @@ const MyAccountPage = () => {
 									className='btn btn-danger w-25 px-3 py-2 mx-3' 
 									type='button'
 									onClick={manageUser}
+									disabled={authentication_regex && authentication_regex.includes('login attempts') ? true : false}
 									>
 										Delete account
 								</button>
