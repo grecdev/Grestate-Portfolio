@@ -5,6 +5,8 @@ import { firebase_auth, firebase_db } from '../firebaseConfig';
 export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
+	static whyDidYouRender = true;
+
 	state = {
 		login_enabled: false,
 		signup_enabled: false,

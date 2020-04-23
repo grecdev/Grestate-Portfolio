@@ -1,4 +1,11 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
+import React, { 
+	
+	createContext, 
+	useEffect, 
+	useReducer, 
+	useState
+
+} from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -21,7 +28,7 @@ const GlobalContextProvider = (props) => {
 		location: undefined
 	}
 
-	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState)
+	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState);
 	
 	const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
@@ -38,7 +45,6 @@ const GlobalContextProvider = (props) => {
 	}
 
 	const [counter, setCounter] = useState(false);
-
 	const counterAnimation = () => {
 
 		if (window.pageYOffset >= 1350) setCounter(true);
@@ -111,11 +117,11 @@ const GlobalContextProvider = (props) => {
 
 	useEffect(() => {
 
+		dispatch({ type: CHANGE_LOCATION, payload: location.pathname });
+
 		location.pathname !== '/' && document.body.classList.add('header-space');
 
 		window.scrollTo(0, 0);
-
-		dispatch({ type: CHANGE_LOCATION, payload: location.pathname });
 
 	}, [location.pathname]);
 
@@ -132,6 +138,8 @@ const GlobalContextProvider = (props) => {
 		</GlobalContext.Provider>
 	)
 }
+
+GlobalContextProvider.whyDidYouRender = true;
 
 GlobalContextProvider.propTypes = {
 	match: PropTypes.object.isRequired,

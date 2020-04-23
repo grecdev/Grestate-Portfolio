@@ -1,8 +1,16 @@
-import React, { useEffect, useReducer, createContext, useContext } from 'react';
+import React, {
+	
+	useEffect,
+	useReducer,
+	createContext,
+	useContext
+	
+} from 'react';
+
+export const FetchContext = createContext();
 
 import { GlobalContext } from '@context/GlobalContext';
 
-export const FetchContext = createContext();
 import FetchReducer from '@reducers/FetchReducer';
 import {
 
@@ -144,5 +152,7 @@ const FetchContextProvider = (props) => {
 		</FetchContext.Provider>
 	)
 }
+
+FetchContextProvider.whyDidYouRender = true;
 
 export default FetchContextProvider;

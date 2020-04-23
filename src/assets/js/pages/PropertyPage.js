@@ -28,8 +28,8 @@ const PropertyPage = ({ match }) => {
 	const {
 
 		db,
-		filtered_buy_properties,
-		filtered_rent_properties
+		buy_properties,
+		rent_properties,
 		
 	} = useContext(FetchContext);
 
@@ -43,8 +43,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		// if(filtered_buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		// if(filtered_rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
@@ -52,14 +52,12 @@ const PropertyPage = ({ match }) => {
 
 	useEffect(() => {
 
-		// if(location.includes('buy') && filtered_buy_properties.length > 0) filtered_buy_properties.filter(item => item.id === houseId && setProperty(item));
-		// if(location.includes('rent') && filtered_rent_properties.length > 0) filtered_rent_properties.filter(item => item.id === houseId && setProperty(item));
+		if(location.includes('buy') && buy_properties.length > 0) buy_properties.filter(item => item.id === houseId && setProperty(item));
+		if(location.includes('rent') && rent_properties.length > 0) rent_properties.filter(item => item.id === houseId && setProperty(item));
 
 		db.filter(item => item.id === houseId && setProperty(item));
 
-		/// CHANGE HERE
-		// [filtered_buy_properties, filtered_rent_properties]
-	});
+	}, [buy_properties, rent_properties]);
 
 	const defaultSliderState = {
 		// This is the image that we display it when we first enter on the page
