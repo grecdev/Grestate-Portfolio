@@ -31,7 +31,7 @@ module.exports = {
 						esModule: false
 					}
 				}
-			}
+			},
 		]
 	},
 	plugins: [

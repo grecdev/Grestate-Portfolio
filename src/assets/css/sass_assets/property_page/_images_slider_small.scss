@@ -22,6 +22,8 @@
 
 		.review-image {
 			transition: transform 350ms ease-in-out;
+			height: 100%;
+			width: 100%;
 
 			&:hover { opacity: 0.9 }
 		}
@@ -33,7 +35,7 @@
 			color: $white;
 		}
 
-		> div {
+		> div:not(.review-image) {
 			top: 0;
 			right: 0;
 			bottom: 0;
@@ -45,6 +47,6 @@
 			transition: opacity 300ms ease-in-out;
 		}
 
-		&:hover > div { opacity: 1 }
+		&:hover > div:not(.review-image) { opacity: 1 }
 	}
 }

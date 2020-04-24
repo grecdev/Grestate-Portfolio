@@ -4,12 +4,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { GlobalContext } from '@context/GlobalContext';
 
+import pin1 from '../../../media/pin-1.svg';
+import hightlight_pin1 from '../../../media/hightlight-pin-1.svg';
+
+import pin2 from '../../../media/pin-2.svg';
+import hightlight_pin2 from '../../../media/hightlight-pin-2.svg';
+
+import Image from '@components/global_layout/Image';
+
 const PropertyBox = ({ array }) => {
 
 	const {
 
 		changePage,
-		getImage,
 		location
 
 	} = useContext(GlobalContext);
@@ -32,14 +39,14 @@ const PropertyBox = ({ array }) => {
 
 		if(location.includes('buy')) {
 			
-			e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin-1.svg'));
-			e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin-1.svg'));
+			e.type === 'mouseenter' && pinImage.setAttribute('src', hightlight_pin1);
+			e.type === 'mouseleave' && pinImage.setAttribute('src', pin1);
 		}
 
 		if(location.includes('rent')) {
 
-			e.type === 'mouseenter' && pinImage.setAttribute('src', getImage('hightlight-pin-2.svg'));
-			e.type === 'mouseleave' && pinImage.setAttribute('src', getImage('pin-2.svg'));
+			e.type === 'mouseenter' && pinImage.setAttribute('src', hightlight_pin2);
+			e.type === 'mouseleave' && pinImage.setAttribute('src', pin2);
 		}
 		
 		e.stopPropagation();
@@ -63,7 +70,9 @@ const PropertyBox = ({ array }) => {
 				onMouseLeave={hightlightPin}
 				onClick={test}
 			>
-				<img src={getImage(item.propertyImages.showcaseImage)} className='rounded'/>
+				<div className='rounded'>
+					<Image src={item.propertyImages.showcaseImage} />
+				</div>
 
 				<div className="property-box-info pt-3">
 					<p className='font-weight-bold m-0'>{item.addressLocation}</p>

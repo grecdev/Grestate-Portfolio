@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '@context/GlobalContext';
 import { FetchContext } from '@context/FetchContext';
 
+import Image from '@components/global_layout/Image';
 import PropertyBox from './PropertyBox';
 import FilterProperties from './FilterProperties';
 
@@ -12,8 +13,7 @@ const SearchListings = () => {
 
 	const {
 
-		location,
-		getImage
+		location
 
 	} = useContext(GlobalContext);
 
@@ -52,7 +52,10 @@ const SearchListings = () => {
 
 					<div className="search-not-found text-center">
 						<p className='h1'>No property found, please try again.</p>
-						<img className='mx-auto' src={getImage('property-not-found.png')} alt='property not found' />
+						
+						<div className="mx-auto">
+							<Image src='property-not-found.png' />
+						</div>
 					</div>
 
 				) : (

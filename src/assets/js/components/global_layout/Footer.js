@@ -1,15 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+
+import Image from './Image';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-import { GlobalContext } from '@context/GlobalContext';
+import Col from 'react-bootstrap/Col';	
 
 const Footer = () => {
-
-	const { getImage } = useContext(GlobalContext);
 
 	return (
 		<footer>
@@ -47,7 +45,7 @@ const Footer = () => {
 					</Col>
 
 					<Col>
-						<div className="footer-image mx-auto"><img src={getImage('houses-footer.svg')} alt='neighbourhood' /></div>
+						<div className="footer-image mx-auto"><Image src='houses-footer.svg' /></div>
 					</Col>
 
 				</Row>

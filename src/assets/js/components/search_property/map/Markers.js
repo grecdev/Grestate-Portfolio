@@ -6,6 +6,12 @@ import { GlobalContext } from '@context/GlobalContext';
 
 import { Marker } from 'react-map-gl';
 
+import pin1 from '../../../../media/pin-1.svg';
+import hightlight_pin1 from '../../../../media/hightlight-pin-1.svg';
+
+import pin2 from '../../../../media/pin-2.svg';
+import hightlight_pin2 from '../../../../media/hightlight-pin-2.svg';
+
 export class Markers extends PureComponent {
 
 	static contextType = GlobalContext;
@@ -23,7 +29,7 @@ export class Markers extends PureComponent {
 
 	hightlightProperty = e => {
 
-		const { getImage, location } = this.context;
+		const { location } = this.context;
 
 		const propertyIndex = e.currentTarget.dataset.propertyIndex;
 
@@ -37,14 +43,14 @@ export class Markers extends PureComponent {
 
 		if(location.includes('buy')) {
 
-			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', getImage('hightlight-pin-1.svg'));
-			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', getImage('pin-1.svg'));
+			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', hightlight_pin1);
+			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', pin1);
 		}
 
 		if(location.includes('rent')) {
 
-			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', getImage('hightlight-pin-2.svg'));
-			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', getImage('pin-2.svg'));
+			e.type === 'mouseenter' && e.currentTarget.setAttribute('src', hightlight_pin2);
+			e.type === 'mouseleave' && e.currentTarget.setAttribute('src', pin2);
 		}
 
 		e.stopPropagation();
@@ -62,7 +68,7 @@ export class Markers extends PureComponent {
 				latitude={item.coordinates.latitude}
 			>
 				<img
-					src={location.includes('buy') ? getImage("pin-1.svg") : getImage("pin-2.svg")}
+					src={location.includes('buy') ? pin1 : pin2}
 					className='marker-image'
 					data-property-index={index}
 					onClick={this.togglePopup}

@@ -1,19 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '@context/GlobalContext';
-
 const AgentListing = ({ agent }) => {
-
-	const {
-
-		getImage
-	 	
-	} = useContext(GlobalContext);
 	
 	// If we use a img element the quality of image is bad
 	const bg_image = {
-		background: `url(${getImage(agent.avatar)}) no-repeat center/cover`
+		background: `url(${require(`../../../media/${agent.avatar}`)}) no-repeat center/cover`
 	}
 
 	const showNumber = e => {

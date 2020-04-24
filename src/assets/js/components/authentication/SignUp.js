@@ -13,6 +13,7 @@ import {
 
 } from '@constants/actionTypes';
 
+import Image from '@components/global_layout/Image';
 import RegexAlert from '@components/global_layout/RegexAlert';
 import AuthLoader from './AuthLoader';
 
@@ -33,7 +34,6 @@ const SignUp = () => {
 
 	const {
 
-		getImage,
 		disableLetters
 
 	} = useContext(GlobalContext);
@@ -484,7 +484,7 @@ const SignUp = () => {
 						className="mb-3 p-0 border-0 rounded facebook-signin d-flex flex-row justify-content-between align-items-stretch"
 						onClick={socialAuthentication}
 						>
-						<span><img className='m-0' src={getImage('facebook-icon-white.svg')} alt='facebook icon' /></span>
+						<span><Image src='facebook-icon-white.svg' /></span>
 						<p className='w-100 py-2 m-0 font-weight-bold'>Sign up with facebook</p>
 					</button>
 
@@ -493,7 +493,7 @@ const SignUp = () => {
 						className="mb-3 p-0 rounded google-signin d-flex flex-row justify-content-center align-items-stretch"
 						onClick={socialAuthentication}
 						>
-						<span><img className='m-0' src={getImage('google-icon.svg')} alt='google icon' /></span>
+						<span><Image src='google-icon.svg' /></span>
 						<p className='w-100 p-2 m-0 font-weight-bold'>Sign up with google</p>
 					</button>
 				</Form.Row>

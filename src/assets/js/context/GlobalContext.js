@@ -30,7 +30,7 @@ const GlobalContextProvider = (props) => {
 
 	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState);
 	
-	const getImage = image => require(`../../media/${image}`);
+	// const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
 
 	const throttleEvent = (cb, interval) => function (...args) {
@@ -129,7 +129,7 @@ const GlobalContextProvider = (props) => {
 		<GlobalContext.Provider value={{
 			...state,
 			counter,
-			getImage,
+			// getImage,
 			throttleEvent,
 			disableLetters,
 			changePage,

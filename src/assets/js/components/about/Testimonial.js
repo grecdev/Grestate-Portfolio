@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 
 const Testimonial = () => {
 
-	const { getImage, throttleEvent } = useContext(GlobalContext);
+	const { throttleEvent } = useContext(GlobalContext);
 
 	const defaultCarouselState = {
 		boxWidth: 0,
@@ -27,35 +27,35 @@ const Testimonial = () => {
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Elif Mathews',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: getImage('avatar-1.jpeg')
+			avatar: require('../../../media/avatar-1.jpg')
 		},
 		{
 			id: 2,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Dru Wood',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: getImage('avatar-2.jpeg')
+			avatar: require('../../../media/avatar-2.jpg')
 		},
 		{
 			id: 3,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Willem Lugo',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: getImage('avatar-3.jpeg')
+			avatar: require('../../../media/avatar-3.jpg')
 		},
 		{
 			id: 4,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Borys Redmond',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: getImage('avatar-4.jpeg')
+			avatar: require('../../../media/avatar-4.jpg')
 		},
 		{
 			id: 5,
 			feedback: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corrupti nostrum repellendus, eos animi illum hic cupiditate voluptatum eum veniam commodi!',
 			name: 'Tashan Barr',
 			description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, modi!',
-			avatar: getImage('avatar-5.jpeg')
+			avatar: require('../../../media/avatar-5.jpg')
 		}
 	];
 

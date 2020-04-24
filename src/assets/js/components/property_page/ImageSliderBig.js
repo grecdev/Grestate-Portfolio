@@ -1,15 +1,9 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '@context/GlobalContext';
+import Image from '@components/global_layout/Image';
 
 const ImageSliderBig = (props) => {
-
-	const {
-
-		getImage
-
-	} = useContext(GlobalContext);
 
 	const {
 
@@ -23,7 +17,7 @@ const ImageSliderBig = (props) => {
 
 	const displayImages = () => {
 
-		document.querySelectorAll('#images-slider-big .image-gallery img').forEach((image, index) => {
+		document.querySelectorAll('#images-slider-big .image-gallery > div').forEach((image, index) => {
 
 			image.style.transition = 'none';
 			setTimeout(() => image.style.transition = '', transitionTime);
@@ -45,8 +39,6 @@ const ImageSliderBig = (props) => {
 
 		displayImages();
 
-		console.log('images big');
-
 	}, []);
 
 	let count = shownImage;
@@ -66,11 +58,11 @@ const ImageSliderBig = (props) => {
 
 			if(target.id.includes('right')) {
 
-				if(count === 0) count = document.querySelectorAll('#images-slider-big .image-gallery img').length - 1;
+				if(count === 0) count = document.querySelectorAll('#images-slider-big .image-gallery > div').length - 1;
 				else count--;
 			}
 
-			document.querySelectorAll('#images-slider-big .image-gallery img').forEach((image, index) => {
+			document.querySelectorAll('#images-slider-big .image-gallery > div').forEach((image, index) => {
 	
 				const image_margin = parseFloat(window.getComputedStyle(image).getPropertyValue('margin-left'));
 				const image_width = Math.ceil(image.getBoundingClientRect().width + image_margin);				
@@ -169,12 +161,12 @@ const ImageSliderBig = (props) => {
 
 				{ images.map(image => (
 
-					<img
+					<div
 						key={image}
-						src={getImage(image)}
-						alt={image}
 						className='position-absolute mx-5'
-					/>
+					>
+						<Image src={image} />
+					</div>
 
 				))}
 

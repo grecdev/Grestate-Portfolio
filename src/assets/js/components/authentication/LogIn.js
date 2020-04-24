@@ -2,7 +2,6 @@ import React, { useContext, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
-import { GlobalContext } from '@context/GlobalContext';
 
 import AuthenticationReducer from '@reducers/AuthenticationReducer';
 import {
@@ -13,6 +12,7 @@ import {
 
 import AuthLoader from './AuthLoader';
 import RegexAlert from '@components/global_layout/RegexAlert';
+import Image from '@components/global_layout/Image';
 
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
@@ -29,12 +29,6 @@ const LogIn = () => {
 		authentication_regex
 
 	} = useContext(AuthenticationContext);
-
-	const {
-
-		getImage
-
-	} = useContext(GlobalContext);
 
 	const defaultLoginState = {
 		email: '',
@@ -118,7 +112,7 @@ const LogIn = () => {
 						className="mb-3 p-0 border-0 rounded facebook-signin d-flex flex-row justify-content-between align-items-stretch"
 						onClick={socialAuthentication}
 						>
-						<span><img className='m-0' src={getImage('facebook-icon-white.svg')} alt='facebook icon' /></span>
+						<span><Image src='facebook-icon-white.svg' /></span>
 						<p className='w-100 py-2 m-0 font-weight-bold'>Sign in with facebook</p>
 					</button>
 
@@ -127,7 +121,7 @@ const LogIn = () => {
 						className="mb-3 p-0 rounded google-signin d-flex flex-row justify-content-center align-items-stretch"
 						onClick={socialAuthentication}
 						>
-						<span><img className='m-0' src={getImage('google-icon.svg')} alt='google icon' /></span>
+						<span><Image src='google-icon.svg' /></span>
 						<p className='w-100 p-2 m-0 font-weight-bold'>Sign in with google</p>
 					</button>
 				</Form.Row>

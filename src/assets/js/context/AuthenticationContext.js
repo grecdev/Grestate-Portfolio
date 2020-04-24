@@ -115,10 +115,7 @@ export class AuthenticationContextProvider extends Component {
 		this.setState({ auth_loader: true });
 		
 		firebase_auth.auth().signInWithEmailAndPassword(email, password)
-		.then(user => {
-
-			console.log('Remove login loader');
-			console.log('User has logged in');
+		.then(() => {
 
 			this.setState({
 				login_enabled: false,
@@ -139,8 +136,8 @@ export class AuthenticationContextProvider extends Component {
 		this.state.unsubscribe();
 		
 		firebase_auth.auth().signOut()
-		.then(() => console.log('User signed out'))
-		.catch(err => console.log(err));
+		.then(() => {})
+		.catch(() => {});
 
 	}
 
@@ -156,9 +153,6 @@ export class AuthenticationContextProvider extends Component {
 		);
 		
 		current_user.reauthenticateWithCredential(credentials).then(() => {
-			
-			// User re-authenticated.
-			console.log('User re-authenticated');
 
 			firebase_db.collection('users').doc(current_user.uid).update({
 				first_name: data.first_name,
@@ -170,8 +164,8 @@ export class AuthenticationContextProvider extends Component {
 				email: data.email,
 				date_joined: data.date_joined
 			})
-			.then(() => console.log('profile succesfully updated'))
-			.catch(err => console.log(err));
+			.then(() => {})
+			.catch(() => {});
 
 			// Change email
 			if(data.email.length > 0) {
@@ -189,6 +183,8 @@ export class AuthenticationContextProvider extends Component {
 
 			// Change password
 			if(data.new_password.length > 0) {
+
+				this.signOutAuth();
 				
 				current_user.updatePassword(data.new_password).then(() => {
 		
@@ -196,14 +192,18 @@ export class AuthenticationContextProvider extends Component {
 	
 				}).catch(err => {
 
-					err && this.setState({ auth_loader: false, authentication_regex: err.message});
+					err && this.setState({ auth_loader: false, authentication_regex: err.message });
 
 				});
+
+				// Because when password is changed firebase will log out the user
+				// And it won't show any loader
+			} else {
+
+				this.setState({ authentication_regex: 'Profile successfully updated', auth_loader: false });
+
+				setTimeout(() => this.setState({ authentication_regex: undefined }), 3000);
 			}
-
-			this.setState({ authentication_regex: 'Profile successfully updated', auth_loader: false });
-
-			setTimeout(() => this.setState({ authentication_regex: undefined }), 3000);
 
 		// Re-authentication failed	
 		}).catch(err => {
@@ -236,20 +236,15 @@ export class AuthenticationContextProvider extends Component {
 
 			// User re-authenticated.
 
+			this.state.unsubscribe();
+
 			firebase_db.collection("users").doc(current_user.uid).delete()
-			.then(() => console.log("Document successfully deleted!"))
+			.then(() => {})
 			.catch(err => console.error(err));
 			
 			current_user.delete()
-			.then(() => {
-
-				console.log('user succesfully deleted');
-
-			})
-			.catch(err => {
-
-				console.log(err.message);
-			});
+			.then(() => {})
+			.catch(err => {});
 
 			// An re-authentication error happened.
 		}).catch(err => {
@@ -268,6 +263,8 @@ export class AuthenticationContextProvider extends Component {
 	authListener() {
 
 		firebase_auth.auth().onAuthStateChanged(user => {
+
+			console.log(user);
 
 			if(user) {
 

@@ -1,18 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { GlobalContext } from '@context/GlobalContext';
+import Image from '@components/global_layout/Image';
 
 const AuthLoader = () => {
 
-	const {
-
-		getImage
-
-	} = useContext(GlobalContext);
-
 	return (
 		<div className='auth-loader w-25 d-flex flex-column justify-content-center align-items-center'>
-			<img src={getImage('auth-loader.svg')} alt='authentication loader' />
+			<Image src='auth-loader.svg' />
 		</div>
 	)
 }

@@ -26,9 +26,10 @@
 		width: 70%;
 		height: 600px;
 		
-		img {
+		> div {
 			left: -48px;
 			transition: transform 500ms ease-in-out;
+			width: 100%;
 		}
 		
 		p {

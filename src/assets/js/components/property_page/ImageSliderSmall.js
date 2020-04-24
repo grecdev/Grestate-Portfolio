@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { GlobalContext } from '@context/GlobalContext';
 
+import Image from '@components/global_layout/Image';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -10,7 +12,6 @@ const ImageSliderSmall = (props) => {
 
 	const {
 
-		getImage,
 		throttleEvent
 
 	} = useContext(GlobalContext);
@@ -37,6 +38,7 @@ const ImageSliderSmall = (props) => {
 		
 			const image_width = Math.ceil(image.getBoundingClientRect().width);
 			
+			// I use this because we have more than 3 images, but the slider displays only 3
 			if(shownImage >= document.querySelectorAll('.review-image').length - 1) image_pos = image_width * (index - 2);
 			else image_pos = image_width * (index - shownImage);
 
@@ -68,9 +70,9 @@ const ImageSliderSmall = (props) => {
 
 		if(target.classList.contains('image-small')) {
 
-			document.querySelectorAll('.image-small').forEach(image => image.classList.remove('rounded', 'selected'));
+			document.querySelectorAll('.image-small').forEach(image => image.classList.remove('selected'));
 
-			target.classList.add('rounded', 'selected');
+			target.classList.add('selected');
 
 			document.querySelectorAll('.review-image').forEach((image, index) => {
 
@@ -81,7 +83,7 @@ const ImageSliderSmall = (props) => {
 				if(index < current_image) {
 
 					image.style.transform = `translateY(${-image_width}px)`;
-					
+
 					// So we don't see any image that overlap the current shown ones
 					if(current_pos > 0) {
 
@@ -131,19 +133,20 @@ const ImageSliderSmall = (props) => {
 					{
 						images.map((image, index) => {
 
-							let className = 'image-small mb-3';
+							let className = 'rounded image-small mb-3';
 
 							if(index < 3) {
 
 								return (
 
 									<div
-										className={shownImage === index ? className += ' rounded selected' : className}
+										className={shownImage === index ? className += ' selected' : className}
 										key={image}
 										onClick={throttleEvent(changeImage, transitionTime + 200)}
 										data-image-index={index}
 									>
-										<img className='rounded' src={getImage(image)} alt='image' />
+										{/* <img  src={getImage(image)} alt='image' /> */}
+										<Image src={image} />
 									</div>
 									
 								)
@@ -156,12 +159,17 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.map((image, index) => <img
+						{images.map((image, index) => (
+
+							<div
 								key={image}
 								data-image-index={index}
 								className='review-image rounded position-absolute'
-								src={getImage(image)} alt={image}
-							/>
+							>
+								<Image src={image} />
+							</div>
+
+						)
 						)}
 
 				    <p className="position-absolute px-3 py-1 rounded"><span>{shownImage + 1}</span> / {images.length}</p>
