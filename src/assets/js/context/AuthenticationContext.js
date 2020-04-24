@@ -5,48 +5,72 @@ import { firebase_auth, firebase_db } from '../firebaseConfig';
 export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
 
-	static whyDidYouRender = true;
-
 	state = {
 		login_enabled: false,
 		signup_enabled: false,
+		reset_password_enabled: false,
 		auth_loader: false,
-		user_data: {},
+		user_data: undefined,
 		unsubscribe: undefined,
 		authentication_regex: undefined
 	}
 
 	toggleModal(e) {
 
-		// Clicking on the header links or buttons inside the modal
-		if(e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+		const {
+			
+			tagName,
+			id,
+			textContent,
+			parentElement,
+			classList
 
-			if(e.target.textContent.toLowerCase().replace(/ /g, '').includes('login')) {
+		} = e.target;
+
+		// Clicking on the header links or buttons inside the modal
+		if(tagName === 'BUTTON' || tagName === 'A') {
+
+			if(textContent.toLowerCase().replace(/ /g, '').includes('login')) {
 				
 				this.setState({
 					login_enabled: true,
 					signup_enabled: false,
+					reset_password_enabled: false,
 					auth_loader: false,
 					authentication_regex: undefined
 				});
 			}
 
-			if(e.target.textContent.toLowerCase().includes('sign up')) {
+			if(textContent.toLowerCase().includes('sign up')) {
 
 				this.setState({
 					login_enabled: false,
 					signup_enabled: true,
+					reset_password_enabled: false,
 					auth_loader: false,
 					authentication_regex: undefined
 				});
 			}
 		}
 
-		if(e.target.classList.contains('close-modal') || e.target.parentElement.classList.contains('close-modal') || e.target.id === 'authentication-modal' || (e.currentTarget.tagName === 'A' && e.currentTarget.getAttribute('href').includes('forgot'))) {
+		if(classList.contains('close-modal') || parentElement.classList.contains('close-modal') || id === 'authentication-modal') {
 			
 			this.setState({
 				login_enabled: false,
 				signup_enabled: false,
+				reset_password_enabled: false,
+				auth_loader: false,
+				unsubscribe: undefined,
+				authentication_regex: undefined
+			});
+		}
+
+		if(id.includes('reset-password-btn')) {
+
+			this.setState({
+				login_enabled: false,
+				signup_enabled: false,
+				reset_password_enabled: true,
 				auth_loader: false,
 				authentication_regex: undefined
 			});
@@ -124,10 +148,31 @@ export class AuthenticationContextProvider extends Component {
 		})
 		.catch(err => {
 		
-			err && this.setState({ auth_loader: false });
+			this.setState({ auth_loader: false });
 
 			err.code.includes('wrong-password') && this.setState({ authentication_regex: 'The password is invalid' });
 			err.code.includes('user-not-found') && this.setState({ authentication_regex: 'The user has not been found in our database' });
+		});
+	}
+
+	resetPasswordAuth(email) {
+
+		this.setState({ auth_loader: true });
+
+		firebase_auth.auth().sendPasswordResetEmail(email).then(() => {
+
+			// Email sent.
+			this.setState({ auth_loader: false, authentication_regex: 'Reset link has been successfully sended to the registered email' });
+
+			setTimeout(() => this.setState({ authentication_regex: undefined }), 5000);
+
+		}).catch(err => {
+
+			this.setState({ auth_loader: false });
+
+			err.code.includes('auth/user-not-found') && this.setState({ authentication_regex: "There is no user record corresponding to this email address. The user may have been deleted."});
+
+			setTimeout(() => this.setState({ authentication_regex: undefined }), 5000);
 		});
 	}
 
@@ -208,7 +253,7 @@ export class AuthenticationContextProvider extends Component {
 		// Re-authentication failed	
 		}).catch(err => {
 
-			err && this.setState({ auth_loader: false });
+			this.setState({ auth_loader: false });
 
 			if(err.code.includes('wrong-password')) this.setState({ authentication_regex: 'The password is invalid' });
 
@@ -264,8 +309,6 @@ export class AuthenticationContextProvider extends Component {
 
 		firebase_auth.auth().onAuthStateChanged(user => {
 
-			console.log(user);
-
 			if(user) {
 
 				const unsubscribe = firebase_db.collection('users').doc(user.uid).onSnapshot(doc => {
@@ -276,7 +319,7 @@ export class AuthenticationContextProvider extends Component {
 
 				this.setState({ unsubscribe });
 
-			} else this.setState({ user_data: null });
+			} else this.setState({ user_data: undefined });
 
 		});
 	}
@@ -288,9 +331,9 @@ export class AuthenticationContextProvider extends Component {
 
 	componentDidUpdate(prevState) {
 
-		if(prevState.login_enabled !== this.state.login_enabled || prevState.signup_enabled !== this.state.signup_enabled) {
+		if(prevState.login_enabled !== this.state.login_enabled || prevState.signup_enabled !== this.state.signup_enabled || prevState.reset_password_enabled !== this.state.reset_password_enabled) {
 
-			if(this.state.login_enabled || this.state.signup_enabled) document.body.classList.add('overflow-hidden');
+			if(this.state.login_enabled || this.state.signup_enabled || this.state.reset_password_enabled) document.body.classList.add('overflow-hidden');
 			else document.body.classList.remove('overflow-hidden');
 		}
 	}
@@ -305,6 +348,7 @@ export class AuthenticationContextProvider extends Component {
 				authListener: this.authListener.bind(this),
 				signUpAuth: this.signUpAuth.bind(this),
 				loginAuth: this.loginAuth.bind(this),
+				resetPasswordAuth: this.resetPasswordAuth.bind(this),
 				signOutAuth: this.signOutAuth.bind(this),
 				deleteUser: this.deleteUser.bind(this),
 				updateUser: this.updateUser.bind(this)

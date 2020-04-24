@@ -1,12 +1,15 @@
-import React, { useContext, useReducer } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useReducer, useState } from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 
+import RegexReducer from '@reducers/RegexReducer';
 import AuthenticationReducer from '@reducers/AuthenticationReducer';
+
 import {
 
-	HANDLE_LOGIN_INPUT
+	HANDLE_LOGIN_INPUT,
+	SET_REGEX_ALERT,
+	RESET_REGEX_ALERT
 
 } from '@constants/actionTypes';
 
@@ -22,7 +25,6 @@ const LogIn = () => {
 
 	const {
 
-		toggleModal,
 		socialAuthentication,
 		loginAuth,
 		auth_loader,
@@ -35,7 +37,15 @@ const LogIn = () => {
 		password: ''
 	}
 
-	const [login_state, dispatch] = useReducer(AuthenticationReducer, defaultLoginState);
+	const [login_state, dispatch_login_state] = useReducer(AuthenticationReducer, defaultLoginState);
+
+	const defaultRegexState = {
+		email: undefined,
+		password: undefined,
+		global: undefined
+	}
+	
+	const [login_regex, dispatch_login_regex] = useReducer(RegexReducer, defaultRegexState);
 
 	const handleChange = e => {
 
@@ -43,17 +53,96 @@ const LogIn = () => {
 		// To match the key from login_state
 		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
 
-		dispatch({ type: HANDLE_LOGIN_INPUT, target, payload: e.target.value });
+		dispatch_login_state({ type: HANDLE_LOGIN_INPUT, target, payload: e.target.value });
 
 		e.stopPropagation();
 	}
 
 	const login = e => {
 
+		const alert_danger = ['incorrect-validation', 'border-danger'];
+		const inputs_available = document.querySelectorAll('form[name="login"] .input-field');
+		const inputs_correct = document.querySelectorAll('form[name="login"] .correct-validation');
+		
+		if(inputs_available.length === inputs_correct.length) loginAuth(login_state.email, login_state.password);
+		else {
+
+			inputs_available.forEach(input => {
+
+				if(!input.classList.contains('correct-validation')) {
+
+					input.classList.add(...alert_danger);
+
+					setTimeout(() => input.classList.remove(...alert_danger), 3000);
+				}
+			});
+
+			dispatch_login_regex({ type: SET_REGEX_ALERT, target: 'global', payload: 'All inputs are required' });
+
+			setTimeout(() => dispatch_login_regex({ type: SET_REGEX_ALERT, target: 'global', payload: undefined }), 3000);
+		}
+
 		e.preventDefault();
 		e.stopPropagation();
+	}
 
-		loginAuth(login_state.email, login_state.password);
+	const loginRegex = e => {
+
+		const alert_danger = ['incorrect-validation', 'border-danger'];
+
+		// for email
+		const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gi;
+
+		const {
+
+			id,
+			value
+
+		} = e.target;
+
+		const isEmpty = value.length === 0;
+
+		// Remove the `login-` string from id and replace `-` with `_`
+		const target = id.substring(id.indexOf('-') + 1).replace(/\-/g, '_');
+
+		if(id.includes('email')) {
+
+			if(!value.match(regex)) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Invalid email' });
+
+			if(isEmpty) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Email is required to login' });
+
+			if(isEmpty || !value.match(regex)) {
+
+				e.target.classList.remove('correct-validation');
+				e.target.classList.add(...alert_danger);
+			}
+
+			if(!isEmpty && value.match(regex)) {
+
+				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+				e.target.classList.add('correct-validation');
+				e.target.classList.remove(...alert_danger);
+			}
+		}
+
+		if(id.includes('password')) {
+
+			if(isEmpty) {
+
+				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Password is required to login' });
+
+				e.target.classList.remove('correct-validation');
+				e.target.classList.add(...alert_danger);
+
+			} else {
+
+				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+				e.target.classList.add('correct-validation');
+				e.target.classList.remove(...alert_danger);
+			}
+		}
 	}
 
 	return (
@@ -69,17 +158,23 @@ const LogIn = () => {
 						<Form.Control 
 							type="text"
 							placeholder="Enter email"
+							className='input-field'
 							value={login_state.email}
 							onChange={handleChange}
+							onBlur={loginRegex}
 						/>
+
+						{login_regex.email && <RegexAlert text={login_regex.email} danger={true} />}
 					</Form.Group>
 
 					<Form.Group as={Col} controlId="login-password" className='mb-4'>
 						<Form.Control
 							type="password"
 							placeholder="Password"
+							className='input-field'
 							value={login_state.password}
 							onChange={handleChange}
+							onBlur={loginRegex}
 						/>
 					</Form.Group>
 
@@ -88,16 +183,17 @@ const LogIn = () => {
 						{auth_loader ? <AuthLoader /> : (
 							<>
 
+								{login_regex.global && <RegexAlert text={login_regex.global} danger={true} />}
 								{authentication_regex && <RegexAlert text={authentication_regex} danger={true} />}
 
-								<Button id='login-auth' type='submit' className={`mx-auto mb-3 py-2 ${authentication_regex && 'mt-3'}`}>Log in</Button>
-								<Link 
-									to='forgot-password'
-									className='mx-auto text-decoration-underline text-secondary'
-									onClick={toggleModal}
+								<Button id='login-auth' type='submit' className={`mx-auto mb-3 py-2 ${authentication_regex || login_regex.global ? 'mt-3' : ''}`}>Log in</Button>
+								<Button 
+									id='reset-password-btn' 
+									type='button'
+									className='mx-auto text-secondary'
 								>
-									Forgot Password ?
-								</Link>
+									Reset Password
+								</Button>
 							</>
 						)}
 					</div>

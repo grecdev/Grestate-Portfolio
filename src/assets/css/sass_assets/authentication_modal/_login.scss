@@ -1,0 +1,8 @@
+#authentication-modal #login-modal {
+	
+	#reset-password-btn {
+		background: none;
+		
+		&:hover { text-decoration: underline }
+	}
+}

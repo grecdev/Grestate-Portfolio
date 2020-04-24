@@ -4,6 +4,7 @@ import { AuthenticationContext } from '@context/AuthenticationContext';
 
 import LogIn from './LogIn';
 import SignUp from './SignUp';
+import ForgotPassword from './ForgotPassword';
 
 const AuthenticationModal = () => {
 
@@ -11,6 +12,7 @@ const AuthenticationModal = () => {
 
 		login_enabled,
 		signup_enabled,
+		reset_password_enabled,
 		toggleModal
 
 	} = useContext(AuthenticationContext);
@@ -22,6 +24,7 @@ const AuthenticationModal = () => {
 
 			{login_enabled && <LogIn /> }
 			{signup_enabled && <SignUp /> }
+			{reset_password_enabled && <ForgotPassword />}
 			
 		</section>
 	)

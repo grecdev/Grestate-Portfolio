@@ -25,7 +25,8 @@ const App = () => {
 	const {
 
 		login_enabled,
-		signup_enabled
+		signup_enabled,
+		reset_password_enabled
 
 	} = useContext(AuthenticationContext);
 
@@ -48,7 +49,7 @@ const App = () => {
 					<Route component={NotFoundPage} />
 				</Switch>
 
-				{ login_enabled || signup_enabled ? <AuthenticationModal /> : null }
+				{ login_enabled || signup_enabled || reset_password_enabled ? <AuthenticationModal /> : null }
 
 				<ResetScroll />
 
