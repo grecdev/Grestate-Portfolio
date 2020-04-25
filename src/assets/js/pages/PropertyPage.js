@@ -51,8 +51,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		// if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		// if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
