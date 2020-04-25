@@ -113,7 +113,7 @@ const ImageSliderSmall = (props) => {
 					image.style.transform = `translateY(${image_width}px)`;
 
 					// So we don't see any image that overlap the current shown ones
-					if(current_pos > 0) {
+					if(current_pos < 0) {
 
 						image.style.transition = 'none';
 
