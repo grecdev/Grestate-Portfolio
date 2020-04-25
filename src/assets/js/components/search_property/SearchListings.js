@@ -1,4 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+
+	useContext, 
+	useEffect, 
+	useState,
+	memo
+
+} from 'react';
 
 import { GlobalContext } from '@context/GlobalContext';
 import { FetchContext } from '@context/FetchContext';
@@ -75,4 +82,4 @@ const SearchListings = () => {
 	)
 }
 
-export default SearchListings;
+export default memo(SearchListings);

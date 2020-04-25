@@ -53,7 +53,8 @@ module.exports = merge(config, {
 					'*.png',
 					'*.PNG',
 					'*.js',
-					'*.scss'
+					'*.scss',
+					'*.webp'
 				]
 			}
 		]),

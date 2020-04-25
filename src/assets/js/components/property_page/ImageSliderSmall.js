@@ -1,20 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { 
+
+	useEffect, 
+	useState, 
+	memo
+
+} from 'react';
 import PropTypes from 'prop-types';
 
-import { GlobalContext } from '@context/GlobalContext';
-
 import Image from '@components/global_layout/Image';
-
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const ImageSliderSmall = (props) => {
-
-	const {
-
-		throttleEvent
-
-	} = useContext(GlobalContext);
 
 	const {
 
@@ -62,17 +59,31 @@ const ImageSliderSmall = (props) => {
 
 	const changeImage = e => {
 
-		const target = e.currentTarget;
-		const current_image = parseFloat(target.dataset.imageIndex);
+		const {
+
+			classList,
+			dataset,
+
+		} = e.currentTarget;
+
+		const current_image = parseFloat(dataset.imageIndex);
 
 		setImageCount(current_image);
 		document.querySelector('.image-showcase > p span').textContent = current_image + 1;
 
-		if(target.classList.contains('image-small')) {
+		if(classList.contains('image-small') && dataset.toggleImage === 'true') {
 
-			document.querySelectorAll('.image-small').forEach(image => image.classList.remove('selected'));
+			// So we have only image selected
+			document.querySelectorAll('.image-small').forEach(image => {
 
-			target.classList.add('selected');
+				image.classList.remove('selected');
+
+				image.setAttribute('data-toggle-image', 'false');
+
+				setTimeout(() => image.setAttribute('data-toggle-image', 'true'), transitionTime);
+			});
+
+			classList.add('selected');
 
 			document.querySelectorAll('.review-image').forEach((image, index) => {
 
@@ -125,7 +136,7 @@ const ImageSliderSmall = (props) => {
 
 		e.stopPropagation();
 	}
-	
+
 	return (
 		<section id='images-slider-small'>
 			<Row className='m-0'>
@@ -142,16 +153,15 @@ const ImageSliderSmall = (props) => {
 									<div
 										className={shownImage === index ? className += ' selected' : className}
 										key={image}
-										onClick={throttleEvent(changeImage, transitionTime + 200)}
+										onClick={changeImage}
 										data-image-index={index}
+										data-toggle-image='true'
 									>
-										{/* <img  src={getImage(image)} alt='image' /> */}
 										<Image src={image} />
 									</div>
 									
 								)
 							}
-							
 						})
 					}
 				</Col>
@@ -192,4 +202,4 @@ ImageSliderSmall.propTypes = {
 	toggleSliderModal: PropTypes.func.isRequired
 }
 
-export default ImageSliderSmall;
+export default memo(ImageSliderSmall);

@@ -1,4 +1,12 @@
-import React, { useReducer, useContext, useEffect, useState } from 'react';
+import React, {
+
+	useReducer,
+	useContext,
+	useEffect,
+	useState,
+	memo
+
+} from 'react';
 import PropTypes from 'prop-types';
 
 import { GlobalContext } from '@context/GlobalContext';
@@ -318,4 +326,4 @@ MortageCalculator.propTypes = {
 	getTotalPayment: PropTypes.func.isRequired
 }
 
-export default MortageCalculator;
+export default memo(MortageCalculator);

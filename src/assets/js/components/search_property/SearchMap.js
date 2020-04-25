@@ -1,4 +1,12 @@
-import React, { useState, useReducer, useContext, useEffect } from 'react';
+import React, {
+
+	useState,
+	useReducer,
+	useContext,
+	useEffect,
+	memo
+
+} from 'react';
 
 import { FetchContext } from '@context/FetchContext';
 import { GlobalContext } from '@context/GlobalContext';
@@ -126,4 +134,4 @@ const SearchMap = () => {
 	)
 }
 
-export default SearchMap;
+export default memo(SearchMap);

@@ -146,177 +146,181 @@ const SignUp = () => {
 
 		const alert_danger = ['incorrect-validation', 'border-danger'];
 
-		if(id.includes('name')) {
+		if(e.type === 'blur' || (e.type === 'keydown' && e.which === 13)) {
 
-			if(!value.match(regex.name)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
+			if(id.includes('name')) {
 
-			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
+				if(!value.match(regex.name)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(isEmpty || !value.match(regex.name)) {
+				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+				if(isEmpty || !value.match(regex.name)) {
+
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
+
+				if(!isEmpty && value.match(regex.name)) {
+
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
 
-			if(!isEmpty && value.match(regex.name)) {
+			if(id.includes('age')) {
 
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+				if(value.match(regex.age) || isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid age` });
 
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
-			}
-		}
+				if(parseFloat(value) < 18) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Must be over 18 years old' });
+				if(parseFloat(value) > 100) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Don\'t you think you are to old ?' });
 
-		if(id.includes('age')) {
+				if(value.match(regex.age) || parseFloat(value) < 18 || parseFloat(value) > 100 || isEmpty) {
 
-			if(value.match(regex.age) || isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid age` });
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
 
-			if(parseFloat(value) < 18) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Must be over 18 years old' });
-			if(parseFloat(value) > 100) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Don\'t you think you are to old ?' });
+				} else {
 
-			if(value.match(regex.age) || parseFloat(value) < 18 || parseFloat(value) > 100 || isEmpty) {
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
 
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
-
-			} else {
-
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
-
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
-			}
-		}
-
-		if(id.includes('gender')) {
-
-			if(!value.match(regex.gender)) {
-
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Need to select a gender' });
-
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
-
-			} else {
-
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
-
-				e.target.classList.remove(...alert_danger);
-				e.target.classList.add('correct-validation');
-			}
-		}
-
-		if(id.includes('city')) {
-
-			if(!value.match(regex.city)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
-
-			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
-
-			if(isEmpty || !value.match(regex.city)) {
-
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
 
-			if(!isEmpty && value.match(regex.city)) {
+			if(id.includes('gender')) {
 
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+				if(!value.match(regex.gender)) {
 
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
-			}
-		}
-		
-		if(id.includes('address')) {
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Need to select a gender' });
 
-			if(!value.match(regex.address)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
 
-			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
+				} else {
 
-			if(isEmpty || !value.match(regex.address)) {
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
 
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+					e.target.classList.remove(...alert_danger);
+					e.target.classList.add('correct-validation');
+				}
 			}
 
-			if(!isEmpty && value.match(regex.address)) {
+			if(id.includes('city')) {
 
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+				if(!value.match(regex.city)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
+				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
+
+				if(isEmpty || !value.match(regex.city)) {
+
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
+
+				if(!isEmpty && value.match(regex.city)) {
+
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
-		}
+			
+			if(id.includes('address')) {
 
-		if(id.includes('email')) {
+				if(!value.match(regex.address)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-			if(!value.match(regex.email)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
+				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
 
-			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
+				if(isEmpty || !value.match(regex.address)) {
 
-			if(isEmpty || !value.match(regex.email)) {
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
 
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+				if(!isEmpty && value.match(regex.address)) {
+
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
 
-			if(!isEmpty && value.match(regex.email)) {
+			if(id.includes('email')) {
 
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+				if(!value.match(regex.email)) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `Invalid ${placeholder}` });
 
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
+				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: `${placeholder} is required` });
+
+				if(isEmpty || !value.match(regex.email)) {
+
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
+
+				if(!isEmpty && value.match(regex.email)) {
+
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
-		}
 
-		if(target === 'password') {
+			if(target === 'password') {
 
-			const div = document.createElement('div');
+				const div = document.createElement('div');
 
-			// So we display only one error
-			document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
-
-			if(!value.match(regex.password)) {
-
-				div.classList.add('my-2', 'p-0', 'bg-white', 'text-center', 'text-danger', 'password-regex');
-
-				div.innerHTML = `
-					${value.length < 8 ? `<p class='mb-3'>Password needs to contain at least 8 characters</p>` : ''}
-					${!value.match(/\d{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 number</p>` : ''}
-					${!value.match(/[a-z]{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 lowercase character</p>` : ''}
-					${!value.match(/[A-Z]{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 uppercase character</p>` : ''}
-				`;
-				
-				e.target.parentElement.insertAdjacentElement('beforeend', div);
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
-
-			} else {
-
+				// So we display only one error
 				document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
+
+				if(!value.match(regex.password)) {
+
+					div.classList.add('my-2', 'p-0', 'bg-white', 'text-center', 'text-danger', 'password-regex');
+
+					div.innerHTML = `
+						${value.length < 8 ? `<p class='mb-3'>Password needs to contain at least 8 characters</p>` : ''}
+						${!value.match(/\d{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 number</p>` : ''}
+						${!value.match(/[a-z]{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 lowercase character</p>` : ''}
+						${!value.match(/[A-Z]{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 uppercase character</p>` : ''}
+					`;
+					
+					e.target.parentElement.insertAdjacentElement('beforeend', div);
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+
+				} else {
+
+					document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
-		}
 
-		if(target === 'confirm_password') {
+			if(target === 'confirm_password') {
 
-			if(signup_state.password === signup_state.confirm_password) {
+				if(signup_state.password === signup_state.confirm_password) {
 
-				dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
+					dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: undefined });
 
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
 
-			} else dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Password does not match' });
+				} else dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'Password does not match' });
 
-			if(isEmpty || signup_state.password !== signup_state.confirm_password) {
+				if(isEmpty || signup_state.password !== signup_state.confirm_password) {
 
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
+
+				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'You need to confirm password' });
 			}
 
-			if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'You need to confirm password' });
 		}
 
 		e.stopPropagation();
@@ -339,6 +343,7 @@ const SignUp = () => {
 							value={signup_state.last_name} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.last_name && <RegexAlert text={signup_regex.last_name} danger={true} />}
@@ -352,6 +357,7 @@ const SignUp = () => {
 							value={signup_state.first_name} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.first_name && <RegexAlert text={signup_regex.first_name} danger={true} />}
@@ -380,6 +386,7 @@ const SignUp = () => {
 							value={signup_state.gender} 
 							onChange={handleChange} 
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						>
 							<option disabled>Choose your gender</option>
 							<option value='male'>Male</option>
@@ -399,6 +406,7 @@ const SignUp = () => {
 							value={signup_state.city} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.city && <RegexAlert text={signup_regex.city} danger={true} />}
@@ -412,6 +420,7 @@ const SignUp = () => {
 							value={signup_state.address} 
 							onChange={handleChange} 
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.address && <RegexAlert text={signup_regex.address} danger={true} />}
@@ -427,6 +436,7 @@ const SignUp = () => {
 							value={signup_state.email} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.email && <RegexAlert text={signup_regex.email} danger={true} />}
@@ -442,6 +452,7 @@ const SignUp = () => {
 							value={signup_state.password} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						<div className='password-strength d-flex justify-content-start align-items-center mt-2'>
@@ -463,6 +474,7 @@ const SignUp = () => {
 							value={signup_state.confirm_password} 
 							onChange={handleChange}
 							onBlur={signupValidation}
+							onKeyDown={signupValidation}
 						/>
 
 						{signup_regex.confirm_password && <RegexAlert text={signup_regex.confirm_password} danger={true} />}

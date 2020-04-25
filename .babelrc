@@ -8,7 +8,7 @@
           "@components": "./src/assets/js/components",
           "@constants": "./src/assets/js/constants",
           "@reducers": "./src/assets/js/reducers",
-					"@media": "./src/assets/media"
+					"@helpers": "./src/assets/js/helpers"
         }
       }
     ]

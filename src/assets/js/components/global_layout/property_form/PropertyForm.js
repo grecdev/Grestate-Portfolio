@@ -2,7 +2,8 @@ import React, {
 
 	useContext,
 	useReducer,
-	useEffect
+	useEffect,
+	memo
 
 } from 'react';
 
@@ -98,7 +99,7 @@ const PropertyForm = ({ buy, rent, multiple }) => {
 		}
 
 		let submitted = false;
-		let arr = db;
+		let arr = [...db];
 
 		if(e.target.name.includes('buy')) {
 			
@@ -351,4 +352,4 @@ PropertyForm.propTypes = {
 	rent: PropTypes.bool.isRequired
 }
 
-export default PropertyForm;
+export default memo(PropertyForm);

@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useReducer } from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 
@@ -8,8 +8,7 @@ import AuthenticationReducer from '@reducers/AuthenticationReducer';
 import {
 
 	HANDLE_LOGIN_INPUT,
-	SET_REGEX_ALERT,
-	RESET_REGEX_ALERT
+	SET_REGEX_ALERT
 
 } from '@constants/actionTypes';
 
@@ -105,42 +104,45 @@ const LogIn = () => {
 		// Remove the `login-` string from id and replace `-` with `_`
 		const target = id.substring(id.indexOf('-') + 1).replace(/\-/g, '_');
 
-		if(id.includes('email')) {
+		if(e.type === 'blur' || (e.type === 'keydown' && e.which === 13)) {
 
-			if(!value.match(regex)) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Invalid email' });
+			if(id.includes('email')) {
 
-			if(isEmpty) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Email is required to login' });
-
-			if(isEmpty || !value.match(regex)) {
-
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
+				if(!value.match(regex)) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Invalid email' });
+	
+				if(isEmpty) dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Email is required to login' });
+	
+				if(isEmpty || !value.match(regex)) {
+	
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+				}
+	
+				if(!isEmpty && value.match(regex)) {
+	
+					dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
+	
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
-
-			if(!isEmpty && value.match(regex)) {
-
-				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
-
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
-			}
-		}
-
-		if(id.includes('password')) {
-
-			if(isEmpty) {
-
-				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Password is required to login' });
-
-				e.target.classList.remove('correct-validation');
-				e.target.classList.add(...alert_danger);
-
-			} else {
-
-				dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
-
-				e.target.classList.add('correct-validation');
-				e.target.classList.remove(...alert_danger);
+	
+			if(id.includes('password')) {
+	
+				if(isEmpty) {
+	
+					dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: 'Password is required to login' });
+	
+					e.target.classList.remove('correct-validation');
+					e.target.classList.add(...alert_danger);
+	
+				} else {
+	
+					dispatch_login_regex({ type: SET_REGEX_ALERT, target, payload: undefined });
+	
+					e.target.classList.add('correct-validation');
+					e.target.classList.remove(...alert_danger);
+				}
 			}
 		}
 	}
@@ -162,6 +164,7 @@ const LogIn = () => {
 							value={login_state.email}
 							onChange={handleChange}
 							onBlur={loginRegex}
+							onKeyDown={loginRegex}
 						/>
 
 						{login_regex.email && <RegexAlert text={login_regex.email} danger={true} />}
@@ -175,6 +178,7 @@ const LogIn = () => {
 							value={login_state.password}
 							onChange={handleChange}
 							onBlur={loginRegex}
+							onKeyDown={loginRegex}
 						/>
 					</Form.Group>
 

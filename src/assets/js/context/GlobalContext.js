@@ -24,7 +24,6 @@ const GlobalContextProvider = (props) => {
 	const { children, location, history } = props;
 
 	const defaultGlobalState = {
-		throttle: true,
 		location: undefined
 	}
 
@@ -45,6 +44,7 @@ const GlobalContextProvider = (props) => {
 	}
 
 	const [counter, setCounter] = useState(false);
+
 	const counterAnimation = () => {
 
 		if (window.pageYOffset >= 1350) setCounter(true);
@@ -101,15 +101,22 @@ const GlobalContextProvider = (props) => {
 		e.stopPropagation();
 	}
 
+	const loadEvent = e => {
+		
+		
+	}
+
 	useEffect(() => {
 
 		document.addEventListener('mousedown', clickEvent, true);
 		window.addEventListener('scroll', scrollEvent, true);
+		window.addEventListener('load', loadEvent, true);
 
 		return () => {
 
-			window.removeEventListener('scroll', scrollEvent);
 			document.removeEventListener('click', clickEvent, true);
+			window.removeEventListener('scroll', scrollEvent, true);
+			window.removeEventListener('load', loadEvent, true);
 
 		}
 
@@ -129,8 +136,6 @@ const GlobalContextProvider = (props) => {
 		<GlobalContext.Provider value={{
 			...state,
 			counter,
-			// getImage,
-			throttleEvent,
 			disableLetters,
 			changePage,
 		}}>
@@ -138,8 +143,6 @@ const GlobalContextProvider = (props) => {
 		</GlobalContext.Provider>
 	)
 }
-
-GlobalContextProvider.whyDidYouRender = true;
 
 GlobalContextProvider.propTypes = {
 	match: PropTypes.object.isRequired,

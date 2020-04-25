@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, memo } from 'react';
 import PropTypes from 'prop-types';
 
 import { FetchContext } from '@context/FetchContext';
@@ -121,4 +121,4 @@ DynamicOptions.propTypes = {
 	status: PropTypes.string.isRequired
 }
 
-export default DynamicOptions;
+export default memo(DynamicOptions);

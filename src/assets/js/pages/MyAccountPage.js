@@ -55,10 +55,18 @@ const MyAccountPage = () => {
 
 	const handleChange = e => {
 
+		const {
+
+			id
+
+		} = e.target;
+
 		// Remove the `account-` string from id and replace `-` with `_`
-		const target = e.target.id.substring(e.target.id.indexOf('-') + 1).replace(/\-/g, '_');
+		const target = id.substring(id.indexOf('-') + 1).replace(/\-/g, '_');
 
 		dispatch_account_state({ type: HANDLE_ACCOUNT_INPUT, target, payload: e.target.value });
+
+		console.log(id);
 
 		e.stopPropagation();
 	}

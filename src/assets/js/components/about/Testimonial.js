@@ -1,18 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
-
-import { GlobalContext } from '@context/GlobalContext';
+import { throttleEvent } from '@helpers';
 
 import SectionHeader from '@components/global_layout/SectionHeader';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 const Testimonial = () => {
-
-	const { throttleEvent } = useContext(GlobalContext);
-
+	
 	const defaultCarouselState = {
 		boxWidth: 0,
 		startPos: 0,
