@@ -12,7 +12,6 @@ import { withRouter } from 'react-router-dom';
 import GlobalReducer from '@reducers/GlobalReducer';
 import {
 
-	TOGGLE_THROTTLE,
 	CHANGE_LOCATION
 
 } from '@constants/actionTypes';
@@ -93,11 +92,12 @@ const GlobalContextProvider = (props) => {
 		
 		setTimeout(() => {
 
+			document.querySelector('html').classList.remove('overflow-hidden');
 			document.getElementById('intro-loader').classList.add('hidden');
 
 			setTimeout(() => document.getElementById('intro-loader').remove(), 300);
 
-		}, 2000);
+		}, 2500);
 	}
 
 	useEffect(() => {

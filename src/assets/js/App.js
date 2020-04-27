@@ -61,6 +61,7 @@ const App = () => {
 				<ResetScroll />
 
 				<IntroLoader />
+
 				<Footer />
 			</Suspense>
 		</>

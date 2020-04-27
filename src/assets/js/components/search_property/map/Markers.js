@@ -74,6 +74,7 @@ export class Markers extends PureComponent {
 					onClick={this.togglePopup}
 					onMouseEnter={this.hightlightProperty}
 					onMouseLeave={this.hightlightProperty}
+					alt='marker pin'
 				/>
 			</Marker>
 		))

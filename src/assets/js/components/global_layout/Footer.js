@@ -31,13 +31,13 @@ const Footer = () => {
 
 							<div className="d-flex flex-row justify-content-center footer-social">
 
-								<a href='https://github.com/grecdev' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-github-square"></i></a>
+								<a href='https://github.com/grecdev' aria-label='github profile' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-github-square"></i></a>
 
-								<a href='https://twitter.com/grecdev' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-twitter-square"></i></a>
+								<a href='https://twitter.com/grecdev' aria-label='twitter profile' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-twitter-square"></i></a>
 
-								<a href='https://www.instagram.com/grecdev1/' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-instagram"></i></a>
+								<a href='https://www.instagram.com/grecdev1/' aria-label='instagram profile' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-instagram"></i></a>
 
-								<a href='https://www.linkedin.com/in/grecdev/' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-linkedin"></i></a>
+								<a href='https://www.linkedin.com/in/grecdev/' aria-label='linkedin profile' rel='noreferrer noopener' target='_blank' className='mx-3'><i className="fab fa-linkedin"></i></a>
 
 							</div>
 

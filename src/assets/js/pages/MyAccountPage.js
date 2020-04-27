@@ -66,8 +66,6 @@ const MyAccountPage = () => {
 
 		dispatch_account_state({ type: HANDLE_ACCOUNT_INPUT, target, payload: e.target.value });
 
-		console.log(id);
-
 		e.stopPropagation();
 	}
 
@@ -105,13 +103,8 @@ const MyAccountPage = () => {
 
 		if(e.target.id.includes('delete')) {
 
-			if(account_state.current_password.length > 0) {
-
-				console.log(authentication_regex);
-
-				deleteUser(account_state.current_password);
-
-			} else {
+			if(account_state.current_password.length > 0) deleteUser(account_state.current_password);
+			else {
 
 				document.getElementById('account-current-password').classList.add(...alert_danger);
 

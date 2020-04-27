@@ -1,7 +1,7 @@
 export const throttleEvent = (cb, interval) => {
 
 	let enabled = true;
-
+	
 	return (...args) => {
 
 		if(!enabled) return;

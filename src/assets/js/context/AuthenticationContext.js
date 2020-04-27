@@ -289,7 +289,7 @@ export class AuthenticationContextProvider extends Component {
 			
 			current_user.delete()
 			.then(() => {})
-			.catch(err => {});
+			.catch(() => {});
 
 			// An re-authentication error happened.
 		}).catch(err => {
