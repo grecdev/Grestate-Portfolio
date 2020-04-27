@@ -86,6 +86,8 @@ const PropertyPage = ({ match }) => {
 			<main id="property-page">
 				<Container className='py-4 px-0'>
 
+				<h1 className='mb-4'>Property Review</h1>
+
 				<Row className='m-0 align-items-start'>
 					<Col id='left-side' className='col-lg-8 p-0'>
 

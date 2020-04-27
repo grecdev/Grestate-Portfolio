@@ -266,6 +266,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='down-payment'>Down payment</label>
+				<label htmlFor='down-payment-percent' className='d-none'>Down payment percent</label>
 
 				<Row className='m-0'>
 					<div className='position-relative'>
