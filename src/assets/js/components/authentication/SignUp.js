@@ -141,7 +141,7 @@ const SignUp = () => {
 			city: /^[aA-zZ]{3,}$/g,
 			address: /^[\w\- ,.]{3,}$/g,
 			email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gi,
-			password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z].{8,}$/gi
+			password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z].{8,}$/
 		}
 
 		const alert_danger = ['incorrect-validation', 'border-danger'];
@@ -276,7 +276,7 @@ const SignUp = () => {
 				const div = document.createElement('div');
 
 				// So we display only one error
-				document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
+				document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();	
 
 				if(!value.match(regex.password)) {
 
@@ -295,7 +295,6 @@ const SignUp = () => {
 
 				} else {
 
-					document.body.contains(document.querySelector('form[name="signup"] .password-regex')) && document.querySelector('form[name="signup"] .password-regex').remove();
 					e.target.classList.add('correct-validation');
 					e.target.classList.remove(...alert_danger);
 				}
@@ -321,6 +320,38 @@ const SignUp = () => {
 				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'You need to confirm password' });
 			}
 
+		}
+
+		e.stopPropagation();
+	}
+
+	const passwordStrength = e => {
+
+		const {
+
+			nextElementSibling,
+			value
+
+		} = e.target;
+
+		let password_strength = nextElementSibling.children[0];
+		const password_length = value.length * 5;
+		const classes = ['weak', 'medium', 'strong'];
+
+		if(e.type === 'paste') e.preventDefault();
+		else {
+
+			// If the bar is filled
+			if(password_length > 100) return;
+	
+			// So we always have one class displayed
+			password_strength.classList.remove(...classes);
+	
+			if(password_length < 25) password_strength.classList.add('weak');
+			if(password_length > 25 && password_length < 70) password_strength.classList.add('medium');
+			if(password_length > 70) password_strength.classList.add('strong');
+	
+			password_strength.style.width = `${password_length}%`;
 		}
 
 		e.stopPropagation();
@@ -453,13 +484,20 @@ const SignUp = () => {
 							onChange={handleChange}
 							onBlur={signupValidation}
 							onKeyDown={signupValidation}
+							onInput={passwordStrength}
+							onPaste={passwordStrength}
 						/>
 
-						<div className='password-strength d-flex justify-content-start align-items-center mt-2'>
+						<div 
+							className={`password-strength justify-content-start align-items-center ${signup_state.password.length > 0 ? 'mt-3 d-flex' : ''}`}
+						>
 
-							<div className={`${signup_state.password.length > 0 ? 'show' : ''} rounded mx-1`}></div>
-							<div className={`${signup_state.password.length >= 6 ? 'show' : ''} rounded mx-1`}></div>
-							<div className={`${signup_state.password.length >= 8 ? 'show' : ''} rounded mx-1`}></div>
+							<div className="password-strength-bar"></div>
+
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
 
 						</div>
 

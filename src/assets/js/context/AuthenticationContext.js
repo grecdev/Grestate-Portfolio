@@ -7,7 +7,7 @@ export class AuthenticationContextProvider extends Component {
 
 	state = {
 		login_enabled: false,
-		signup_enabled: false,
+		signup_enabled: true,
 		reset_password_enabled: false,
 		auth_loader: false,
 		user_data: undefined,
