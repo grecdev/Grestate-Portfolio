@@ -5,7 +5,7 @@ const Image = ({ src }) => {
 
 	const old_format = require(`../../../media/${src}`);
 
-	if(src.includes('svg') || src.includes('png')) return <img src={old_format} alt={old_format} />
+	if(!src.includes('webp')) return <img src={old_format} alt={old_format} />
 	else {
 
 		// Change .jpg to .webp so we can use it in picture element

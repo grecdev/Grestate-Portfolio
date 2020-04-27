@@ -29,19 +29,7 @@ const GlobalContextProvider = (props) => {
 
 	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState);
 	
-	// const getImage = image => require(`../../media/${image}`);
 	const changePage = page => history.push(page);
-
-	const throttleEvent = (cb, interval) => function (...args) {
-
-		if (!state.throttle) return;
-
-		dispatch({type: TOGGLE_THROTTLE, payload: false });
-
-		cb.apply(this, args);
-
-		setTimeout(() => dispatch({type: TOGGLE_THROTTLE, payload: true}), interval);
-	}
 
 	const [counter, setCounter] = useState(false);
 
@@ -101,9 +89,15 @@ const GlobalContextProvider = (props) => {
 		e.stopPropagation();
 	}
 
-	const loadEvent = e => {
+	const loadEvent = () => {
 		
-		
+		setTimeout(() => {
+
+			document.getElementById('intro-loader').classList.add('hidden');
+
+			setTimeout(() => document.getElementById('intro-loader').remove(), 300);
+
+		}, 2000);
 	}
 
 	useEffect(() => {

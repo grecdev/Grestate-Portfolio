@@ -6,6 +6,7 @@ import { Switch, Route } from 'react-router-dom';
 import { AuthenticationContext } from '@context/AuthenticationContext';
 
 import Header from '@components/global_layout/header';
+import IntroLoader from '@components/global_layout/IntroLoader';
 import Footer from '@components/global_layout/Footer';
 import ResetScroll from '@components/global_layout/ResetScroll';
 
@@ -30,9 +31,15 @@ const App = () => {
 
 	} = useContext(AuthenticationContext);
 
+	const fallback_style = {
+		fontWeight: 'bold',
+		fontSize: '2rem',
+		padding: '3rem'
+	}
+
 	return (
 		<>
-			<Suspense fallback={<div><p>Loading...</p></div>} >
+			<Suspense fallback={<div style={fallback_style}><p>Loading...</p></div>} >
 				<Header />
 
 				<Switch>
@@ -53,6 +60,7 @@ const App = () => {
 
 				<ResetScroll />
 
+				<IntroLoader />
 				<Footer />
 			</Suspense>
 		</>

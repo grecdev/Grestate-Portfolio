@@ -1,0 +1,14 @@
+#intro-loader {
+	top: 0;
+	left: 0;
+	z-index: 999;
+	background: #f3f3f3;
+	transition: opacity 350ms ease-in-out;
+
+	&.hidden { opacity: 0 }
+	
+	img {
+		width: 25%;
+		height: 25%;
+	}
+}
