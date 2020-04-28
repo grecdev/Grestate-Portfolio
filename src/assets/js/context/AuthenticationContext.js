@@ -27,7 +27,12 @@ export class AuthenticationContextProvider extends Component {
 
 		} = e.target;
 
-		if(document.body.contains(document.getElementById('mobile-navbar'))) document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+		if(document.body.contains(document.getElementById('mobile-navbar'))) {
+
+			document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+			// When the authentication modal appears, enable the mobile menu event
+			document.getElementById('mobile-navbar-icon').setAttribute('data-menu-enabled', 'false');
+		}
 
 		// Clicking on the header links or buttons inside the modal
 		if(tagName === 'BUTTON' || tagName === 'A') {

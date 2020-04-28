@@ -85,7 +85,13 @@ const GlobalContextProvider = (props) => {
 
 		if(!e.target.closest('#user-dropdown') && document.body.contains(document.getElementById('user-dropdown-menu'))) document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');
 
-		if(!e.target.closest('.mobile-navbar-dropdown')) document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+		if(!e.target.closest('.mobile-navbar-dropdown')) {
+
+			// Enable the click event on the menu icon when we don't click on it ( menu icon )
+			if(!e.target.id.includes('mobile-navbar-icon') && !e.target.parentElement.id.includes('mobile-navbar-icon')) document.getElementById('mobile-navbar-icon').setAttribute('data-menu-enabled', 'false');
+
+			document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+		}
 
 		e.stopPropagation();
 	}

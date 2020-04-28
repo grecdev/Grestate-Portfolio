@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 
+import { throttleEvent } from '@helpers';
+
 import Button from 'react-bootstrap/Button';
 
 const UserDropdown = () => {
@@ -29,7 +31,7 @@ const UserDropdown = () => {
 
 	return (
 		<div id="user-dropdown" className='position-relative'>
-			<i onClick={toggleDropdown} className="fas fa-user"></i>
+			<i onClick={throttleEvent(toggleDropdown, 300)} className="fas fa-user"></i>
 
 			<div id="user-dropdown-menu" className='position-absolute d-flex flex-column justify-content-around align-items-center p-3'>
 				<p className='m-0 text-white text-center'>{user_data.last_name}</p>

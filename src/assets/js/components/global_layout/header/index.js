@@ -27,12 +27,20 @@ const Header = () => {
 
 	const showMobileNavbar = e => {
 
-		if(e.currentTarget.id.includes('icon')) {
+		const target = e.currentTarget;
+		const interval = 300;
+		const mobile_menu = document.querySelector('.mobile-navbar-dropdown');
+		const isNotEnabled = target.dataset.menuEnabled === 'false';
 
-			const mobile_menu = document.querySelector('.mobile-navbar-dropdown');
-	
-			if(!mobile_menu.classList.contains('show-navbar')) mobile_menu.classList.add('show-navbar');
-			else mobile_menu.classList.remove('show-navbar');
+		if(isNotEnabled) {
+
+			mobile_menu.classList.add('show-navbar');
+			setTimeout(() => target.setAttribute('data-menu-enabled', 'true'), interval);
+			
+		} else {
+
+			mobile_menu.classList.remove('show-navbar');
+			setTimeout(() => target.setAttribute('data-menu-enabled', 'false'), interval);
 		}
 
 		e.stopPropagation();
@@ -88,13 +96,14 @@ const Header = () => {
 							id="mobile-navbar-icon" 
 							className={`d-flex flex-column justify-content-center align-items-center ${user_data ? 'ml-3' : ''}`}
 							onClick={showMobileNavbar}
+							data-menu-enabled='false'
 						>
 							<Image src='header-menu-dark.svg' />
 						</div>
 					</div>
 
 
-					<Nav activeKey='/home' className='mobile-navbar-dropdown position-absolute d- flex-column align-items-stretch text-center px-2'>
+					<Nav activeKey='/home' className='mobile-navbar-dropdown position-absolute d-flex flex-column align-items-stretch text-center px-2'>
 						<Nav.Item>
 							<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 my-3' exact to='/'>Home</NavLink>
 						</Nav.Item>
