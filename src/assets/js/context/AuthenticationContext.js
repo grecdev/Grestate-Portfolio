@@ -27,6 +27,8 @@ export class AuthenticationContextProvider extends Component {
 
 		} = e.target;
 
+		if(document.body.contains(document.getElementById('mobile-navbar'))) document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+
 		// Clicking on the header links or buttons inside the modal
 		if(tagName === 'BUTTON' || tagName === 'A') {
 

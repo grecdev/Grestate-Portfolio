@@ -21,6 +21,7 @@ const UserDropdown = () => {
 		if(!dropdown.classList.contains('dropdown-visible')) dropdown.classList.add('dropdown-visible');
 		else dropdown.classList.remove('dropdown-visible');
 
+		// When going to the my account page
 		e.target.textContent.toLowerCase().includes('my account') && document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');
 
 		e.stopPropagation();

@@ -85,19 +85,21 @@ const GlobalContextProvider = (props) => {
 
 		if(!e.target.closest('#user-dropdown') && document.body.contains(document.getElementById('user-dropdown-menu'))) document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');
 
+		if(!e.target.closest('.mobile-navbar-dropdown')) document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
+
 		e.stopPropagation();
 	}
 
 	const loadEvent = () => {
 		
-		setTimeout(() => {
+		document.querySelector('html').classList.remove('overflow-hidden');
+		// setTimeout(() => {
 
-			document.querySelector('html').classList.remove('overflow-hidden');
-			document.getElementById('intro-loader').classList.add('hidden');
+		// 	document.getElementById('intro-loader').classList.add('hidden');
 
-			setTimeout(() => document.getElementById('intro-loader').remove(), 300);
+		// 	setTimeout(() => document.getElementById('intro-loader').remove(), 300);
 
-		}, 2500);
+		// }, 2500);
 	}
 
 	useEffect(() => {
@@ -126,12 +128,20 @@ const GlobalContextProvider = (props) => {
 
 	}, [location.pathname]);
 
+	const isMobile = () => {
+
+		const isMobile = /(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i;
+
+		return isMobile.test(navigator.userAgent);
+	}
+
 	return (
 		<GlobalContext.Provider value={{
 			...state,
 			counter,
 			disableLetters,
 			changePage,
+			isMobile
 		}}>
 			{children}
 		</GlobalContext.Provider>
