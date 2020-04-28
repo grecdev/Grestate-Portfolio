@@ -34,4 +34,5 @@ ReactDOM.render(
 				</FetchContextProvider>
 			</GlobalContextProvider>
 	</Router>
-	, document.getElementById('root'));
+	, document.getElementById('root')
+);

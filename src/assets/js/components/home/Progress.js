@@ -17,9 +17,7 @@ const Progress = () => {
 		let speed;
 		let formattedStr;
 
-		document.getElementById('progress-counter').classList.add('activate-counter');
-
-		document.getElementById('progress-counter').classList.contains('activate-counter') && document.querySelectorAll('.counter').forEach(counter => {
+		document.querySelectorAll('.counter').forEach(counter => {
 
 			function recursive() {
 
@@ -60,37 +58,37 @@ const Progress = () => {
 				<SectionHeader title='Progress across the years' description={false} />
 
 				<Row className='px-5'>
-					<Col className='text-center'>
+					<div className='text-center'>
 
 						<i className="fas fa-users mb-3"></i>
 
 						<h4 className='text-white'>Monthly users</h4>
 						<p className='text-white h5 counter' data-increment-end='483724'>0</p>
-					</Col>
+					</div>
 
-					<Col className='text-center'>
+					<div className='text-center'>
 
 						<i className="fas fa-home mb-3"></i>
 
 						<h4 className='text-white'>Properties sold</h4>
 						<p className='text-white h5 counter' data-increment-end='2345786'>0</p>
-					</Col>
+					</div>
 
-					<Col className='text-center'>
+					<div className='text-center'>
 
 						<i className="fas fa-door-closed mb-3"></i>
 
 						<h4 className='text-white'>Properties for rent</h4>
 						<p className='text-white h5 counter' data-increment-end='13654'>0</p>
-					</Col>
+					</div>
 
-					<Col className='text-center'>
+					<div className='text-center'>
 
 						<i className="fas fa-users mb-3"></i>
 
 						<h4 className='text-white'>Cities Available</h4>
 						<p className='text-white h5 counter' data-increment-end='102'>0</p>
-					</Col>
+					</div>
 				</Row>
 			</Container>
 		</section>

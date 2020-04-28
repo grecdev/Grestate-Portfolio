@@ -180,6 +180,8 @@ const LogIn = () => {
 							onBlur={loginRegex}
 							onKeyDown={loginRegex}
 						/>
+
+						{login_regex.password && <RegexAlert text={login_regex.password} danger={true} />}
 					</Form.Group>
 
 					<div className='w-100 d-flex flex-column align-items-center'>
