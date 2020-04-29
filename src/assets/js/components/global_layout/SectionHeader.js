@@ -8,7 +8,7 @@ const SectionHeader = ({ title, description }) => {
 
 			<hr />
 
-			{description && <p className='font-weight-light'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere quidem laudantium at animi sapiente, alias libero temporibus quaerat assumenda sunt.</p>}
+			{description && <p className='font-weight-light px-5'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Facere quidem laudantium at animi sapiente, alias libero temporibus quaerat assumenda sunt.</p>}
 		</div>
 	)
 }

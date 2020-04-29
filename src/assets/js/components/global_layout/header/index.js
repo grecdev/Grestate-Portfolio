@@ -88,13 +88,13 @@ const Header = () => {
 				<Navbar id='mobile-navbar' className='d-flex justify-content-between align-items-center'>
 					<NavLink className='navbar-brand p-0 m-0' exact to='/'>Gr<span>estate</span></NavLink>
 
-					<div className='d-flex justify-content-center align-items-center'>
+					<div className='d-flex justify-content-end align-items-center'>
 
 						{ user_data && <UserDropdown />}
 
 						<div 
 							id="mobile-navbar-icon" 
-							className={`d-flex flex-column justify-content-center align-items-center ${user_data ? 'ml-3' : ''}`}
+							className='d-flex flex-column justify-content-center align-items-center'
 							onClick={showMobileNavbar}
 							data-menu-enabled='false'
 						>

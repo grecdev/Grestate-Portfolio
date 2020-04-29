@@ -1,0 +1,83 @@
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+  #testimonial .container-fluid .testimonial-box {
+		width: 100%;
+		margin: 1rem 0;
+	}
+  
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+	#who-we-are .container {
+		top: 0;
+		box-shadow: none !important;
+	}
+	
+	#our-team .container > .row  {
+		flex-direction: column;
+		
+		.col { margin: 1rem 0 }
+	}
+  
+	#testimonial .container-fluid .testimonial-box {
+		width: 100%;
+		margin: 1rem 0;
+	}
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+  
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+  #our-team .container > .row  {
+		flex-direction: column;
+
+		.col { margin: 1rem 0 }
+	}
+
+	#testimonial .container-fluid .testimonial-box {
+		width: 100%;
+		margin: 1rem 0;
+	}
+  
+}
+
+// Iphone X && Pixel 2XL
+// Landscape
+@media only screen
+	and (min-height: 375px)
+	and (max-height: 411px)
+	and (min-width: 812px)
+	and (max-width: 823px)
+	and (orientation: landscape)
+{
+
+	#our-team .container > .row  {
+		flex-direction: column;
+
+		.col { margin: 1rem 0 }
+	}
+}

@@ -22,7 +22,7 @@ const OurTeam = () => {
 
 						<h4>Tasmin Coombes</h4>
 						<p className='text-black-50 font-weight-light font-italic'>CTO</p>
-						<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
+						<p className='px-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
 					</Col>
 
 					<Col className='text-center col-lg-3 p-0'>
@@ -32,7 +32,7 @@ const OurTeam = () => {
 
 						<h4>Ayrton Cottrell</h4>
 						<p className='text-black-50 font-weight-light font-italic'>CEO</p>
-						<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
+						<p className='px-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
 					</Col>
 
 					<Col className='text-center col-lg-3 p-0'>
@@ -42,7 +42,7 @@ const OurTeam = () => {
 
 						<h4>Aaliya Archer</h4>
 						<p className='text-black-50 font-weight-light font-italic'>HR</p>
-						<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
+						<p className='px-3'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, sint.</p>
 					</Col>
 				</Row>
 			</Container>
