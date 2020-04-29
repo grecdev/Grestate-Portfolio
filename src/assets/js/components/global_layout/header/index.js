@@ -54,20 +54,20 @@ const Header = () => {
 					<NavLink className='navbar-brand p-0 m-0' exact to='/'>Gr<span>estate</span></NavLink>
 
 					<Nav activeKey='/home' className='align-items-center'>
-						<Nav.Item>
-							<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' exact to='/'>Home</NavLink>
+						<Nav.Item className='p-1 mx-3'>
+							<NavLink activeClassName='page-active' className='nav-link p-0' exact to='/'>Home</NavLink>
 						</Nav.Item>
 
-						<Nav.Item>
-							<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' exact to='/buy-properties'>Buy</NavLink>
+						<Nav.Item className='p-1 mx-3'>
+							<NavLink activeClassName='page-active' className='nav-link p-0' exact to='/buy-properties'>Buy</NavLink>
 						</Nav.Item>
 
-						<Nav.Item>
-							<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' exact to='/rental-listings'>Rent</NavLink>
+						<Nav.Item className='p-1 mx-3'>
+							<NavLink activeClassName='page-active' className='nav-link p-0' exact to='/rental-listings'>Rent</NavLink>
 						</Nav.Item>
 
-						<Nav.Item>
-							<NavLink activeClassName='page-active' className='nav-link p-1 pb-1 mx-3' to='/mortage-calculator'>Mortage Calculator</NavLink>
+						<Nav.Item className='p-1 mx-3'>
+							<NavLink activeClassName='page-active' className='nav-link p-0' to='/mortage-calculator'>Mortage Calculator</NavLink>
 						</Nav.Item>
 
 						{ user_data ? <UserDropdown /> : (

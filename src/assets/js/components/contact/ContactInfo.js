@@ -12,15 +12,23 @@ const ContactInfo = () => {
 
 		const modal = document.getElementById('contact-form-modal');
 
-		if (e.target.id === 'contact-form-modal' || e.target.id === 'close-form-modal' || e.target.parentElement.id === 'close-form-modal') modal.classList.replace('d-flex', 'd-none');
+		if (e.target.id === 'contact-form-modal' || e.target.id === 'close-form-modal' || e.target.parentElement.id === 'close-form-modal') {
 
-		if (e.currentTarget.id === 'contact-form') modal.classList.replace('d-none', 'd-flex');
+			document.body.classList.remove('overflow-hidden');
+			modal.classList.replace('d-flex', 'd-none');
+		}
+
+		if (e.currentTarget.id === 'contact-form') {
+
+			document.body.classList.add('overflow-hidden');
+			modal.classList.replace('d-none', 'd-flex');
+		}
 
 		e.stopPropagation();
 	}
 
 	return (
-		<div id='contact-info'>
+		<div id='contact-info' className='p-4'>
 
 			<SectionHeader title='Contact us' description={false} />
 
@@ -34,7 +42,7 @@ const ContactInfo = () => {
 
 			<div id="contact-form-modal" className="position-fixed d-none flex-column justify-content-center align-items-center" onClick={toggleModal}>
 
-				<Form name='contact-form' className='p-4 position-relative d-flex flex-column border-0 bg-white'>
+				<Form name='contact-form' className='p-4 position-relative d-flex flex-column border-0 bg-white overflow-auto'>
 					<button id='close-form-modal' type='button' role='close modal' className='mb-3'><i className="fas fa-times"></i></button>
 
 					<Form.Row>

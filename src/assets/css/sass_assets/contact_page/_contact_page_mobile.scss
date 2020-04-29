@@ -1,0 +1,57 @@
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  
+  #contact {
+		@include flex(column, space-between, stretch);
+
+		> div { width: 100% }
+	}
+  
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+  //CSS
+  
+}
+
+// Iphone X && Pixel 2XL
+// Landscape
+@media only screen
+	and (min-height: 375px)
+	and (max-height: 411px)
+	and (min-width: 812px)
+	and (max-width: 823px)
+	and (orientation: landscape) 
+{
+
+	#contact #contact-info #contact-form-modal form {
+		height: 100%;
+		width: 100%;
+	}
+
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  #contact {
+		@include flex(column, space-between, stretch);
+
+		> div { width: 100% }
+	}
+  
+}

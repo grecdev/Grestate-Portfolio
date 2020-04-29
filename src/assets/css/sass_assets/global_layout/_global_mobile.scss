@@ -1,10 +1,11 @@
-
 /* 
   ##Device = Tablets, Ipads (portrait)
   ##Screen = B/w 768px to 1024px
 */
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+
+	.section-header hr { width: 5% }
   
 }
 
@@ -25,6 +26,8 @@
 			.col { margin: 1rem 0 }
 		}
 	}
+
+	.section-header hr { width: 10% }
   
 }
 
@@ -49,7 +52,7 @@
 	.section-header {
 
 		h4 { font-size: 1.3rem }
-		hr { width: 25% }
+		hr { width: 10% }
 	}
 	
 	footer {
@@ -81,6 +84,14 @@
 			.col { margin: 1rem 0 }
 		}
 	}
+
+	header #mobile-navbar .navbar-nav {
+		flex-direction: row !important;
+		justify-content: center !important;
+		align-items: center !important;
+
+		.nav-link { margin: 0 1rem !important }
+	}
   
   .section-header hr { width: 10% }
 	
@@ -95,5 +106,24 @@
 			a { margin: 1rem 0 }
 		}
 	}
-  
+}
+
+// Iphone X && Pixel 2XL
+// Landscape
+@media only screen
+	and (min-height: 375px)
+	and (max-height: 411px)
+	and (min-width: 812px)
+	and (max-width: 823px)
+	and (orientation: landscape)
+{
+
+	header #mobile-navbar .navbar-nav {
+		flex-direction: row !important;
+		justify-content: center !important;
+		align-items: center !important;
+
+		.nav-link { margin: 0 1rem !important }
+	}
+
 }
