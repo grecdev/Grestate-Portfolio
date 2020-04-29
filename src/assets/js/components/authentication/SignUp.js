@@ -531,7 +531,7 @@ const SignUp = () => {
 				<Form.Row className='form-footer d-flex flex-column justify-content-center align-items-center px-4 pb-4'>
 					<button 
 						type='button'
-						className="mb-3 p-0 border-0 rounded facebook-signin d-flex flex-row justify-content-between align-items-stretch"
+						className="mb-3 p-0 border-0 rounded facebook-signin d-flex flex-row justify-content-between align-items-center"
 						onClick={socialAuthentication}
 						>
 						<span><Image src='facebook-icon-white.svg' /></span>
@@ -540,7 +540,7 @@ const SignUp = () => {
 
 					<button 
 						type='button'
-						className="mb-3 p-0 rounded google-signin d-flex flex-row justify-content-center align-items-stretch"
+						className="mb-3 p-0 rounded google-signin d-flex flex-row justify-content-center align-items-center"
 						onClick={socialAuthentication}
 						>
 						<span><Image src='google-icon.svg' /></span>

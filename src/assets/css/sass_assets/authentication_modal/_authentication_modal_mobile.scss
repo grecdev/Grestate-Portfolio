@@ -1,0 +1,267 @@
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  
+  #authentication-modal > div {
+
+		&#login-modal { width: 40% }
+		&#signup-modal { width: 45% }
+
+		form > p {
+
+			&::before { left: 60px }
+			&::after { right: 60px }
+		}
+
+		.form-footer button span { width: 17% }
+	}
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (max-height: 1365px) {
+  
+  #authentication-modal {
+		justify-content: center;
+
+		> div {
+
+			&#login-modal { width: 55% }
+			&#signup-modal { width: 60% }
+			&#reset-password-modal { width: 45% }
+	
+			form > p {
+	
+				&::before { left: 60px }
+				&::after { right: 60px }
+			}
+	
+			&#login-modal .form-footer button span { width: 14% }
+			&#signup-modal .form-footer button span { width: 13% }
+		}
+	}
+}
+
+/* Ipad Pro */
+/* Portrait */
+@media only screen 
+  and (min-width: 1024px) 
+  and (max-height: 1366px) 
+  and (orientation: portrait) 
+	and (-webkit-min-device-pixel-ratio: 1.5)
+{
+
+	#authentication-modal {
+		justify-content: center;
+
+		> div {
+
+			&#login-modal { width: 40% }
+			&#signup-modal { width: 45% }
+	
+			form > p {
+	
+				&::before { left: 60px }
+				&::after { right: 60px }
+			}
+	
+			&#login-modal .form-footer button span { width: 14% }
+			&#signup-modal .form-footer button span { width: 13% }
+		}
+	}
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+
+	#authentication-modal {
+		justify-content: center;
+
+		> div {
+
+			&#login-modal { width: 50% }
+			&#signup-modal { width: 55% }
+	
+			form > p {
+	
+				&::before { left: 120px }
+				&::after { right: 120px }
+			}
+
+			&#login-modal .form-footer button span { width: 11% }
+			&#signup-modal .form-footer button span { width: 10% }
+		}
+	}
+  
+}
+
+/* Ipad Pro */
+/* Landscape */
+@media only screen 
+	and (min-height: 1024px)
+  and (max-width: 1366px) 
+  and (-webkit-min-device-pixel-ratio: 2) 
+  and (orientation: landscape) {
+
+	#authentication-modal {
+		justify-content: center;
+
+		> div {
+
+			&#login-modal { width: 40% }
+			&#signup-modal { width: 45% }
+	
+			form > p {
+	
+				&::before { left: 120px }
+				&::after { right: 120px }
+			}
+
+			&#login-modal .form-footer button span { width: 11% }
+			&#signup-modal .form-footer button span { width: 10% }
+		}
+	}
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  #authentication-modal {
+		justify-content: stretch;
+
+		.close-modal {
+			position: relative !important;
+			margin-left: auto;
+			top: -10px
+		}
+
+		> div {
+			width: 100% !important;
+	
+			form > p {
+	
+				&::before { left: 60px }
+				&::after { right: 60px }
+			}
+
+			.form-body {
+				flex-direction: column;
+			}
+
+			&#signup-modal .form-body {
+				margin: 0 !important;
+
+				.form-group.col { margin: 1rem 0 !important }
+
+				&:nth-child(6) { margin-bottom: 1rem !important }
+			}
+	
+			.form-footer button span { width: 15% !important }
+		}
+	}
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+  #authentication-modal {
+		justify-content: stretch;
+
+		.close-modal {
+			position: relative !important;
+			margin-left: auto;
+			top: -10px
+		}
+
+		> div {
+			width: 100% !important;
+	
+			form > p {
+	
+				&::before { left: 200px }
+				&::after { right: 200px }
+			}
+
+			.form-body {
+				flex-direction: column;
+			}
+
+			&#signup-modal .form-body {
+				margin: 0 !important;
+
+				.form-group.col { margin: 1rem 0 !important }
+
+				&:nth-child(6) { margin-bottom: 1rem !important }
+			}
+	
+			.form-footer button span { width: 9% !important }
+		}
+	}
+  
+}
+
+// Iphone X && Pixel 2XL
+// Landscape
+@media only screen
+	and (min-height: 375px)
+	and (max-height: 411px)
+	and (min-width: 812px)
+	and (max-width: 823px)
+	and (orientation: landscape)
+{
+
+	#authentication-modal {
+		justify-content: stretch;
+
+		.close-modal {
+			position: relative !important;
+			margin-left: auto;
+			top: -10px
+		}
+
+		> div {
+			width: 100% !important;
+	
+			form > p {
+	
+				&::before { left: 250px }
+				&::after { right: 250px }
+			}
+
+			.form-body {
+				flex-direction: column;
+			}
+
+			&#signup-modal .form-body {
+				margin: 0 !important;
+
+				.form-group.col { margin: 1rem 0 !important }
+
+				&:nth-child(6) { margin-bottom: 1rem !important }
+			}
+	
+			.form-footer button span { width: 9% !important }
+		}
+	}
+
+}
+

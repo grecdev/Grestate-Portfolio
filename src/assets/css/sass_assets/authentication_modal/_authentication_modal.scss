@@ -10,7 +10,7 @@
 
 	.auth-loader { min-height: 80px }
 
-	> .close-modal {
+	.close-modal {
 		top: 20px;
 		right: 20px;
 		width: 35px;
@@ -24,7 +24,8 @@
 	> div {
 		color: $dark-1;
 		background: $white;
-		width: 30%;
+
+		&#reset-password-modal { width: 30% }
 
 		.form-header a {
 			border-bottom: 3px solid transparent;
@@ -76,10 +77,10 @@
 			}
 
 			&.or::before,
-			&.or::after { height: 1px }
+			&.or::after { height: 0.7px }
 
-			&::before { left: 70px }
-			&::after { right: 70px }
+			&::before { left: 100px }
+			&::after { right: 100px }
 		}
 
 		.form-footer {
@@ -97,8 +98,8 @@
 				span {
 					border-top-left-radius: 0.25rem;
 					border-bottom-left-radius: 0.25rem;
-					width: 13%;
 					padding: 0.5rem;
+					align-self: stretch;
 				}
 
 				&.facebook-signin {
