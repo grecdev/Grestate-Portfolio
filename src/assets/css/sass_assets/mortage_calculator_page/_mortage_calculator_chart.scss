@@ -1,11 +1,18 @@
-.ct-series-a .ct-slice-donut { stroke: $green-dark }
-.ct-series-b .ct-slice-donut { stroke: $dark-1 }
-.ct-series-c .ct-slice-donut { stroke: $dark-2 }
+.mortage-chart {
 
-.total-payment {
-	line-height: 2.3rem;
+	.ct-chart {
+		
+		.ct-series-a .ct-slice-donut { stroke: $green-dark }
+		.ct-series-b .ct-slice-donut { stroke: $dark-1 }
+		.ct-series-c .ct-slice-donut { stroke: $dark-2 }
+	}
 
-	span:first-child { font-size: 2.5rem }
-	span:last-child { font-size: 1.2rem }
-
+	.total-payment {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	
+		span:first-child { font-size: 2.5rem }
+		span:last-child { font-size: 1.2rem }
+	}
 }

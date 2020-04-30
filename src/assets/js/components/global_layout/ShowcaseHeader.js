@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const ShowcaseHeader = ({ text }) => {
 	return (
-		<div className='showcase-header px-4 py-2 rounded'>
+		<div className='showcase-header text-center px-4 py-2 rounded'>
 			<h1>{text}</h1>
 		</div>
 	)

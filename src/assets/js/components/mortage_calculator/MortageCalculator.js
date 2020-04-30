@@ -163,8 +163,10 @@ const MortageCalculator = ({getTotalPayment}) => {
 			} else {
 
 				setCalculatorRegex(prevState => ({
-					...prevState, [target]: undefined,
-					home_price: undefined
+					...prevState,
+					[target]: undefined,
+					home_price: undefined,
+					down_payment_percent: undefined
 				}));
 			}
 		}
@@ -200,7 +202,8 @@ const MortageCalculator = ({getTotalPayment}) => {
 				setCalculatorRegex(prevState => ({
 					...prevState,
 					[target]: undefined,
-					home_price: undefined
+					home_price: undefined,
+					down_payment: undefined
 				}));
 			}
 		}
@@ -244,7 +247,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 
 	return (
 
-		<Col className='mortage-inputs p-0'>
+		<div className='mortage-inputs'>
 
 			<div className="mortage-input-box d-flex flex-column my-3">
 				<label htmlFor='home-price'>Home price</label>
@@ -319,7 +322,7 @@ const MortageCalculator = ({getTotalPayment}) => {
 				{calculator_regex.interest_rate && <RegexAlert text={calculator_regex.interest_rate} danger={true} />}
 			</div>
 
-		</Col>
+		</div>
 	)
 }
 

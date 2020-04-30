@@ -96,7 +96,7 @@
 				h1 { font-size: 2rem }
 			}
 	
-			.home-showcase-image { display: none }
+			.home-showcase-image, .showcase-cartoon { display: none }
 	
 			.property-search-form { width: 100% }
 		}
@@ -196,7 +196,6 @@
   ##Device = Low Resolution Tablets, Mobiles (Landscape)
   ##Screen = B/w 481px to 767px
 */
-
 @media (min-width: 481px) and (max-width: 767px) {
   
   #home-showcase {

@@ -1,0 +1,96 @@
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  
+  .mortage-chart {
+	
+		.total-payment {
+		
+			span:first-child { font-size: 2.2rem }
+			span:last-child { font-size: 1.1rem }
+		}
+	}
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (max-height: 1024px) and (orientation: portrait){
+	
+	#mortage #calculator .row {
+	
+		> div:last-child { width: 40% }
+
+		.mortage-chart {
+
+			.ct-chart svg > g.ct-series > path { stroke-width: 20px !important }
+		
+			.total-payment {
+			
+				span:first-child { font-size: 1.8rem }
+				span:last-child { font-size: 1rem }
+			}
+		}
+	}
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+  //CSS
+  
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  #mortage #calculator .row {
+		flex-direction: column;
+
+		> div {
+			width: 100%;
+			margin: 1rem 0;
+		}
+
+		.mortage-chart {
+
+			.ct-chart svg > g.ct-series > path { stroke-width: 25px !important }
+		
+			.total-payment {
+			
+				span:first-child { font-size: 1.8rem }
+				span:last-child { font-size: 1rem }
+			}
+		}
+
+		.mortage-inputs > div:nth-child(2) > div > div {
+			width: 100% !important;
+			border: 0;
+		}
+	}
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+  //CSS
+  
+}

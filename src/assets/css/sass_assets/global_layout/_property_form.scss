@@ -12,6 +12,7 @@
 			padding: .5rem 1rem;
 			cursor: pointer;
 			position: relative;
+			border-bottom: 3px solid $dark-1;
 
 			&.active-form {
 				background: $dark-1;

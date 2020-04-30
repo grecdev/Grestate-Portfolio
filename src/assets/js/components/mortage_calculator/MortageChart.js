@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 
 import Chartist from './chartist.min.js';
 
-const MortageChart = ({payment}) => {
+const MortageChart = ({ payment }) => {
 	
 	let disabledChart = false;
 
@@ -16,13 +16,12 @@ const MortageChart = ({payment}) => {
 
 			value = 1;
 			disabledChart = true;
-
-		} else value;
+		};
 		
 		return value;
 	});
 
-	// Without the total payment which is displayed in the mortage info component
+	// Without the total payment which is displayed in the middle of the chart
 	values.pop();
 
 	const data = {
@@ -31,8 +30,6 @@ const MortageChart = ({payment}) => {
 	};
 
 	const options = {
-		width: 450,
-		height: 330,
 		donut: true,
 		donutWidth: 40
 	}
@@ -45,13 +42,14 @@ const MortageChart = ({payment}) => {
 
 	return (
 
-		<Col className='mortage-chart p-0 d-flex flex-column justify-content-center align-items-center position-relative'>
-			<div className="ct-chart ct-perfect-fourth"></div>
+		<div className='mortage-chart p-0'>
+			<div className="ct-chart ct-perfect-fourth position-relative">
+				<p className="total-payment d-flex flex-column justify-content-center align-items-center position-absolute font-weight-bold">
+					<span>${isNaN(payment.payment_per_month) ? 0 : payment.payment_per_month}</span><span>/month</span>
+				</p>
+			</div>
 
-			<p className="d-flex flex-column total-payment position-absolute font-weight-bold text-center">
-				<span>${isNaN(payment.payment_per_month) ? 0 : payment.payment_per_month}</span><span>/month</span>
-			</p>
-		</Col>
+		</div>
 		
 	)
 }

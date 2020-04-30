@@ -12,7 +12,7 @@ const MortageInfo = ({payment}) => {
 	Object.entries(payment).forEach(item => valuesArr.push(item));
 
 	return (
-		<Col className='payment-info col-lg-3 p-0 d-flex align-items-center'>
+		<div className='payment-info d-flex align-items-center justify-content-center'>
 
 			<div className='dots d-flex flex-column'>
 				<div className="chart-color rounded-circle"></div>
@@ -42,7 +42,7 @@ const MortageInfo = ({payment}) => {
 				})}
 			</div>
 
-		</Col>
+		</div>
 	)
 }
 
