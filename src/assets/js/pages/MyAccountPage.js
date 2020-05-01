@@ -326,13 +326,15 @@ const MyAccountPage = () => {
 
 	useEffect(() => {
 
-		if(!user_data) changePage('/');
-		else {
+		console.log(user_data);
 
-			// When the data fetch is completed get the user data and set it on the inputs
-			// Depends on the firebase servers
-			if(Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
-		}
+		// if(!user_data) changePage('/');
+		// else {
+
+		// 	// When the data fetch is completed get the user data and set it on the inputs
+		// 	// Depends on the firebase servers
+			// if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
+		// }
 		
 	}, [user_data]);
 
@@ -473,7 +475,8 @@ const MyAccountPage = () => {
 					{authentication_regex && <RegexAlert text={authentication_regex} danger={authentication_regex.includes('successfully') ? false : true} />}
 					{account_regex.global && <RegexAlert text={account_regex.global} danger={true} />}
 
-					<Form.Row className={`justify-content-center ${account_regex.global || authentication_regex ? 'mt-4': ''}`}>
+					<Form.Row className={`justify-content-center${account_regex.global || authentication_regex ? 'mt-4': ''}`}>
+					<AuthLoader />
 						{ auth_loader ? <AuthLoader /> : (
 							<>
 								<button 

@@ -1,0 +1,96 @@
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  #my-account .container {
+
+		h1 { font-size: 2rem }
+
+		form .form-row {
+			flex-direction: column !important;
+			margin: 1rem 0;
+
+			&:last-child {
+
+				.auth-loader {
+					width: 30% !important;
+					margin: 0 auto;
+				}
+
+				button {
+					width: 90% !important;
+					margin: .5rem 0;
+				}
+			}
+		}
+	}
+  
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+@media (min-width: 481px) and (max-width: 767px) {
+	
+	#my-account .container {
+
+		h1 { font-size: 2rem }
+
+		form .form-row {
+			flex-direction: column !important;
+			margin: 1rem 0;
+
+			&:last-child {
+
+				.auth-loader {
+					width: 25% !important;
+					margin: 0 auto;
+				}
+
+				button {
+					width: 90% !important;
+					margin: .5rem 0;
+				}
+			}
+		}
+	}
+
+}
+
+// Iphone X && Pixel 2XL
+// Landscape
+@media only screen
+	and (min-height: 375px)
+	and (max-height: 411px)
+	and (min-width: 812px)
+	and (max-width: 823px)
+	and (orientation: landscape)
+{
+
+	#my-account .container {
+
+		h1 { font-size: 2rem }
+
+		form .form-row {
+			flex-direction: column !important;
+			margin: 1rem 0;
+
+			&:last-child {
+
+				.auth-loader {
+					width: 20% !important;
+					margin: 0 auto;
+				}
+
+				button {
+					width: 90% !important;
+					margin: .5rem 0;
+				}
+			}
+		}
+	}
+
+}

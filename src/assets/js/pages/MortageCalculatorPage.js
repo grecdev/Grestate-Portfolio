@@ -19,7 +19,7 @@ const MortageCalculatorPage = () => {
 			<MortageShowcase />
 
 			<section id='calculator' className='container-custom container-custom-md'>
-				<Row className='m-0 flex-nowrap p-2 justify-content-between align-items-center'>
+				<Row className='m-0 flex-nowrap py-2 px-3 justify-content-between align-items-center'>
 					<MortageInfo payment={payment} />
 					<MortageChart payment={payment}/>
 					<MortageCalculator getTotalPayment={getTotalPayment} />

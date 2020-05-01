@@ -5,6 +5,12 @@
 	box-sizing: border-box;
 }
 
+html { height: 100% }
+body { 
+	min-height: 100%;
+	padding-bottom: 429px;
+}
+
 /* Responsive images */
 img {
 	display: block;

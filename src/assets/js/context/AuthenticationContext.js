@@ -1,4 +1,9 @@
-import React, { Component, createContext } from 'react';
+import React, {
+
+	Component,
+	createContext
+
+} from 'react';
 
 import { firebase_auth, firebase_db } from '../firebaseConfig';
 
