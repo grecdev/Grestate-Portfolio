@@ -20,8 +20,16 @@ const UserDropdown = () => {
 
 		const dropdown = e.target.nextElementSibling;
 
-		if(!dropdown.classList.contains('dropdown-visible')) dropdown.classList.add('dropdown-visible');
-		else dropdown.classList.remove('dropdown-visible');
+		if(!dropdown.classList.contains('dropdown-visible')) {
+
+			dropdown.classList.add('dropdown-visible');
+			document.getElementById('contact-location').style.zIndex = '-1';
+		}
+		else {
+
+			dropdown.classList.remove('dropdown-visible');
+			document.getElementById('contact-location').style.zIndex = '';
+		}
 
 		// When going to the my account page
 		e.target.textContent.toLowerCase().includes('my account') && document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');

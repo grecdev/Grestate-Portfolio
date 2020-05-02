@@ -26,6 +26,7 @@ const SearchListings = () => {
 
 	const {
 
+		db,
 		buy_properties,
 		rent_properties,
 		filtered_buy_properties,
@@ -33,26 +34,26 @@ const SearchListings = () => {
 
 	} = useContext(FetchContext);
 
-	let [arr, setArr] = useState([]);
+	let [arr, setArr] = useState(db);
 
-	useEffect(() => {
+	// useEffect(() => {
 
-		if(location.includes('buy')) {
+	// 	if(location.includes('buy')) {
 
-			if(filtered_buy_properties.length === 0) setArr(buy_properties);
-			else setArr(filtered_buy_properties);
-		}
+	// 		if(filtered_buy_properties.length === 0) setArr(buy_properties);
+	// 		else setArr(filtered_buy_properties);
+	// 	}
 
-		if(location.includes('rent')) {
+	// 	if(location.includes('rent')) {
 
-			if(filtered_rent_properties.length === 0) setArr(rent_properties);
-			else setArr(filtered_rent_properties);
-		}
+	// 		if(filtered_rent_properties.length === 0) setArr(rent_properties);
+	// 		else setArr(filtered_rent_properties);
+	// 	}
 
-	}, [buy_properties, filtered_buy_properties, rent_properties, filtered_rent_properties]);
+	// }, [buy_properties, filtered_buy_properties, rent_properties, filtered_rent_properties]);
 	
 	return (
-		<Row id='search-listings' className='p-3 m-0 d-flex flex-column justify-content-start align-items-start'>
+		<Row id='search-listings' className='p-3 m-0 d-flex flex-column justify-content-start align-items-around'>
 
 			{
 				arr.length === 0 ? (
@@ -70,7 +71,7 @@ const SearchListings = () => {
 						
 						<FilterProperties array={arr} />
 
-						<div className="w-100 d-flex flex-row justify-content-around align-items-center">
+						<div className="w-100 overflow-auto d-flex flex-wrap flex-row justify-content-around align-items-start">
 							<PropertyBox array={arr} />
 						</div>
 

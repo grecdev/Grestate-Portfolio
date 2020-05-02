@@ -73,11 +73,11 @@ const FilterProperties = ({ array }) => {
 	}, [buy_properties, rent_properties]);
 
 	return (
-		<div id="filter-properties" className='w-100 mb-5 d-flex justify-content-between align-items-center'>
+		<div id="filter-properties" className='w-100 mb-4 d-flex justify-content-between align-items-center'>
 			
 			<p className='font-weight-bold m-0'>{array.length} properties found</p>
 
-			<div className='d-flex flex-row justify-content-end align-items-center'>
+			<div className={`d-flex flex-wrap flex-row ${filtered_buy_properties.length > 0 || filtered_rent_properties.length > 0 ? 'justify-content-center' : 'justify-content-end'} align-items-center`}>
 
 				<p className='m-0'>Sort by:</p>
 

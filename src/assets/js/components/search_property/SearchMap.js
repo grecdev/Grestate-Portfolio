@@ -53,11 +53,11 @@ const SearchMap = () => {
 		popup_info: defaultData
 	}
 
-	const [state, dispatch] = useReducer(MapReducer, defaultMapState);
+	const [map_state, dispatch] = useReducer(MapReducer, defaultMapState);
 
 	const togglePopup = val => dispatch({ type: TOGGLE_POPUP, payload: val });
 
-	const getPropertyInfo = index => dispatch({ type: SET_POPUP_INFO, payload: state.properties[index] });
+	const getPropertyInfo = index => dispatch({ type: SET_POPUP_INFO, payload: map_state.properties[index] });
 
 	const [arr, setArr] = useState([]);
 
@@ -82,8 +82,8 @@ const SearchMap = () => {
 	}, [buy_properties, rent_properties, arr]);
 
 	const [viewport, setViewport] = useState({
-		width: 759,
-		height: 528,
+		width: '100%',
+		height: '100%',
 		zoom: 16,
 		latitude: undefined,
 		longitude: undefined
@@ -93,11 +93,11 @@ const SearchMap = () => {
 
 		setViewport(prevState => ({
 			...prevState, 
-			latitude: state.properties[0].coordinates.latitude,
-			longitude: state.properties[0].coordinates.longitude
+			latitude: map_state.properties[0].coordinates.latitude,
+			longitude: map_state.properties[0].coordinates.longitude
 		}));
 
-	}, [state.properties]);
+	}, [map_state.properties]);
 	
 	return (
 		<section id='search-map'>
@@ -108,16 +108,16 @@ const SearchMap = () => {
 				mapStyle='mapbox://styles/mapbox/dark-v10'
 			>
 				<Markers
-					data={state.properties}
+					data={map_state.properties}
 					togglePopup={togglePopup}
 					getPropertyInfo={getPropertyInfo}
-					showPopup={state.show_popup}
+					showPopup={map_state.show_popup}
 				/>
 
 				<PopUp
-					showPopup={state.show_popup}
+					showPopup={map_state.show_popup}
 					togglePopup={togglePopup}
-					popupInfo={state.popup_info}
+					popupInfo={map_state.popup_info}
 				/>
 
 				<GeolocateControl

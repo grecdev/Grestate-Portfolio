@@ -63,7 +63,7 @@ const PropertyBox = ({ array }) => {
 
 			<div
 				key={uuidv4()}
-				className="property-box"
+				className="property-box my-3"
 				data-property-id={item.id}
 				data-pin-index={index}
 				onMouseEnter={hightlightPin}
@@ -94,7 +94,7 @@ const PropertyBox = ({ array }) => {
 
 					<div className='position-relative'>
 						<p className='pr-3'><i className="fas fa-ruler-combined mr-1"></i> {item.propertySize}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Property Size</div>
+						<div className='d-none p-2 text-center position-absolute pop-up'>Lot Size</div>
 					</div>
 				</div>
 			</div>

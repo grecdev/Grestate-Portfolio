@@ -1,6 +1,7 @@
 #search-property #search-listings {
 	height: 100%;
-	overflow-y: auto;
 
 	.search-not-found div { width: 50% }
+
+	> div:nth-child(2) { height: 555px }
 }

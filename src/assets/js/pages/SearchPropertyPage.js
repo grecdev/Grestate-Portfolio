@@ -14,7 +14,12 @@ import Col from 'react-bootstrap/Col';
 const SearchPropertyPage = () => {
 
 	const { loader } = useContext(FetchContext);
-	const { location } = useContext(GlobalContext);
+	const {
+
+		location,
+		isMobile
+
+	} = useContext(GlobalContext);
 
 	return (
 		<main id='search-property'>
@@ -24,11 +29,15 @@ const SearchPropertyPage = () => {
 			</Container>
 
 			<Row className='m-0'>
-				<Col className='col-lg-6 p-0 m-0'>
-					<SearchMap />
-				</Col>
+				{
+					!isMobile() && (
+						<Col className='p-0 m-0'>
+							<SearchMap />
+						</Col>
+					)
+				}
 
-				<Col className='col-lg-6 p-0 m-0'>
+				<Col className='p-0 m-0'>
 
 					{
 						loader && (
