@@ -23,12 +23,12 @@ const UserDropdown = () => {
 		if(!dropdown.classList.contains('dropdown-visible')) {
 
 			dropdown.classList.add('dropdown-visible');
-			document.getElementById('contact-location').style.zIndex = '-1';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '-1');
 		}
 		else {
 
 			dropdown.classList.remove('dropdown-visible');
-			document.getElementById('contact-location').style.zIndex = '';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
 		}
 
 		// When going to the my account page

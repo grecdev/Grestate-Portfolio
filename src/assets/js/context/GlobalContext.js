@@ -87,7 +87,7 @@ const GlobalContextProvider = (props) => {
 		if(!e.target.closest('#user-dropdown') && document.body.contains(document.getElementById('user-dropdown-menu'))) {
 
 			document.getElementById('user-dropdown-menu').classList.remove('dropdown-visible');
-			document.getElementById('contact-location').style.zIndex = '';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
 		}
 
 		// Close the mobile navbar
@@ -97,7 +97,7 @@ const GlobalContextProvider = (props) => {
 			if(!e.target.id.includes('mobile-navbar-icon') && !e.target.parentElement.id.includes('mobile-navbar-icon')) document.getElementById('mobile-navbar-icon').setAttribute('data-menu-enabled', 'false');
 
 			document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
-			document.getElementById('contact-location').style.zIndex = '';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
 		}
 
 		e.stopPropagation();

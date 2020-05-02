@@ -37,14 +37,14 @@ const Header = () => {
 			mobile_menu.classList.add('show-navbar');
 			setTimeout(() => target.setAttribute('data-menu-enabled', 'true'), interval);
 
-			document.getElementById('contact-location').style.zIndex = '-1';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '-1');
 			
 		} else {
 
 			mobile_menu.classList.remove('show-navbar');
 			setTimeout(() => target.setAttribute('data-menu-enabled', 'false'), interval);
 
-			document.getElementById('contact-location').style.zIndex = '';
+			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
 		}
 
 		e.stopPropagation();

@@ -17,6 +17,17 @@
 	body { padding-bottom: 380px }
 
 	.section-header hr { width: 5% }
+
+	.property-search-form form {
+		padding: 2rem 1rem !important;
+		text-align: left;
+
+		> div:last-child {
+			flex-direction: column;
+
+			.col { margin: 1rem 0 }
+		}
+	}
   
 }
 
