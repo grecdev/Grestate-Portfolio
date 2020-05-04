@@ -156,7 +156,7 @@ const MyAccountPage = () => {
 			city: /^[aA-zZ]{3,}$/g,
 			address: /^[\w\- ,.]{3,}$/g,
 			email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/gi,
-			password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z].{8,}$/gi
+			password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z].{8,}$/
 		};
 
 		const alert_danger = ['incorrect-validation', 'border-danger'];
@@ -304,6 +304,7 @@ const MyAccountPage = () => {
 
 				div.classList.add('my-2', 'p-0', 'bg-white', 'text-center', 'text-danger', 'password-regex');
 
+				// Display what the password still needs to be secured
 				div.innerHTML = `
 					${value.length < 8 ? `<p class='mb-3'>Password needs to contain at least 8 characters</p>` : ''}
 					${!value.match(/\d{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 number</p>` : ''}
@@ -311,30 +312,71 @@ const MyAccountPage = () => {
 					${!value.match(/[A-Z]{1,}/g) ? `<p class='mb-3'>Password needs to contain at least 1 uppercase character</p>` : ''}
 				`;
 				
+				// Insert the error
 				e.target.parentElement.insertAdjacentElement('beforeend', div);
+
 				e.target.classList.remove('correct-validation');
 				e.target.classList.add(...alert_danger);
 
 			} else {
 
 				document.body.contains(document.querySelector('form[name="account-form"] .password-regex')) && document.querySelector('form[name="account-form"] .password-regex').remove();
+
 				e.target.classList.remove(...alert_danger);
 				e.target.classList.add('correct-validation');
+
+				// Remove the password strength UI
+				e.target.nextElementSibling.classList.remove('d-flex');
 			}
 		}
 	}
 
-	useEffect(() => {
+	const passwordStrength = e => {
 
-		console.log(user_data);
+		const {
+
+			nextElementSibling,
+			value
+
+		} = e.target;
+
+		let password_strength = nextElementSibling.children[0];
+		const password_length = value.length * 5;
+		const classes = ['weak', 'medium', 'strong'];
+
+		if(e.type === 'paste') e.preventDefault();
+		else {
+
+			// If the bar is filled
+			if(password_length > 100) return;
+	
+			// So we always have one class displayed
+			password_strength.classList.remove(...classes);
+	
+			if(password_length <= 25) password_strength.classList.add('weak');
+			if(password_length >= 25 && password_length <= 70) password_strength.classList.add('medium');
+			if(password_length >= 70) password_strength.classList.add('strong');
+	
+			password_strength.style.width = `${password_length}%`;
+		}
+
+		// Show again the password strength UI
+		if(e.type === 'focus' && password_length > 0) e.target.nextElementSibling.classList.add('d-flex');
+
+		e.stopPropagation();
+	}
+
+	useEffect(() => {
 
 		// if(!user_data) changePage('/');
 		// else {
 
 		// 	// When the data fetch is completed get the user data and set it on the inputs
 		// 	// Depends on the firebase servers
-			// if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
+		// 	if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
 		// }
+
+		if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
 		
 	}, [user_data]);
 
@@ -468,15 +510,30 @@ const MyAccountPage = () => {
 								value={account_state.new_password}
 								onChange={handleChange}
 								onBlur={myAccountRegex}
+								onInput={passwordStrength}
+								onPaste={passwordStrength}
+								onFocus={passwordStrength}
 							/>
+
+						<div 
+							className={`password-strength justify-content-start align-items-center ${account_state.new_password.length > 0 ? 'mt-3 d-flex' : ''}`}
+						>
+							<div className="password-strength-bar"></div>
+
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+
+						</div>
 						</Form.Group>
 					</Form.Row>
 
 					{authentication_regex && <RegexAlert text={authentication_regex} danger={authentication_regex.includes('successfully') ? false : true} />}
 					{account_regex.global && <RegexAlert text={account_regex.global} danger={true} />}
 
-					<Form.Row className={`justify-content-center${account_regex.global || authentication_regex ? 'mt-4': ''}`}>
-					<AuthLoader />
+					<Form.Row className={`justify-content-center${account_regex.global || authentication_regex ? ' mt-4': ''}`}>
+
 						{ auth_loader ? <AuthLoader /> : (
 							<>
 								<button 

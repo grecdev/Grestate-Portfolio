@@ -297,6 +297,9 @@ const SignUp = () => {
 
 					e.target.classList.add('correct-validation');
 					e.target.classList.remove(...alert_danger);
+					
+					// Remove the password strength UI
+					e.target.nextElementSibling.classList.remove('d-flex');
 				}
 			}
 
@@ -347,12 +350,15 @@ const SignUp = () => {
 			// So we always have one class displayed
 			password_strength.classList.remove(...classes);
 	
-			if(password_length < 25) password_strength.classList.add('weak');
-			if(password_length > 25 && password_length < 70) password_strength.classList.add('medium');
-			if(password_length > 70) password_strength.classList.add('strong');
+			if(password_length <= 25) password_strength.classList.add('weak');
+			if(password_length >= 25 && password_length <= 70) password_strength.classList.add('medium');
+			if(password_length >= 70) password_strength.classList.add('strong');
 	
 			password_strength.style.width = `${password_length}%`;
 		}
+
+		// Show again the password strength UI
+		if(e.type === 'focus' && password_length > 0) e.target.nextElementSibling.classList.add('d-flex');
 
 		e.stopPropagation();
 	}
@@ -486,6 +492,7 @@ const SignUp = () => {
 							onKeyDown={signupValidation}
 							onInput={passwordStrength}
 							onPaste={passwordStrength}
+							onFocus={passwordStrength}
 						/>
 
 						<div 

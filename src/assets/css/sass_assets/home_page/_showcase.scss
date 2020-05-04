@@ -3,7 +3,7 @@
 
 	.container-fluid {
 
-		&, > .row, .row > div { height: 100% }
+		&, > .row, .row > div { height: inherit }
 
 		.row > div { flex: 1 }
 	
