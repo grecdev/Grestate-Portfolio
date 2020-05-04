@@ -34,21 +34,21 @@ const SearchListings = () => {
 
 	} = useContext(FetchContext);
 
-	let [arr, setArr] = useState(db);
+	let [arr, setArr] = useState([]);
 
 	useEffect(() => {
 
-		// if(location.includes('buy')) {
+		if(location.includes('buy')) {
 
-		// 	if(filtered_buy_properties.length === 0) setArr(buy_properties);
-		// 	else setArr(filtered_buy_properties);
-		// }
+			if(filtered_buy_properties.length === 0) setArr(buy_properties);
+			else setArr(filtered_buy_properties);
+		}
 
-		// if(location.includes('rent')) {
+		if(location.includes('rent')) {
 
-		// 	if(filtered_rent_properties.length === 0) setArr(rent_properties);
-		// 	else setArr(filtered_rent_properties);
-		// }
+			if(filtered_rent_properties.length === 0) setArr(rent_properties);
+			else setArr(filtered_rent_properties);
+		}
 
 	}, [buy_properties, filtered_buy_properties, rent_properties, filtered_rent_properties]);
 	

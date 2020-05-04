@@ -51,8 +51,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		// if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		// if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
@@ -60,12 +60,12 @@ const PropertyPage = ({ match }) => {
 
 	useEffect(() => {
 
-		if(location.includes('buy') && buy_properties.length > 0) buy_properties.filter(item => item.id === houseId && setProperty(item));
-		if(location.includes('rent') && rent_properties.length > 0) rent_properties.filter(item => item.id === houseId && setProperty(item));
+		// if(location.includes('buy') && buy_properties.length > 0) buy_properties.filter(item => item.id === houseId && setProperty(item));
+		// if(location.includes('rent') && rent_properties.length > 0) rent_properties.filter(item => item.id === houseId && setProperty(item));
 
 		db.filter(item => item.id === houseId && setProperty(item));
 
-	}, [buy_properties, rent_properties]);
+	}, []);
 
 	const defaultSliderState = {
 		// This is the image that we display it when we first enter on the page
@@ -97,6 +97,7 @@ const PropertyPage = ({ match }) => {
 							transitionTime={500}
 							setShownImage={setShownImage}
 							toggleSliderModal={toggleSliderModal}
+							modal_visible={slider_state.slider_modal_visible}
 						/>
 
 						<PropertyDetails info={property} />

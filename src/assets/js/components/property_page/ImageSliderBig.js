@@ -117,10 +117,10 @@ const ImageSliderBig = (props) => {
 
 			target.setAttribute('data-event-toggle', 'false');
 
+			document.querySelector('.image-gallery > p span').textContent = count + 1;
+
 			setTimeout(() => target.setAttribute('data-event-toggle', 'true'), transitionTime + 200);
 		}
-
-		document.querySelector('.image-gallery > p span').textContent = count + 1;
 
 		e.stopPropagation();
 	}
@@ -133,8 +133,8 @@ const ImageSliderBig = (props) => {
 
 			let image = parseFloat(document.querySelector('.image-gallery > p span').textContent) - 1;
 
-			// Because on the property page we have displayed only 3 images in the left side
-			image >= 3 ? image = 2 : image;
+			// Because on the smaller slider we display only 3 images
+			image > 2 ? image = 2 : image;
 
 			setShownImage(image);
 		}

@@ -19,7 +19,8 @@ const ImageSliderSmall = (props) => {
 		shownImage,
 		setShownImage,
 		transitionTime,
-		toggleSliderModal
+		toggleSliderModal,
+		modal_visible
 
 	} = props;
 
@@ -51,11 +52,7 @@ const ImageSliderSmall = (props) => {
 
 		displayImages();
 
-	}, [shownImage]);
-
-	// If we directly set the shown image it will re-render, and transitions won't work
-	// So that's why i used an internal state
-	let [imageCount, setImageCount] = useState(shownImage);
+	}, [modal_visible]);
 
 	const changeImage = e => {
 
@@ -67,17 +64,18 @@ const ImageSliderSmall = (props) => {
 		} = e.currentTarget;
 
 		const current_image = parseFloat(dataset.imageIndex);
-
-		setImageCount(current_image);
-		document.querySelector('.image-showcase > p span').textContent = current_image + 1;
-
+		
 		if(classList.contains('image-small') && dataset.toggleImage === 'true') {
 
-			// So we have only image selected
-			document.querySelectorAll('.image-small').forEach(image => {
+			setShownImage(current_image);
+			document.querySelector('.image-showcase > p span').textContent = current_image + 1;
 
+			document.querySelectorAll('.image-small').forEach(image => {
+				
+				// So we have only one image selected
 				image.classList.remove('selected');
 
+				// Throttle
 				image.setAttribute('data-toggle-image', 'false');
 
 				setTimeout(() => image.setAttribute('data-toggle-image', 'true'), transitionTime);
@@ -128,11 +126,7 @@ const ImageSliderSmall = (props) => {
 
 	const toggleSlider = e => {
 
-		if(e.currentTarget.tagName === 'DIV') {
-
-			toggleSliderModal(true);
-			setShownImage(imageCount);
-		}
+		if(e.currentTarget.tagName === 'DIV') toggleSliderModal(true);
 
 		e.stopPropagation();
 	}
@@ -145,13 +139,16 @@ const ImageSliderSmall = (props) => {
 						images.map((image, index) => {
 
 							let className = 'rounded image-small mb-3';
+							// Hightlight the clicked image
+							index === shownImage && (className += ' selected');
 
+							// Display only 3 images on the smaller slider
 							if(index < 3) {
 
 								return (
 
 									<div
-										className={shownImage === index ? className += ' selected' : className}
+										className={className}
 										key={image}
 										onClick={changeImage}
 										data-image-index={index}
@@ -169,17 +166,20 @@ const ImageSliderSmall = (props) => {
 				<Col className='p-0 col-lg-8'>
 					<div className="image-showcase position-relative overflow-hidden">
 
-						{images.map((image, index) => (
+						{images.map((image, index) => {
 
-							<div
-								key={image}
-								data-image-index={index}
-								className='review-image rounded position-absolute'
-							>
-								<Image src={image} />
-							</div>
+							if(index < 3) return (
 
-						)
+								<div
+									key={image}
+									data-image-index={index}
+									className='review-image rounded position-absolute'
+								>
+									<Image src={image} />
+								</div>
+								
+							)}
+
 						)}
 
 				    <p className="position-absolute px-3 py-1 rounded"><span>{shownImage + 1}</span> / {images.length}</p>
@@ -199,7 +199,8 @@ ImageSliderSmall.propTypes = {
 	shownImage: PropTypes.number.isRequired,
 	transitionTime: PropTypes.number.isRequired,
 	setShownImage: PropTypes.func.isRequired,
-	toggleSliderModal: PropTypes.func.isRequired
+	toggleSliderModal: PropTypes.func.isRequired,
+	modal_visible: PropTypes.bool.isRequired
 }
 
 export default memo(ImageSliderSmall);

@@ -49,10 +49,6 @@ const SearchPropertyPage = () => {
 						)
 					}
 
-{/* <div className="search-listings-loader d-flex flex-column justify-content-center align-items-center">
-								<div className='mx-auto'></div>
-							</div> */}
-
 					<div className={loader ? 'd-none' : 'd-block'}>
 						<SearchListings />
 					</div>
