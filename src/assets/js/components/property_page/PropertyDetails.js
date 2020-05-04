@@ -52,7 +52,7 @@ const PropertyDetails = (props) => {
 	return (
 		<section id='property-details' className='pr-5'>
 			
-			<div className="property-details-header d-flex flex-row justify-content-start align-items-start py-3">
+			<div className="property-details-header d-flex flex-wrap flex-row justify-content-start align-items-start py-3">
 
 				{propertyPrice && <p className="price font-weight-bold">$ {parseFloat(propertyPrice).toLocaleString()}</p>}
 
@@ -74,7 +74,7 @@ const PropertyDetails = (props) => {
 			</div>
 
 			<div className="property-details-info py-3">
-				<div className='d-flex flex-row justify-content-between align-items-center'>
+				<div className='d-flex flex-wrap flex-row justify-content-between align-items-center'>
 
 					<div className="info-box text-center">
 						<h3 className='text-secondary font-weight-light'>Bedrooms</h3>

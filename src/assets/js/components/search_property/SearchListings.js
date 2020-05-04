@@ -40,14 +40,14 @@ const SearchListings = () => {
 
 		if(location.includes('buy')) {
 
-			if(filtered_buy_properties.length === 0) setArr(buy_properties);
-			else setArr(filtered_buy_properties);
+			if(filtered_buy_properties.length > 0) setArr(filtered_buy_properties);
+			else setArr(buy_properties);
 		}
 
 		if(location.includes('rent')) {
 
-			if(filtered_rent_properties.length === 0) setArr(rent_properties);
-			else setArr(filtered_rent_properties);
+			if(filtered_rent_properties.length > 0) setArr(filtered_rent_properties);
+			else setArr(rent_properties);
 		}
 
 	}, [buy_properties, filtered_buy_properties, rent_properties, filtered_rent_properties]);

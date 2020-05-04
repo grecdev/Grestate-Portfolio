@@ -132,7 +132,7 @@ const FetchContextProvider = (props) => {
 				dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
 			}
 
-			if(!location.includes('rent')) {
+			if(!location.includes('rental')) {
 
 				dispatch({ type: SET_RENTAL_PROPERTIES, payload: [] });
 				dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });

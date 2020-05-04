@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { throttleEvent } from '@helpers';
+
 import Image from '@components/global_layout/Image';
 
 const ImageSliderBig = (props) => {
@@ -46,9 +48,8 @@ const ImageSliderBig = (props) => {
 	const changeImage = e => {
 		
 		const target = e.currentTarget;
-		const toggle = target.dataset.eventToggle === 'true';
 		
-		if(target.tagName === 'DIV' && toggle) {
+		if(target.tagName === 'DIV') {
 
 			if(target.id.includes('left')) {
 
@@ -115,11 +116,7 @@ const ImageSliderBig = (props) => {
 				}
 			});
 
-			target.setAttribute('data-event-toggle', 'false');
-
 			document.querySelector('.image-gallery > p span').textContent = count + 1;
-
-			setTimeout(() => target.setAttribute('data-event-toggle', 'true'), transitionTime + 200);
 		}
 
 		e.stopPropagation();
@@ -143,21 +140,23 @@ const ImageSliderBig = (props) => {
 	}
 
 	return (
-		<section id='images-slider-big' className='px-5 position-fixed d-flex flex-row justify-content-between align-items-center' onClick={toggleSlider}>
-
+		<section 
+			id='images-slider-big' 
+			className='p-5 position-fixed overflow-auto d-flex flex-row justify-content-between align-items-stretch' 
+			onClick={toggleSlider}
+		>
 			<div id="close-slider" role='button' className='position-absolute' onClick={toggleSlider}><i className="fas fa-times"></i></div>
 
 			<div 
 				id="left-arrow"
 				role='button'
-				className='text-center'
-				data-event-toggle='true'
-				onClick={changeImage}
+				className='text-center my-auto'
+				onClick={throttleEvent(changeImage, transitionTime)}
 			>
 				<i className="fas fa-chevron-left"></i>
 			</div>
 
-			<div className="image-gallery position-relative overflow-hidden">
+			<div className="image-gallery mx-5 position-relative overflow-hidden">
 
 				{ images.map(image => (
 
@@ -176,9 +175,8 @@ const ImageSliderBig = (props) => {
 			<div 
 				id="right-arrow"
 				role='button'
-				className='text-center'
-				onClick={changeImage}
-				data-event-toggle='true'
+				className='text-center my-auto'
+				onClick={throttleEvent(changeImage, transitionTime)}
 			>
 				<i className="fas fa-chevron-right"></i>
 			</div>

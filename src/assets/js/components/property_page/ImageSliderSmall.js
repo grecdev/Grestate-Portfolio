@@ -1,11 +1,13 @@
 import React, { 
 
-	useEffect, 
-	useState, 
-	memo
+	useEffect,
+	memo,
+	useContext
 
 } from 'react';
 import PropTypes from 'prop-types';
+
+import { GlobalContext } from '@context/GlobalContext';
 
 import Image from '@components/global_layout/Image';
 import Row from 'react-bootstrap/Row';
@@ -24,6 +26,14 @@ const ImageSliderSmall = (props) => {
 
 	} = props;
 
+	const { isMobile } = useContext(GlobalContext);
+
+	let direction = '';
+	const mobile = window.matchMedia('(min-width: 768px) and (max-height: 1024px) and (orientation: portrait)').matches || window.matchMedia('(min-width: 320px) and (max-width: 480px)').matches;
+
+	// For some mobile devices images should be aligned on x axis
+	mobile ? direction = 'translateX' : direction = 'translateY';
+
 	const displayImages = () => {
 
 		document.querySelectorAll('.review-image').forEach((image, index) => {
@@ -33,18 +43,21 @@ const ImageSliderSmall = (props) => {
 			setTimeout(() => image.style.transition = '', 100);
 
 			let image_pos;
-		
-			const image_width = Math.ceil(image.getBoundingClientRect().width);
+
+			let image_width = Math.ceil(image.getBoundingClientRect().width);
+			
+			// We need some spacing for review images on mobile devices
+			mobile && (image_width = image_width + parseFloat(window.getComputedStyle(image).getPropertyValue('margin-left')) * 2);
 			
 			// I use this because we have more than 3 images, but the slider displays only 3
 			if(shownImage >= document.querySelectorAll('.review-image').length - 1) image_pos = image_width * (index - 2);
 			else image_pos = image_width * (index - shownImage);
 
-			image.style.transform = `translateY(${image_pos}px)`;
+			image.style.transform = `${direction}(${image_pos}px)`;
 			const current_pos = parseFloat(image.style.transform.match(/[\d\-]/g).join(''));
 			
-			if(current_pos < 0) image.style.transform = `translateY(${-image_width}px)`;
-			if(current_pos >= image_width) image.style.transform = `translateY(${image_width}px)`;
+			if(current_pos < 0) image.style.transform = `${direction}(${-image_width}px)`;
+			if(current_pos >= image_width) image.style.transform = `${direction}(${image_width}px)`;
 		});
 	}
 
@@ -64,8 +77,9 @@ const ImageSliderSmall = (props) => {
 		} = e.currentTarget;
 
 		const current_image = parseFloat(dataset.imageIndex);
+		const toggle_event = dataset.toggleEvent === 'true';
 		
-		if(classList.contains('image-small') && dataset.toggleImage === 'true') {
+		if(classList.contains('image-small') && toggle_event) {
 
 			setShownImage(current_image);
 			document.querySelector('.image-showcase > p span').textContent = current_image + 1;
@@ -75,23 +89,27 @@ const ImageSliderSmall = (props) => {
 				// So we have only one image selected
 				image.classList.remove('selected');
 
-				// Throttle
-				image.setAttribute('data-toggle-image', 'false');
+				// Throttle workaround
+				image.setAttribute('data-toggle-event', 'false');
 
-				setTimeout(() => image.setAttribute('data-toggle-image', 'true'), transitionTime);
+				setTimeout(() => image.setAttribute('data-toggle-event', 'true'), transitionTime);
 			});
 
 			classList.add('selected');
 
 			document.querySelectorAll('.review-image').forEach((image, index) => {
 
-				const image_width = Math.ceil(image.getBoundingClientRect().width);
+				let image_width = Math.ceil(image.getBoundingClientRect().width);
+
+				// We need some spacing for review images on mobile devices
+				mobile && (image_width = image_width + parseFloat(window.getComputedStyle(image).getPropertyValue('margin-left')) * 2);
+
 				const current_pos = parseFloat(image.style.transform.match(/[\d\-]/g).join(''));
 
 				// Moving upwards
 				if(index < current_image) {
 
-					image.style.transform = `translateY(${-image_width}px)`;
+					image.style.transform = `${direction}(${-image_width}px)`;
 
 					// So we don't see any image that overlap the current shown ones
 					if(current_pos > 0) {
@@ -103,12 +121,12 @@ const ImageSliderSmall = (props) => {
 				}
 
 				// The image that we click comes to center
-				if(index === current_image) image.style.transform = `translateY(${0}px)`;
+				if(index === current_image) image.style.transform = `${direction}(${0}px)`;
 
 				// Moving downwards
 				if(index > current_image) {
 
-					image.style.transform = `translateY(${image_width}px)`;
+					image.style.transform = `${direction}(${image_width}px)`;
 
 					// So we don't see any image that overlap the current shown ones
 					if(current_pos < 0) {
@@ -134,8 +152,10 @@ const ImageSliderSmall = (props) => {
 	return (
 		<section id='images-slider-small'>
 			<Row className='m-0'>
-				<Col className='d-flex flex-column justify-content-between align-items-start p-0 col-lg-3 mr-3'>
+				<Col className='d-flex flex-column justify-content-between align-items-start p-0 col-12 col-lg-3 col-md-12 mr-3'>
 					{
+						// Here the images will always render when we click on them so, i can't use throttle helper
+						// But i use a 'throttle workaround'
 						images.map((image, index) => {
 
 							let className = 'rounded image-small mb-3';
@@ -152,7 +172,7 @@ const ImageSliderSmall = (props) => {
 										key={image}
 										onClick={changeImage}
 										data-image-index={index}
-										data-toggle-image='true'
+										data-toggle-event='true'
 									>
 										<Image src={image} />
 									</div>
@@ -163,7 +183,7 @@ const ImageSliderSmall = (props) => {
 					}
 				</Col>
 
-				<Col className='p-0 col-lg-8'>
+				<Col className='p-0 col-lg-8 col-12 col-md-12'>
 					<div className="image-showcase position-relative overflow-hidden">
 
 						{images.map((image, index) => {
@@ -185,8 +205,9 @@ const ImageSliderSmall = (props) => {
 				    <p className="position-absolute px-3 py-1 rounded"><span>{shownImage + 1}</span> / {images.length}</p>
 
 						<div className="rounded position-absolute d-flex flex-column justify-content-center align-items-center" onClick={toggleSlider}>
-							<p>See more images <i className="ml-2 fas fa-images"></i></p>
+							{!isMobile && <p>See more images <i className="ml-2 fas fa-images"></i></p>}
 						</div>
+						
 					</div>
 				</Col>
 			</Row>

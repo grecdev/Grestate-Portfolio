@@ -23,13 +23,16 @@
 	}
 
 	.image-gallery {
-		width: 70%;
-		height: 600px;
+		width: 100%;
+		height: 100%;
 		
 		> div {
 			left: -48px;
 			transition: transform 500ms ease-in-out;
 			width: 100%;
+			// because when we set the absolute position to divs
+			// the height will be setted to 0
+			height: inherit;
 		}
 		
 		p {
