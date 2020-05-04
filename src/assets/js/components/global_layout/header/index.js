@@ -10,6 +10,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 
+import dark_icon from '../../../../media/header-menu-dark.svg';
+import light_icon from '../../../../media/header-menu-light.svg';
+
 const Header = () => {
 
 	const {
@@ -38,6 +41,8 @@ const Header = () => {
 			setTimeout(() => target.setAttribute('data-menu-enabled', 'true'), interval);
 
 			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '-1');
+
+			target.children[0].setAttribute('src', light_icon);
 			
 		} else {
 
@@ -45,8 +50,10 @@ const Header = () => {
 			setTimeout(() => target.setAttribute('data-menu-enabled', 'false'), interval);
 
 			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
-		}
 
+			target.children[0].setAttribute('src', dark_icon);
+		}
+		
 		e.stopPropagation();
 	}
 

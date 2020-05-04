@@ -6,6 +6,7 @@ import React, {
 	useState
 
 } from 'react';
+
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -15,6 +16,8 @@ import {
 	CHANGE_LOCATION
 
 } from '@constants/actionTypes';
+
+import dark_icon from '../../media/header-menu-dark.svg';
 
 export const GlobalContext = createContext();
 
@@ -29,6 +32,13 @@ const GlobalContextProvider = (props) => {
 	const [state, dispatch]= useReducer(GlobalReducer, defaultGlobalState);
 	
 	const changePage = page => history.push(page);
+
+	const isMobile = () => {
+
+		const isMobile = /(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i;
+
+		return isMobile.test(navigator.userAgent);
+	}
 
 	const [counter, setCounter] = useState(false);
 
@@ -91,13 +101,15 @@ const GlobalContextProvider = (props) => {
 		}
 
 		// Close the mobile navbar
-		if(!e.target.closest('.mobile-navbar-dropdown') && document.body.contains(document.querySelector('.mobile-navbar-dropdown'))) {
+		if(!e.target.closest('.mobile-navbar-dropdown') && isMobile()) {
 
 			// Enable the click event on the menu icon when we don't click on it ( menu icon )
 			if(!e.target.id.includes('mobile-navbar-icon') && !e.target.parentElement.id.includes('mobile-navbar-icon')) document.getElementById('mobile-navbar-icon').setAttribute('data-menu-enabled', 'false');
 
 			document.querySelector('.mobile-navbar-dropdown').classList.remove('show-navbar');
 			document.body.contains(document.getElementById('contact-location')) && (document.getElementById('contact-location').style.zIndex = '');
+
+			document.getElementById('mobile-navbar-icon').children[0].setAttribute('src', dark_icon);
 		}
 
 		e.stopPropagation();
@@ -139,14 +151,9 @@ const GlobalContextProvider = (props) => {
 
 		window.scrollTo(0, 0);
 
+		isMobile() && document.getElementById('mobile-navbar-icon').children[0].setAttribute('src', dark_icon);
+
 	}, [location.pathname]);
-
-	const isMobile = () => {
-
-		const isMobile = /(Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone)/i;
-
-		return isMobile.test(navigator.userAgent);
-	}
 
 	return (
 		<GlobalContext.Provider value={{
