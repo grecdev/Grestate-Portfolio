@@ -26,7 +26,6 @@ const SearchListings = () => {
 
 	const {
 
-		db,
 		buy_properties,
 		rent_properties,
 		filtered_buy_properties,

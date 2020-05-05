@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, {
+
+	useContext, 
+	useEffect, 
+	useReducer
+
+} from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
@@ -368,15 +374,13 @@ const MyAccountPage = () => {
 
 	useEffect(() => {
 
-		// if(!user_data) changePage('/');
-		// else {
+		if(!user_data) changePage('/');
+		else {
 
-		// 	// When the data fetch is completed get the user data and set it on the inputs
-		// 	// Depends on the firebase servers
-		// 	if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
-		// }
-
-		if(user_data && Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
+			// When the data fetch is completed get the user data and set it on the inputs
+			// Depends on the firebase servers
+			if(Object.keys(user_data).length > 0) dispatch_account_state({ type: SET_ACCOUNT_INPUTS, payload: user_data });
+		}
 		
 	}, [user_data]);
 
@@ -565,4 +569,4 @@ const MyAccountPage = () => {
 	) : null
 }
 
-export default MyAccountPage
+export default MyAccountPage;

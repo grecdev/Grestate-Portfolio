@@ -4,8 +4,12 @@
 */
 @media (min-width: 1025px) and (max-width: 1280px) {
   
-  body { padding-bottom: 398px }
-  
+	body { padding-bottom: 398px }
+	
+	#intro-loader video {
+		width: 30%;
+		margin-left: 1rem;
+	}
 }
 
 /* 
@@ -28,14 +32,17 @@
 			.col { margin: 1rem 0 }
 		}
 	}
-  
+
+	#intro-loader video {
+		width: 30%;
+		margin-left: 1rem;
+	}
 }
 
 /* 
   ##Device = Tablets, Ipads (landscape)
   ##Screen = B/w 768px to 1024px
 */
-
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
 
 	body { padding-bottom: 398px }
@@ -52,14 +59,17 @@
 	}
 
 	.section-header hr { width: 10% }
-  
+
+	#intro-loader video {
+		width: 30%;
+		margin-left: 1rem;
+	}
 }
 
 /* 
   ##Device = Most of the Smartphones Mobiles (Portrait)
   ##Screen = B/w 320px to 479px
 */
-
 @media (min-width: 320px) and (max-width: 480px) {
 
 	body { padding-bottom: 512px }
@@ -93,6 +103,11 @@
 
 			a { margin: 1rem 0 }
 		}
+	}
+
+	#intro-loader video {
+		width: 100%;
+    margin-left: -0.5rem;
 	}
 }
 
@@ -152,6 +167,11 @@
 			a { margin: 1rem 0 }
 		}
 	}
+
+	#intro-loader video {
+		width: 100%;
+    margin-left: -0.5rem;
+	}
 }
 
 // Iphone SE / Moto / Galaxy S5 - Landscape
@@ -186,5 +206,4 @@
 
 		.nav-link { margin: 0 1rem !important }
 	}
-
 }

@@ -8,7 +8,6 @@
 		width: 100%;
 		margin: 1rem 0;
 	}
-  
 }
 
 /* 
@@ -36,20 +35,9 @@
 }
 
 /* 
-  ##Device = Tablets, Ipads (landscape)
-  ##Screen = B/w 768px to 1024px
-*/
-
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  
-  
-}
-
-/* 
   ##Device = Low Resolution Tablets, Mobiles (Landscape)
   ##Screen = B/w 481px to 767px
 */
-
 @media (min-width: 481px) and (max-width: 767px) {
   
   #our-team .container > .row  {
@@ -62,7 +50,6 @@
 		width: 100%;
 		margin: 1rem 0;
 	}
-  
 }
 
 // Iphone X && Pixel 2XL

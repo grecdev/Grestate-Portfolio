@@ -1,4 +1,9 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, {
+
+	useContext, 
+	useReducer
+
+} from 'react';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
 import { GlobalContext } from '@context/GlobalContext';
@@ -322,7 +327,6 @@ const SignUp = () => {
 
 				if(isEmpty) dispatch_signupRegex({ type: SET_REGEX_ALERT, target, payload: 'You need to confirm password' });
 			}
-
 		}
 
 		e.stopPropagation();

@@ -1,6 +1,13 @@
 "use strict";
 
-import React, { lazy, Suspense, useContext } from 'react';
+import React, {
+
+	lazy, 
+	Suspense, 
+	useContext
+	
+} from 'react';
+
 import { Switch, Route } from 'react-router-dom';
 
 import { AuthenticationContext } from '@context/AuthenticationContext';
@@ -60,7 +67,7 @@ const App = () => {
 
 				<ResetScroll />
 
-				{/* <IntroLoader /> */}
+				<IntroLoader />
 
 				<Footer />
 			</Suspense>

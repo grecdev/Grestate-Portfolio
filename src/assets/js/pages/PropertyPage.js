@@ -51,8 +51,8 @@ const PropertyPage = ({ match }) => {
 	// If no property has been searched we should redirect back to the searching page
 	useEffect(() => {
 
-		// if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
-		// if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
+		if(buy_properties.length === 0 && location.includes('buy')) changePage('/buy-properties');
+		if(rent_properties.length === 0 && location.includes('rental')) changePage('/rental-listings');
 
 	}, []);
 
@@ -62,12 +62,12 @@ const PropertyPage = ({ match }) => {
 
 		// If we filter for some property, the property we will display on the Property Page will be from the same array
 		// So no need to check for filtered array, as i did in the SearchListings.js
-		// if(location.includes('buy') && buy_properties.length > 0) buy_properties.filter(item => item.id === houseId && setProperty(item));
-		// if(location.includes('rent') && rent_properties.length > 0) rent_properties.filter(item => item.id === houseId && setProperty(item));
+		if(location.includes('buy') && buy_properties.length > 0) buy_properties.filter(item => item.id === houseId && setProperty(item));
+		if(location.includes('rent') && rent_properties.length > 0) rent_properties.filter(item => item.id === houseId && setProperty(item));
 
 		// Or i could do this, because i have only 12 properties, so i get all of them when the website is loaded
 		// Not recommended if we have a lot more properties
-		db.filter(item => item.id === houseId && setProperty(item));
+		// db.filter(item => item.id === houseId && setProperty(item));
 
 	}, []);
 

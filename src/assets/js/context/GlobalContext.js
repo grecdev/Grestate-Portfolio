@@ -117,14 +117,15 @@ const GlobalContextProvider = (props) => {
 
 	const loadEvent = () => {
 		
-		document.querySelector('html').classList.remove('overflow-hidden');
-		// setTimeout(() => {
+		setTimeout(() => {
+			
+			document.querySelector('html').classList.remove('overflow-hidden');
 
-		// 	document.getElementById('intro-loader').classList.add('hidden');
+			document.getElementById('intro-loader').classList.add('hidden');
 
-		// 	setTimeout(() => document.getElementById('intro-loader').remove(), 300);
+			setTimeout(() => document.getElementById('intro-loader').remove(), 300);
 
-		// }, 2500);
+		}, 2500);
 	}
 
 	useEffect(() => {
