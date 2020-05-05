@@ -1,7 +1,14 @@
-### Installation
-----
+# Grestate
 
-1. Assuming you have [`git`](https://git-scm.com/downloads) installed type in console: `git clone https://github.com/grecdev/GrecTraveling.git`
+Want to buy a house ? Maybe rent some apartment, here is the perfect place to find the property that suit your needs.
+
+:computer: Live preview: [in progress]()
+
+### To properly run the website on your local machine:
+
+**Installing:**
+
+1. Assuming you have [`git`](https://git-scm.com/downloads) installed type in console: `git clone https://github.com/grecdev/Grestate-Portfolio.git`
 
 2. Make sure you have the latest version of [Node.js](https://nodejs.org/en/download/)
 
@@ -9,153 +16,71 @@
 ```
 npm install -g npm@latest
 ```
-4. Create a `package.json` file, run the following command in the `CLI` (command line interface):
+4. Install all `dependencies / modules`, run the following command in the `CLI` (command line interface):
 ```
-npm init -y
-```
-
-### Global dependencies
-
-1. Webpack
-
----
-- webpack
-- webpack-cli
-- webpack-dev-server
-- webpack-merge
-
-```
-npm i webpack webpack-cli webpack-dev-server webpack-merge --save
+npm install
 ```
 
-2. Babel
+**To browse the website**:
 
----
-- @babel/core
-- @babel/polyfill
-- @babel/preset-env
-- babel-loader
-```
-npm i @babel/core @babel/polyfill @babel/preset-env babel-loader --save-dev
-```
+1. `npm start` - To run development server on your local machine (`localhost`)
 
-3. Productivity
----
-- html-webpack-plugin
-- html-loader
-- style-loader
-- css-loader
-- node-sass
-- sass-loader
-- mini-css-extract-plugin
-- optimize-css-assets-webpack-plugin
-- clean-webpack-plugin
-- file-loader
-- copy-webpack-plugin
+2. `npm run build` - To get all production files
 
-```
-npm i html-webpack-plugin html-loader style-loader css-loader node-sass sass-loader mini-css-extract-plugin optimize-css-assets-webpack-plugin clean-webpack-plugin file-loader copy-webpack-plugin --save-dev
-```
+### I used the following technologies for this project:
 
-**Package.json scripts**
+- Semantic HTML5
+- [Sass](https://sass-lang.com/) (with `.scss` extension / syntax, see more details [here](https://sass-lang.com/documentation/syntax))
+- Media Queries ( Responsive Design )
+- React.js
+- [Jump.js](http://callmecavs.com/jump.js/) library for smooth scroll
+- [Webpack](https://github.com/webpack/webpack)
+- For `version control system` i used [Git](https://git-scm.com/)
 
----
+### Features for this website:
+
+1. Smooth Scroll
+2. Form regex validation
+3. Single Page Application
+4. For state management i used: `state hook / class component setState / useReducer hook`
+5. Code splitting with lazy() and Suspense
+6. For my properties "database" i used a `json` file hosted with github pages
+7. For the property page i created an `infinite slideshow gallery`
+8. Filter functionality for properties
+9. Authentication with Firebase / Firestore
+10. Properties displayed on a [map](https://visgl.github.io/react-map-gl/)
+
+For `api data` fetching i used:
 ```
-"scripts": {
-   "start": "webpack-dev-server --config webpack.dev.js --content-base src/ --open",
-   "build": "webpack --config webpack.prod.js"
-},
+XMLHttpRequest()
+Fetch api
+Async / await
 ```
 
-**If we use *React.js***
+### :bowtie: Contribuitors:
 
----
-1. `npm i react react-dom react-scripts --save`
+Grecu Alexandru aka [`grecdev`](https://github.com/grecdev)
 
-2. Babel setup:
-- @babel/preset-react
-- @babel/plugin-syntax-jsx
-- @babel/plugin-transform-react-display-name
-- @babel/plugin-transform-react-jsx
-- @babel/plugin-transform-react-jsx-self
-- @babel/plugin-transform-react-jsx-source
-- @babel/plugin-proposal-class-properties
-```
-npm i @babel/preset-react @babel/plugin-syntax-jsx @babel/plugin-transform-react-display-name @babel/plugin-transform-react-jsx @babel/plugin-transform-react-jsx-self @babel/plugin-transform-react-jsx-source @babel/plugin-proposal-class-properties --save-dev
-```
+### License:
 
-And in `webpack.config.js` file add following:
-```
-query: {
-  presets: ['@babel/preset-env', '@babel/preset-react'],
-  plugins: ['@babel/plugin-proposal-class-properties']
- }
-```
-
-If we want to use
-*[`React router`](https://www.npmjs.com/package/react-router-dom)*:
-
-  ```
-  npm i react-router-dom
-  ```
-
-1. Add in `webpack.dev.js` file: `devServer: { historyApiFallback: true }`
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/grecdev/FitnessClub-Gym-Portfolio/blob/master/LICENSE.md) file for details
 
 ***Additional information:***
 
-`environment variables`:
+:iphone: Check for `responsive design` in chrome: 
 
----
-- Install [`dotenv-webpack`](https://www.npmjs.com/package/dotenv-webpack) and follow the instructions from there
-- Create `.env` file in the `root folder` 
+1. Open `developer console` pressing `F12`
+2. Click on the `Toggle Device Toolbar` button or press `Ctrl + Shift + M`
 
-`Promises / Fetch` for IE:
+(make sure you `refresh` the page each time you change the mobile device)
 
----
-- es6-promise
-- isomorphic-fetch
+You can check for website performance with `google audit` (it checks for individual page):
 
-```
-npm i es6-promise isomorphic-fetch --save-dev
-```
+1. Open an `incognito tab`. ( Disables extenstions, and it works better )
 
-And in the main `index.js` file add:
-```
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-```
+- Windows | Linux, | Chrome OS: `Press Ctrl + Shift + n`.
+- Mac: `Press ⌘ + Shift + n`.
 
-To install *React code splitting* you need to use `lazy()` && `Suspense` (see more here: [Source 1](https://digitalfortress.tech/debug/how-to-use-webpack-analyzer-bundle/) / [Source 2](https://reactjs.org/docs/code-splitting.html)):
-
----
-
-1. `npm install --save-dev webpack-bundle-analyzer`
-
-2. Add the following config in the `webpack.prod.js`:
-
-```
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-```
-
-3. And the plugin in the `plugins` property:
-
-```
-new BundleAnalyzerPlugin({
-    analyzerMode: 'disabled',
-    generateStatsFile: true,
-    statsOptions: { source: false }
-})
-```
-
-4. Add the following script in the `package.json` file:
-
-```
-"build-report": "webpack-bundle-analyzer --port 8888 ./dist/stats.json"
-```
-
-and to run it you do something like this in the `CLI`:
-
-```
-npm run build
-npm run build-report
-```
+2. Open `developer console` pressing `F12`
+3. Select `Audits` tab
+4. Press `Run audits` blue button on the bottom of the tab
