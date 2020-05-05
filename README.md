@@ -63,7 +63,7 @@ Grecu Alexandru aka [`grecdev`](https://github.com/grecdev)
 
 ### License:
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/grecdev/FitnessClub-Gym-Portfolio/blob/master/LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/grecdev/Grestate-Portfolio/blob/master/LICENSE.md) file for details
 
 ***Additional information:***
 
