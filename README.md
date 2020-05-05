@@ -42,7 +42,7 @@ npm install
 1. Smooth Scroll
 2. Form regex validation
 3. Single Page Application
-4. For state management i used: `state hook / class component setState / useReducer hook`
+4. For state management i used: `context api` + `state hook / class component setState / useReducer hook`
 5. Code splitting with lazy() and Suspense
 6. For my properties "database" i used a `json` file hosted with github pages
 7. For the property page i created an `infinite slideshow gallery`
