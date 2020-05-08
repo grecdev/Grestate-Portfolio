@@ -104,7 +104,7 @@ const SearchMap = () => {
 			<ReactMapGL
 				{...viewport}
 				onViewportChange={setViewport}
-				mapboxApiAccessToken={process.env.MAP_KEY}
+				mapboxApiAccessToken='pk.eyJ1IjoiZ3JlY2RldiIsImEiOiJjazc0eTBjZnEwcW9oM2tudncyaGdhemxvIn0.zgIjs4IpmpFNgxJaeVWjzw'
 				mapStyle='mapbox://styles/mapbox/dark-v10'
 			>
 				<Markers
