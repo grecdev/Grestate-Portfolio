@@ -28,7 +28,7 @@
 		
 			.home-showcase-text {
 				justify-content: flex-start !important;
-				padding: 10rem 2rem 5rem;
+				padding: 7rem 2rem 5rem;
 				text-align: center;
 
 				h1 { font-size: 2rem }
@@ -63,7 +63,7 @@
 		
 			.home-showcase-text {
 				justify-content: flex-start !important;
-				padding: 10rem 3rem 5rem;
+				padding: 7em 3rem 5rem;
 				text-align: center;
 
 				h1 { font-size: 2rem }
@@ -89,7 +89,7 @@
 
 			.home-showcase-text {
 				justify-content: flex-start !important;
-				padding: 6rem 2rem 5rem;
+				padding: 6rem 2rem 0;
 				text-align: center;
 
 				h1 { font-size: 2rem }
@@ -135,14 +135,12 @@
 // Iphone SE / Moto / Galaxy S5 - Portrait
 @media only screen
 	and (min-width: 320px)
-	and (max-width: 360px)
-	and (min-height: 568px)
 	and (max-height: 640px)
 	and (orientation: portrait)
 {
 
 	#home-showcase {
-		height: 135vh;
+		height: 150vh;
 
 		.container-fluid .home-showcase-text h1 { font-size: 1.5rem }
 	}
@@ -180,7 +178,7 @@
 		
 			.home-showcase-text {
 				justify-content: flex-start !important;
-				padding: 10rem 3rem 5rem;
+				padding: 7rem 3rem 5rem;
 				text-align: center;
 
 				h1 { font-size: 2rem }
@@ -240,13 +238,12 @@
 {
 
 	#home-showcase {
-		height: 220vh;
+		height: 200vh;
 
 		.container-fluid {
 		
 			.home-showcase-text {
 				justify-content: flex-start !important;
-				padding: 10rem 3rem 5rem;
 				text-align: center;
 
 				h1 { font-size: 2rem }

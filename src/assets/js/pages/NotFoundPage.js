@@ -1,24 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { GlobalContext } from '@context/GlobalContext';
-
+import Image from '@components/global_layout/Image';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const NotFoundPage = () => {
-
-	const { getImage } = useContext(GlobalContext);
 
 	return (
 		<>
 			<section id="not-found">
 				<Row className='m-0'>
 					<Col className='py-5 d-flex flex-column justify-content-center align-items-center'>
-						<img src={getImage('lost.svg')} alt='not found' />
+						<Image src='lost.svg' />
 					</Col>
 
-					<Col className='p-0 d-flex flex-column justify-content-center align-items-center'>
+					<Col className='d-flex flex-column justify-content-center align-items-center'>
 						<div>
 							<h1 className='text-center font-weight-bold mb-3'>404</h1>
 							<p>You sould stay on your path</p>

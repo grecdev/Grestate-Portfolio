@@ -39,8 +39,8 @@ const App = () => {
 	} = useContext(AuthenticationContext);
 
 	const fallback_style = {
-		fontWeight: 'bold',
 		fontSize: '2rem',
+		fontWeight: 'bold',
 		padding: '3rem'
 	}
 
