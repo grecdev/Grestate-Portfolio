@@ -47,7 +47,7 @@ npm install
 6. For my properties "database" i used a `json` file hosted with github pages
 7. For the property page i created an `infinite slideshow gallery`
 8. Filter functionality for properties
-9. Authentication with Firebase / Firestore
+9. [Authentication](https://firebase.google.com/docs/auth/web/start) with Firebase / Firestore
 10. Properties displayed on a [map](https://visgl.github.io/react-map-gl/)
 
 For `api data` fetching i used:
