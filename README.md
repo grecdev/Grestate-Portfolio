@@ -29,7 +29,7 @@ npm install
 
 ### I used the following technologies for this project:
 
-- Semantic HTML5
+- HTML5
 - [Sass](https://sass-lang.com/) (with `.scss` extension / syntax, see more details [here](https://sass-lang.com/documentation/syntax))
 - Media Queries ( Responsive Design )
 - React.js
