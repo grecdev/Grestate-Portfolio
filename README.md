@@ -30,12 +30,14 @@ npm install
 ### I used the following technologies for this project:
 
 - HTML5
-- [Sass](https://sass-lang.com/) (with `.scss` extension / syntax, see more details [here](https://sass-lang.com/documentation/syntax))
+- CSS 3 with [Sass](https://sass-lang.com/)
 - Media Queries ( Responsive Design )
+- Bootstrap
 - React.js
-- [Jump.js](http://callmecavs.com/jump.js/) library for smooth scroll
+- React bootstrap
 - [Webpack](https://github.com/webpack/webpack)
 - For `version control system` i used [Git](https://git-scm.com/)
+- Npm
 
 ### Features for this website:
 
