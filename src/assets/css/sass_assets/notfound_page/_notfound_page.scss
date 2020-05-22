@@ -1,18 +1,24 @@
-#not-found {
-	height: 75vh;
+#not-found-page {
+  height: 75vh;
 
-	.row { height: 100% }
+  .row {
+    height: 100%;
+  }
 
-	.row > div {
-		height: 100%;
-		width: 50%;
+  .row > div {
+    height: 100%;
+    width: 50%;
 
-		h1 { font-size: 10rem }
-		p {font-size: 2.5rem }
+    h1 {
+      font-size: 10rem;
+    }
+    p {
+      font-size: 2.5rem;
+    }
 
-		a {
-			font-size: 1.5rem;
-			text-decoration: none;
-		}
-	}
+    a {
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+  }
 }

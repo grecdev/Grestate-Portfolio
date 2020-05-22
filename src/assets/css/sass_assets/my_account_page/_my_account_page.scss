@@ -1,4 +1,11 @@
-#my-account .auth-loader {
-	width: 10% !important;
-	min-height: 80px;
+#my-account {
+  .auth-loader {
+    width: 10% !important;
+    min-height: 80px;
+  }
+}
+
+#account-not-found div img {
+  width: 30%;
+  margin: 0 auto;
 }
