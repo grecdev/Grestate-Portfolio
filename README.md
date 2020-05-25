@@ -2,7 +2,7 @@
 
 Want to buy a house ? Maybe rent some apartment, here is the perfect place to find the property that suit your needs.
 
-:computer: Live preview: [in progress]()
+:computer: [Live preview](https://grestate.grec.dev/)
 
 ### To properly run the website on your local machine:
 
@@ -13,10 +13,13 @@ Want to buy a house ? Maybe rent some apartment, here is the perfect place to fi
 2. Make sure you have the latest version of [Node.js](https://nodejs.org/en/download/)
 
 3. [node package manager](https://docs.npmjs.com/about-npm/), run the following command in the `CLI` (command line interface):
+
 ```
 npm install -g npm@latest
 ```
+
 4. Install all `dependencies / modules`, run the following command in the `CLI` (command line interface):
+
 ```
 npm install
 ```
@@ -53,6 +56,7 @@ npm install
 10. Properties displayed on a [map](https://visgl.github.io/react-map-gl/)
 
 For `api data` fetching i used:
+
 ```
 XMLHttpRequest()
 Fetch api
@@ -67,9 +71,9 @@ Grecu Alexandru aka [`grecdev`](https://github.com/grecdev)
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/grecdev/Grestate-Portfolio/blob/master/LICENSE.md) file for details
 
-***Additional information:***
+**_Additional information:_**
 
-:iphone: Check for `responsive design` in chrome: 
+:iphone: Check for `responsive design` in chrome:
 
 1. Open `developer console` pressing `F12`
 2. Click on the `Toggle Device Toolbar` button or press `Ctrl + Shift + M`
