@@ -1,110 +1,117 @@
-import React, { useContext, memo } from 'react';
-import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useContext, memo } from "react";
+import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 
-import { GlobalContext } from '@context/GlobalContext';
+import { GlobalContext } from "@context/GlobalContext";
 
-import pin1 from '../../../media/pin-1.svg';
-import hightlight_pin1 from '../../../media/hightlight-pin-1.svg';
+import pin1 from "../../../media/pin-1.svg";
+import hightlight_pin1 from "../../../media/hightlight-pin-1.svg";
 
-import pin2 from '../../../media/pin-2.svg';
-import hightlight_pin2 from '../../../media/hightlight-pin-2.svg';
+import pin2 from "../../../media/pin-2.svg";
+import hightlight_pin2 from "../../../media/hightlight-pin-2.svg";
 
-import Image from '@components/global_layout/Image';
+import Image from "@components/global_layout/Image";
 
 const PropertyBox = ({ array }) => {
+  const { changePage, location, isMobile } = useContext(GlobalContext);
 
-	const {
+  const goToProperty = (e) => {
+    const propertyId = e.currentTarget.dataset.propertyId;
 
-		changePage,
-		location
+    location.includes("buy") &&
+      changePage(`/buy-properties/house-${propertyId}`);
+    location.includes("rent") &&
+      changePage(`/rental-listings/house-${propertyId}`);
 
-	} = useContext(GlobalContext);
+    e.stopPropagation();
+  };
 
-	const test = e => {
-		
-		const propertyId = e.currentTarget.dataset.propertyId;
+  const hightlightPin = (e) => {
+    if (!isMobile()) {
+      const pinIndex = e.currentTarget.dataset.pinIndex;
 
-		location.includes('buy') && changePage(`/buy-properties/house-${propertyId}`);
-		location.includes('rent') && changePage(`/rental-listings/house-${propertyId}`);
+      const pinImage = document.querySelectorAll(".marker-image")[pinIndex];
 
-		e.stopPropagation();
-	}
+      if (location.includes("buy")) {
+        e.type === "mouseenter" &&
+          pinImage.setAttribute("src", hightlight_pin1);
+        e.type === "mouseleave" && pinImage.setAttribute("src", pin1);
+      }
 
-	const hightlightPin = e => {
+      if (location.includes("rent")) {
+        e.type === "mouseenter" &&
+          pinImage.setAttribute("src", hightlight_pin2);
+        e.type === "mouseleave" && pinImage.setAttribute("src", pin2);
+      }
+    }
 
-		const pinIndex = e.currentTarget.dataset.pinIndex;
+    e.stopPropagation();
+  };
 
-		const pinImage = document.querySelectorAll('.marker-image')[pinIndex];
+  let price;
 
-		if(location.includes('buy')) {
-			
-			e.type === 'mouseenter' && pinImage.setAttribute('src', hightlight_pin1);
-			e.type === 'mouseleave' && pinImage.setAttribute('src', pin1);
-		}
+  return array.map((item, index) => {
+    if (item.propertyStatus === "buy") price = item.propertyPrice;
+    if (item.propertyStatus === "rent") price = item.propertyRent;
 
-		if(location.includes('rent')) {
+    return (
+      <div
+        key={uuidv4()}
+        className="property-box my-3"
+        data-property-id={item.id}
+        data-pin-index={index}
+        onMouseEnter={hightlightPin}
+        onMouseLeave={hightlightPin}
+        onClick={goToProperty}
+      >
+        <div className="rounded">
+          <Image src={item.propertyImages.showcaseImage} />
+        </div>
 
-			e.type === 'mouseenter' && pinImage.setAttribute('src', hightlight_pin2);
-			e.type === 'mouseleave' && pinImage.setAttribute('src', pin2);
-		}
-		
-		e.stopPropagation();
-	}
+        <div className="property-box-info pt-3">
+          <p className="font-weight-bold m-0">{item.addressLocation}</p>
+          <p className="text-black-50 mb-1">{item.addressCity}</p>
 
-	let price;
+          <p className="price font-weight-bold">
+            ${parseFloat(price).toLocaleString()}
+          </p>
+        </div>
 
-	return array.map((item, index) => {
-		
-		if(item.propertyStatus === 'buy') price = item.propertyPrice
-		if(item.propertyStatus === 'rent') price = item.propertyRent
+        <div className="features-preview d-flex flex-row justify-content-start align-items-center">
+          <div className="position-relative">
+            <p className="pr-3">
+              <i className="fas fa-bed mr-1"></i> {item.bedrooms}
+            </p>
+            <div className="d-none p-2 text-center position-absolute pop-up">
+              Bedrooms
+            </div>
+          </div>
 
-		return (
+          <div className="position-relative">
+            <p className="pr-3">
+              <i className="fas fa-bath mr-1"></i> {item.bathrooms}
+            </p>
+            <div className="d-none p-2 text-center position-absolute pop-up">
+              Bathrooms
+            </div>
+          </div>
 
-			<div
-				key={uuidv4()}
-				className="property-box my-3"
-				data-property-id={item.id}
-				data-pin-index={index}
-				onMouseEnter={hightlightPin}
-				onMouseLeave={hightlightPin}
-				onClick={test}
-			>
-				<div className='rounded'>
-					<Image src={item.propertyImages.showcaseImage} />
-				</div>
-
-				<div className="property-box-info pt-3">
-					<p className='font-weight-bold m-0'>{item.addressLocation}</p>
-					<p className='text-black-50 mb-1'>{item.addressCity}</p>
-
-					<p className='price font-weight-bold'>${parseFloat(price).toLocaleString()}</p>
-				</div>
-
-				<div className="features-preview d-flex flex-row justify-content-start align-items-center">
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-bed mr-1"></i> {item.bedrooms}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Bedrooms</div>
-					</div>
-
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-bath mr-1"></i> {item.bathrooms}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Bathrooms</div>
-					</div>
-
-					<div className='position-relative'>
-						<p className='pr-3'><i className="fas fa-ruler-combined mr-1"></i> {item.propertySize}</p>
-						<div className='d-none p-2 text-center position-absolute pop-up'>Lot Size</div>
-					</div>
-				</div>
-			</div>
-
-		)
-	});
+          <div className="position-relative">
+            <p className="pr-3">
+              <i className="fas fa-ruler-combined mr-1"></i> {item.propertySize}
+            </p>
+            <div className="d-none p-2 text-center position-absolute pop-up">
+              Lot Size
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  });
 };
 
 PropertyBox.propTypes = {
-	array: PropTypes.array.isRequired
-}
+  array: PropTypes.array.isRequired,
+};
 
 export default memo(PropertyBox);
