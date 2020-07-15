@@ -1,12 +1,12 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, { createContext, useEffect, useReducer, useState } from 'react';
 
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
-import GlobalReducer from "@reducers/GlobalReducer";
-import { CHANGE_LOCATION } from "@constants/actionTypes";
+import GlobalReducer from '@reducers/GlobalReducer';
+import { CHANGE_LOCATION } from '@constants/actionTypes';
 
-import dark_icon from "../../media/header-menu-dark.svg";
+import dark_icon from '../../media/header-menu-dark.svg';
 
 export const GlobalContext = createContext();
 
@@ -34,18 +34,18 @@ const GlobalContextProvider = (props) => {
     else {
       setCounter(false);
       document
-        .querySelectorAll(".counter")
+        .querySelectorAll('.counter')
         .forEach(
           (counter) =>
-            (counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6))
+            (counter.textContent = Math.ceil(counter.dataset.incrementEnd / 6)),
         );
     }
   };
 
   const resetScroll = () => {
     if (window.pageYOffset >= 640)
-      document.getElementById("reset-scroll").classList.remove("d-none");
-    else document.getElementById("reset-scroll").classList.add("d-none");
+      document.getElementById('reset-scroll').classList.remove('d-none');
+    else document.getElementById('reset-scroll').classList.add('d-none');
 
     window.requestAnimationFrame(resetScroll);
   };
@@ -100,36 +100,36 @@ const GlobalContextProvider = (props) => {
   const clickEvent = (e) => {
     // Close the user header menu
     if (
-      !e.target.closest("#user-dropdown") &&
-      document.body.contains(document.getElementById("user-dropdown-menu"))
+      !e.target.closest('#user-dropdown') &&
+      document.body.contains(document.getElementById('user-dropdown-menu'))
     ) {
       document
-        .getElementById("user-dropdown-menu")
-        .classList.remove("dropdown-visible");
-      document.body.contains(document.getElementById("contact-location")) &&
-        (document.getElementById("contact-location").style.zIndex = "");
+        .getElementById('user-dropdown-menu')
+        .classList.remove('dropdown-visible');
+      document.body.contains(document.getElementById('contact-location')) &&
+        (document.getElementById('contact-location').style.zIndex = '');
     }
 
     // Close the mobile navbar
-    if (!e.target.closest(".mobile-navbar-dropdown") && isMobile()) {
+    if (!e.target.closest('.mobile-navbar-dropdown') && isMobile()) {
       // Enable the click event on the menu icon when we don't click on it ( menu icon )
       if (
-        !e.target.id.includes("mobile-navbar-icon") &&
-        !e.target.parentElement.id.includes("mobile-navbar-icon")
+        !e.target.id.includes('mobile-navbar-icon') &&
+        !e.target.parentElement.id.includes('mobile-navbar-icon')
       )
         document
-          .getElementById("mobile-navbar-icon")
-          .setAttribute("data-menu-enabled", "false");
+          .getElementById('mobile-navbar-icon')
+          .setAttribute('data-menu-enabled', 'false');
 
       document
-        .querySelector(".mobile-navbar-dropdown")
-        .classList.remove("show-navbar");
-      document.body.contains(document.getElementById("contact-location")) &&
-        (document.getElementById("contact-location").style.zIndex = "");
+        .querySelector('.mobile-navbar-dropdown')
+        .classList.remove('show-navbar');
+      document.body.contains(document.getElementById('contact-location')) &&
+        (document.getElementById('contact-location').style.zIndex = '');
 
       document
-        .getElementById("mobile-navbar-icon")
-        .children[0].setAttribute("src", dark_icon);
+        .getElementById('mobile-navbar-icon')
+        .children[0].setAttribute('src', dark_icon);
     }
 
     e.stopPropagation();
@@ -137,35 +137,35 @@ const GlobalContextProvider = (props) => {
 
   const loadEvent = () => {
     setTimeout(() => {
-      document.querySelector("html").classList.remove("overflow-hidden");
-      document.getElementById("intro-loader").classList.add("hidden");
-      setTimeout(() => document.getElementById("intro-loader").remove(), 300);
+      document.querySelector('html').classList.remove('overflow-hidden');
+      document.getElementById('intro-loader').classList.add('hidden');
+      setTimeout(() => document.getElementById('intro-loader').remove(), 300);
     }, 2500);
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", clickEvent, true);
-    window.addEventListener("scroll", scrollEvent, true);
-    window.addEventListener("load", loadEvent, true);
+    document.addEventListener('mousedown', clickEvent, true);
+    window.addEventListener('scroll', scrollEvent, true);
+    window.addEventListener('load', loadEvent, true);
 
     return () => {
-      document.removeEventListener("click", clickEvent, true);
-      window.removeEventListener("scroll", scrollEvent, true);
-      window.removeEventListener("load", loadEvent, true);
+      document.removeEventListener('click', clickEvent, true);
+      window.removeEventListener('scroll', scrollEvent, true);
+      window.removeEventListener('load', loadEvent, true);
     };
   }, []);
 
   useEffect(() => {
     dispatch({ type: CHANGE_LOCATION, payload: location.pathname });
 
-    location.pathname !== "/" && document.body.classList.add("header-space");
+    location.pathname !== '/' && document.body.classList.add('header-space');
 
     window.scrollTo(0, 0);
 
     isMobile() &&
       document
-        .getElementById("mobile-navbar-icon")
-        .children[0].setAttribute("src", dark_icon);
+        .getElementById('mobile-navbar-icon')
+        .children[0].setAttribute('src', dark_icon);
   }, [location.pathname]);
 
   return (
