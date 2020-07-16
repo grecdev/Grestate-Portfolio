@@ -1,11 +1,4 @@
-import React, {
-	
-	useEffect,
-	useReducer,
-	createContext,
-	useContext
-	
-} from 'react';
+import React, { useEffect, useReducer, createContext, useContext } from 'react';
 
 export const FetchContext = createContext();
 
@@ -13,145 +6,139 @@ import { GlobalContext } from '@context/GlobalContext';
 
 import FetchReducer from '@reducers/FetchReducer';
 import {
-
-	GET_DATABASE,
-	SET_BUY_PROPERTIES,
-	SET_RENTAL_PROPERTIES,
-	FILTER_BUY_PROPERTIES,
-	FILTER_RENTAL_PROPERTIES,
-	SET_LOADER
-
+  GET_DATABASE,
+  SET_BUY_PROPERTIES,
+  SET_RENTAL_PROPERTIES,
+  FILTER_BUY_PROPERTIES,
+  FILTER_RENTAL_PROPERTIES,
+  SET_LOADER,
 } from '@constants/actionTypes';
 
 const FetchContextProvider = (props) => {
+  const { children } = props;
 
-	const { children } = props;
+  const { location } = useContext(GlobalContext);
 
-	const { location } = useContext(GlobalContext);
+  const defaultDatabaseState = {
+    db: [],
+    buy_properties: [],
+    rent_properties: [],
+    filtered_buy_properties: [],
+    filtered_rent_properties: [],
+    loader: false,
+  };
 
-	const defaultDatabaseState = {
-		db: [],
-		buy_properties: [],
-		rent_properties: [],
-		filtered_buy_properties: [],
-		filtered_rent_properties: [],
-		loader: false
-	}
+  const [state, dispatch] = useReducer(FetchReducer, defaultDatabaseState);
 
-	const [state, dispatch] = useReducer(FetchReducer, defaultDatabaseState);
+  // When we search from the form
+  const searchProperty = (data, target) => {
+    dispatch({ type: SET_LOADER, payload: true });
 
-	// When we search from the form
-	const searchProperty = (data, target) => {
+    target.name.includes('buy') &&
+      dispatch({ type: SET_BUY_PROPERTIES, payload: data });
+    target.name.includes('rent') &&
+      dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
 
-		dispatch({ type: SET_LOADER, payload: true });
-		
-		target.name.includes('buy') && dispatch({ type: SET_BUY_PROPERTIES, payload: data });
-		target.name.includes('rent') && dispatch({ type: SET_RENTAL_PROPERTIES, payload: data });
+    dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
+    dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
 
-		dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
-		dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
+    setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+  };
 
-		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
-	}
+  // When we apply some filters on search property page
+  const filterProperty = (data, location) => {
+    dispatch({ type: SET_LOADER, payload: true });
 
-	// When we apply some filters on search property page
-	const filterProperty = (data, location) => {
+    if (location.includes('buy'))
+      dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
+    if (location.includes('rent'))
+      dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: data });
 
-		dispatch({ type: SET_LOADER, payload: true });
+    setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
+  };
 
-		if(location.includes('buy')) dispatch({ type: FILTER_BUY_PROPERTIES, payload: data });
-		if(location.includes('rent')) dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: data });
+  const getXhr = () => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
 
-		setTimeout(() => dispatch({ type: SET_LOADER, payload: false }), 700);
-	}
+      xhr.open(
+        'GET',
+        'https://grecdev.github.io/json-api/properties.json',
+        true,
+      );
 
-	const getXhr = () => {
+      xhr.onload = () => {
+        const response = JSON.parse(xhr.responseText);
 
-		return new Promise((resolve, reject) => {
+        xhr.status >= 400 ? reject(response) : resolve(response);
+      };
 
-			const xhr = new XMLHttpRequest();
+      xhr.onerror = () => reject('Some error occurred');
 
-			xhr.open('GET', 'https://grecdev.github.io/json-api/properties.json', true);
+      xhr.send();
+    });
+  };
 
-			xhr.onload = () => {
+  const getFetch = () => {
+    return new Promise((resolve, reject) => {
+      fetch('https://grecdev.github.io/json-api/properties.json')
+        .then(errorHandling)
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
 
-				const response = JSON.parse(xhr.responseText);
+      function errorHandling(response) {
+        if (!response.ok) throw Error(response.statusText);
 
-				xhr.status >= 400 ? reject(response) : resolve(response);
-			}
+        return response.json();
+      }
+    });
+  };
 
-			xhr.onerror = () => reject('Some error occurred');
+  const getAjax = async () => {
+    const response = await fetch(
+      'https://grecdev.github.io/json-api/properties.json',
+    );
+    const data = await response.json();
 
-			xhr.send();
-		});
-	}
+    return data;
+  };
 
-	const getFetch = () => {
+  useEffect(() => {
+    getXhr()
+      .then((data) => dispatch({ type: GET_DATABASE, payload: data }))
+      .catch((err) => console.log(err));
+  }, []);
 
-		return new Promise((resolve, reject) => {
+  useEffect(() => {
+    if (location !== undefined) {
+      dispatch({ type: SET_LOADER, payload: false });
 
-			fetch('https://grecdev.github.io/json-api/properties.json')
-				.then(errorHandling)
-				.then(data => resolve(data))
-				.catch(err => reject(err))
+      // So when change between these 2 pages clear the filtered array
+      // So it won't show the buy properties on rent page or vice-versa
+      if (location.includes('buy')) {
+        dispatch({ type: SET_RENTAL_PROPERTIES, payload: [] });
+        dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
+      }
 
-			function errorHandling(response) {
+      if (location.includes('rental')) {
+        dispatch({ type: SET_BUY_PROPERTIES, payload: [] });
+        dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
+      }
+    }
+  }, [location]);
 
-				if (!response.ok) throw Error(response.statusText)
-
-				return response.json();
-			}
-		});
-	}
-
-	const getAjax = async () => {
-
-		const response = await fetch('https://grecdev.github.io/json-api/properties.json');
-		const data = await response.json();
-
-		return data;
-	}
-
-	useEffect(() => {
-
-		getXhr()
-			.then(data => dispatch({ type: GET_DATABASE, payload: data }))
-			.catch(err => console.log(err));
-
-	}, []);
-
-	useEffect(() => {
-
-		if(location !== undefined) {
-
-			dispatch({ type: SET_LOADER, payload: false });
-
-			if(!location.includes('buy')) {
-				
-				dispatch({ type: SET_BUY_PROPERTIES, payload: [] });
-				dispatch({ type: FILTER_BUY_PROPERTIES, payload: [] });
-			}
-
-			if(!location.includes('rental')) {
-
-				dispatch({ type: SET_RENTAL_PROPERTIES, payload: [] });
-				dispatch({ type: FILTER_RENTAL_PROPERTIES, payload: [] });
-			}
-		}
-
-	}, [location]);
-
-	return (
-
-		<FetchContext.Provider value={{
-			...state,
-			searchProperty,
-			filterProperty
-		}}>
-			{children}
-		</FetchContext.Provider>
-	)
-}
+  return (
+    <FetchContext.Provider
+      value={{
+        ...state,
+        searchProperty,
+        filterProperty,
+      }}
+    >
+      {children}
+    </FetchContext.Provider>
+  );
+};
 
 FetchContextProvider.whyDidYouRender = true;
 
