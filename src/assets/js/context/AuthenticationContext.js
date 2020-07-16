@@ -1,8 +1,8 @@
-import React, { Component, createContext } from "react";
+import React, { Component, createContext } from 'react';
 
-import { firebase_auth, firebase_db } from "../firebaseConfig";
+import { firebase_auth, firebase_db } from '../firebaseConfig';
 
-import { GlobalContext } from "./GlobalContext.js";
+import { GlobalContext } from './GlobalContext.js';
 
 export const AuthenticationContext = createContext();
 export class AuthenticationContextProvider extends Component {
@@ -21,19 +21,19 @@ export class AuthenticationContextProvider extends Component {
   toggleModal(e) {
     const { tagName, id, textContent, parentElement, classList } = e.target;
 
-    if (document.body.contains(document.getElementById("mobile-navbar"))) {
+    if (document.body.contains(document.getElementById('mobile-navbar'))) {
       document
-        .querySelector(".mobile-navbar-dropdown")
-        .classList.remove("show-navbar");
+        .querySelector('.mobile-navbar-dropdown')
+        .classList.remove('show-navbar');
       // When the authentication modal appears, enable the mobile menu event
       document
-        .getElementById("mobile-navbar-icon")
-        .setAttribute("data-menu-enabled", "false");
+        .getElementById('mobile-navbar-icon')
+        .setAttribute('data-menu-enabled', 'false');
     }
 
     // Clicking on the header links or buttons inside the modal
-    if (tagName === "BUTTON" || tagName === "A") {
-      if (textContent.toLowerCase().replace(/ /g, "").includes("login")) {
+    if (tagName === 'BUTTON' || tagName === 'A') {
+      if (textContent.toLowerCase().replace(/ /g, '').includes('login')) {
         this.setState({
           login_enabled: true,
           signup_enabled: false,
@@ -43,7 +43,7 @@ export class AuthenticationContextProvider extends Component {
         });
       }
 
-      if (textContent.toLowerCase().includes("sign up")) {
+      if (textContent.toLowerCase().includes('sign up')) {
         this.setState({
           login_enabled: false,
           signup_enabled: true,
@@ -55,9 +55,9 @@ export class AuthenticationContextProvider extends Component {
     }
 
     if (
-      classList.contains("close-modal") ||
-      parentElement.classList.contains("close-modal") ||
-      id === "authentication-modal"
+      classList.contains('close-modal') ||
+      parentElement.classList.contains('close-modal') ||
+      id === 'authentication-modal'
     ) {
       this.setState({
         login_enabled: false,
@@ -69,7 +69,7 @@ export class AuthenticationContextProvider extends Component {
       });
     }
 
-    if (id.includes("reset-password-btn")) {
+    if (id.includes('reset-password-btn')) {
       this.setState({
         login_enabled: false,
         signup_enabled: false,
@@ -89,16 +89,16 @@ export class AuthenticationContextProvider extends Component {
     const x = window.top.outerWidth / 2 + window.top.screenX - height / 2;
 
     const auth = {
-      facebook_url: "https://www.facebook.com",
+      facebook_url: 'https://www.facebook.com',
       google_url:
-        "https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin",
+        'https://accounts.google.com/servicelogin/signinchooser?flowName=GlifWebSignIn&flowEntry=ServiceLogin',
       features: `location=yes,height=570,width=520,scrollbars=yes,status=yes, top=${y}, left=${x}`,
     };
 
-    if (e.currentTarget.className.includes("facebook"))
-      window.open(auth.facebook_url, "_blank", auth.features);
-    if (e.currentTarget.className.includes("google"))
-      window.open(auth.google_url, "_blank", auth.features);
+    if (e.currentTarget.className.includes('facebook'))
+      window.open(auth.facebook_url, '_blank', auth.features);
+    if (e.currentTarget.className.includes('google'))
+      window.open(auth.google_url, '_blank', auth.features);
 
     e.stopPropagation();
   }
@@ -119,11 +119,11 @@ export class AuthenticationContextProvider extends Component {
       .auth()
       .createUserWithEmailAndPassword(
         signup_state.email,
-        signup_state.confirm_password
+        signup_state.confirm_password,
       )
       .then((response) => {
         firebase_db
-          .collection("users")
+          .collection('users')
           .doc(response.user.uid)
           .set({
             first_name: signup_state.first_name,
@@ -162,11 +162,11 @@ export class AuthenticationContextProvider extends Component {
       .catch((err) => {
         this.setState({ auth_loader: false });
 
-        err.code.includes("wrong-password") &&
-          this.setState({ authentication_regex: "The password is invalid" });
-        err.code.includes("user-not-found") &&
+        err.code.includes('wrong-password') &&
+          this.setState({ authentication_regex: 'The password is invalid' });
+        err.code.includes('user-not-found') &&
           this.setState({
-            authentication_regex: "The user has not been found in our database",
+            authentication_regex: 'The user has not been found in our database',
           });
       });
   }
@@ -182,26 +182,26 @@ export class AuthenticationContextProvider extends Component {
         this.setState({
           auth_loader: false,
           authentication_regex:
-            "Reset link has been successfully sended to the registered email",
+            'Reset link has been successfully sended to the registered email',
         });
 
         setTimeout(
           () => this.setState({ authentication_regex: undefined }),
-          5000
+          5000,
         );
       })
       .catch((err) => {
         this.setState({ auth_loader: false });
 
-        err.code.includes("auth/user-not-found") &&
+        err.code.includes('auth/user-not-found') &&
           this.setState({
             authentication_regex:
-              "There is no user record corresponding to this email address. The user may have been deleted.",
+              'There is no user record corresponding to this email address. The user may have been deleted.',
           });
 
         setTimeout(
           () => this.setState({ authentication_regex: undefined }),
-          5000
+          5000,
         );
       });
   }
@@ -215,7 +215,7 @@ export class AuthenticationContextProvider extends Component {
       .auth()
       .signOut()
       .then(() => {
-        location.includes("my-account") && changePage("/");
+        location.includes('my-account') && changePage('/');
       })
       .catch(() => {});
   }
@@ -227,14 +227,14 @@ export class AuthenticationContextProvider extends Component {
 
     const credentials = firebase.auth.EmailAuthProvider.credential(
       current_user.email,
-      data.current_password
+      data.current_password,
     );
 
     current_user
       .reauthenticateWithCredential(credentials)
       .then(() => {
         firebase_db
-          .collection("users")
+          .collection('users')
           .doc(current_user.uid)
           .update({
             first_name: data.first_name,
@@ -286,13 +286,13 @@ export class AuthenticationContextProvider extends Component {
           // And it won't show any loader
         } else {
           this.setState({
-            authentication_regex: "Profile successfully updated",
+            authentication_regex: 'Profile successfully updated',
             auth_loader: false,
           });
 
           setTimeout(
             () => this.setState({ authentication_regex: undefined }),
-            3000
+            3000,
           );
         }
 
@@ -301,32 +301,34 @@ export class AuthenticationContextProvider extends Component {
       .catch((err) => {
         this.setState({ auth_loader: false });
 
-        if (err.code.includes("wrong-password"))
-          this.setState({ authentication_regex: "The password is invalid" });
+        if (err.code.includes('wrong-password'))
+          this.setState({ authentication_regex: 'The password is invalid' });
 
-        if (err.code.includes("too-many-requests")) {
+        if (err.code.includes('too-many-requests')) {
           this.setState({
             authentication_regex: `${err.message.slice(
               0,
-              err.message.length - 1
+              err.message.length - 1,
             )} in 15 seconds.`,
             auth_loader: false,
           });
 
           setTimeout(
             () => this.setState({ authentication_regex: undefined }),
-            15000
+            15000,
           );
         }
       });
   }
 
   deleteUser(password) {
+    const { changePage } = this.context;
+
     const current_user = firebase_auth.auth().currentUser;
 
     const credentials = firebase.auth.EmailAuthProvider.credential(
       current_user.email,
-      password
+      password,
     );
 
     this.setState({ auth_loader: true, authentication_regex: undefined });
@@ -339,7 +341,7 @@ export class AuthenticationContextProvider extends Component {
         this.state.unsubscribe();
 
         firebase_db
-          .collection("users")
+          .collection('users')
           .doc(current_user.uid)
           .delete()
           .then(() => {})
@@ -347,30 +349,30 @@ export class AuthenticationContextProvider extends Component {
 
         current_user
           .delete()
-          .then(() => {})
+          .then(() => changePage('/'))
           .catch(() => {});
 
         // An re-authentication error happened.
       })
       .catch((err) => {
-        if (err.code.includes("wrong-password"))
+        if (err.code.includes('wrong-password'))
           this.setState({
-            authentication_regex: "Wrong password",
+            authentication_regex: 'Wrong password',
             auth_loader: false,
           });
 
-        if (err.code.includes("too-many-requests")) {
+        if (err.code.includes('too-many-requests')) {
           this.setState({
             authentication_regex: `${err.message.slice(
               0,
-              err.message.length - 1
+              err.message.length - 1,
             )} in 15 seconds.`,
             auth_loader: false,
           });
 
           setTimeout(
             () => this.setState({ authentication_regex: undefined }),
-            15000
+            15000,
           );
         }
       });
@@ -380,7 +382,7 @@ export class AuthenticationContextProvider extends Component {
     firebase_auth.auth().onAuthStateChanged((user) => {
       if (user) {
         const unsubscribe = firebase_db
-          .collection("users")
+          .collection('users')
           .doc(user.uid)
           .onSnapshot((doc) => {
             doc.exists && this.setState({ user_data: doc.data() });
@@ -406,8 +408,8 @@ export class AuthenticationContextProvider extends Component {
         this.state.signup_enabled ||
         this.state.reset_password_enabled
       )
-        document.body.classList.add("overflow-hidden");
-      else document.body.classList.remove("overflow-hidden");
+        document.body.classList.add('overflow-hidden');
+      else document.body.classList.remove('overflow-hidden');
     }
   }
 
