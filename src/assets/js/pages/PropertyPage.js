@@ -27,13 +27,19 @@ const PropertyPage = ({ match }) => {
     match.params.house.includes('house') &&
     parseFloat(match.params.house.match(/\d/g).join(''));
 
+  const { changePage, location } = useContext(GlobalContext);
   const { db } = useContext(FetchContext);
 
   const [property, setProperty] = useState(undefined);
 
   useEffect(() => {
-    // Get the property from database
-    db.filter((item) => item.id === houseId && setProperty(item));
+    // If fails to fetch from database and is on the property page then redirect to the search page
+    if (db.length === 0) {
+      location.includes('buy') && changePage('/buy-properties');
+      location.includes('rent') && changePage('/rental-listings');
+
+      // If not get the property
+    } else db.filter((item) => item.id === houseId && setProperty(item));
   }, []);
 
   const defaultSliderState = {
