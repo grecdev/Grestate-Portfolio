@@ -5,7 +5,6 @@ import { GlobalContext } from '@context/GlobalContext';
 
 import Image from '@components/global_layout/Image';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const ImageSliderSmall = (props) => {
   const {
@@ -54,6 +53,7 @@ const ImageSliderSmall = (props) => {
       else image_pos = image_width * (index - shownImage);
 
       image.style.transform = `${direction}(${image_pos}px)`;
+
       const current_pos = parseFloat(
         image.style.transform.match(/[\d\-]/g).join(''),
       );
@@ -152,8 +152,8 @@ const ImageSliderSmall = (props) => {
 
   return (
     <section id='images-slider-small'>
-      <Row className='m-0'>
-        <Col className='d-flex flex-column justify-content-between align-items-start p-0 col-12 col-lg-3 col-md-12 mr-3'>
+      <Row className='m-0 flex-nowrap'>
+        <div className='d-flex flex-column justify-content-between align-items-start p-0 mr-3'>
           {
             // Here the images will always render when we click on them so, i can't use throttle helper
             // But i use a 'throttle workaround'
@@ -178,39 +178,37 @@ const ImageSliderSmall = (props) => {
               }
             })
           }
-        </Col>
+        </div>
 
-        <Col className='p-0 col-lg-8 col-12 col-md-12'>
-          <div className='image-showcase position-relative overflow-hidden'>
-            {images.map((image, index) => {
-              if (index < 3)
-                return (
-                  <div
-                    key={image}
-                    data-image-index={index}
-                    className='review-image rounded position-absolute'
-                  >
-                    <Image src={image} />
-                  </div>
-                );
-            })}
+        <div className='image-showcase position-relative overflow-hidden d-flex flex-column'>
+          {images.map((image, index) => {
+            if (index < 3)
+              return (
+                <div
+                  key={image}
+                  data-image-index={index}
+                  className='review-image rounded position-absolute'
+                >
+                  <Image src={image} />
+                </div>
+              );
+          })}
 
-            <p className='position-absolute px-3 py-1 rounded'>
-              <span>{shownImage + 1}</span> / {images.length}
-            </p>
+          <p className='position-absolute px-3 py-1 rounded'>
+            <span>{shownImage + 1}</span> / {images.length}
+          </p>
 
-            <div
-              className='rounded position-absolute d-flex flex-column justify-content-center align-items-center'
-              onClick={toggleSlider}
-            >
-              {!isMobile() && (
-                <p>
-                  See more images <i className='ml-2 fas fa-images'></i>
-                </p>
-              )}
-            </div>
+          <div
+            className='rounded position-absolute d-flex flex-column justify-content-center align-items-center'
+            onClick={toggleSlider}
+          >
+            {!isMobile() && (
+              <p>
+                See more images <i className='ml-2 fas fa-images'></i>
+              </p>
+            )}
           </div>
-        </Col>
+        </div>
       </Row>
     </section>
   );

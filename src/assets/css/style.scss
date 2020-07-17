@@ -4,8 +4,8 @@
 @import './sass_assets/utilities/utility';
 
 // Charts
-@import "./chartist/chartist-settings";
-@import "./chartist/chartist";
+@import './chartist/chartist-settings';
+@import './chartist/chartist';
 
 // Global layout
 @import './sass_assets/global_layout/header/header';
@@ -57,6 +57,7 @@
 @import './sass_assets/search_property_page/search_property_mobile';
 
 // Property page
+@import './sass_assets/property_page/property_page';
 @import './sass_assets/property_page/images_slider_small';
 @import './sass_assets/property_page/property_details';
 @import './sass_assets/property_page/images_slider_big';
