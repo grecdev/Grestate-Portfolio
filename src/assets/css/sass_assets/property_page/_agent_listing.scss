@@ -1,51 +1,55 @@
 #property-page #right-side #agent-listing {
+  > div:first-child {
+    position: relative;
+    top: 3px;
+    border-width: 2px !important;
+  }
 
-	> div:first-child {
-		position: relative;
-		top: 3px;
-		border-width: 2px !important;
-	}
+  .agent-card-header div {
+    width: 100px;
+    height: 100px;
+  }
 
-	.agent-card-header div {
-		width: 100px;
-		height: 100px;
-	}
+  .agent-card-info {
+    background: $green-dark;
+    width: 90%;
 
-	.agent-card-info {
-		background: $green-dark;
-		width: 90%;
+    .number p {
+      &:first-child {
+        width: 100px;
+      }
 
-		.number p {
+      &:last-child {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
 
-			&:first-child { width: 100px }
+  .agent-card-footer {
+    width: 100%;
+    background: $dark-2;
+    position: relative;
 
-			&:last-child {
-				text-decoration: underline;
-				cursor: pointer;
-			}
-		}
-	}
+    button:first-child {
+      background: $green-dark;
+      color: $white;
+      transition: all 100ms ease-in-out;
 
-	.agent-card-footer {
-		width: 100%;
-		background: $dark-2;
-		position: relative;
+      &:hover {
+        background: lighten($green-dark, 10%);
+      }
+    }
 
-		button:first-child {
-			background: $green-dark;
-			color: $white;
-			transition: all 100ms ease-in-out;
+    button:last-child {
+      background: none;
+      color: $white;
+      border: 1px solid transparent;
+      transition: border-color 100ms ease-in-out;
 
-			&:hover { background: lighten($green-dark, 10%)}
-		}
-
-		button:last-child {
-			background: none;
-			color: $white;
-			border: 1px solid transparent;
-			transition: border-color 100ms ease-in-out;
-
-			&:hover { border-color: $white !important }
-		}
-	}
+      &:hover {
+        border-color: $white !important;
+      }
+    }
+  }
 }

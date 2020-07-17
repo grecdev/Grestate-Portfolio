@@ -1,52 +1,68 @@
 #property-page #left-side #images-slider-small {
+  .row {
+    > div:first-child {
+      width: 25%;
+    }
 
-	.image-small {
-		width: 100%;
-		cursor: pointer;
-		border: 2px solid transparent;
-		padding: .1rem;
-		transition: all 100ms ease-in-out;
-		@include user-select;
-		
-		&:last-child { margin: 0 !important }
+    > div:last-child {
+      width: 100%;
+    }
+  }
 
-		&.selected { border-color: $green-dark }
+  .image-small {
+    cursor: pointer;
+    border: 2px solid transparent;
+    padding: 0.1rem;
+    transition: all 100ms ease-in-out;
+    @include user-select;
 
-		&:not(.selected):hover img { opacity: 0.8 }
-	}
-	
-	.image-showcase {
-		height: 100%;
-		width: 100%;
-		cursor: pointer;
+    &:last-child {
+      margin: 0 !important;
+    }
 
-		.review-image {
-			transition: transform 350ms ease-in-out;
-			height: 100%;
-			width: 100%;
+    &.selected {
+      border-color: $green-dark;
+    }
 
-			&:hover { opacity: 0.9 }
-		}
+    &:not(.selected):hover img {
+      opacity: 0.8;
+    }
+  }
 
-		> p {
-			bottom: 0;
-			right: 10px;
-			background: rgba($dark-1, .7);
-			color: $white;
-		}
+  .image-showcase {
+    cursor: pointer;
 
-		> div:not(.review-image) {
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-			background: rgba(#000, 0.7);
-			color: $white;
-			font-size: 1.3rem;
-			opacity: 0;
-			transition: opacity 300ms ease-in-out;
-		}
+    .review-image {
+      transition: transform 350ms ease-in-out;
+      height: 100%;
+      width: 100%;
 
-		&:hover > div:not(.review-image) { opacity: 1 }
-	}
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    > p {
+      bottom: 0;
+      right: 10px;
+      background: rgba($dark-1, 0.7);
+      color: $white;
+    }
+
+    > div:not(.review-image) {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(#000, 0.7);
+      color: $white;
+      font-size: 1.3rem;
+      opacity: 0;
+      transition: opacity 300ms ease-in-out;
+    }
+
+    &:hover > div:not(.review-image) {
+      opacity: 1;
+    }
+  }
 }

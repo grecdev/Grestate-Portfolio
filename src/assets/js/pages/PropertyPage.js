@@ -72,8 +72,8 @@ const PropertyPage = ({ match }) => {
         <Container className='py-4 px-0'>
           <h1 className='mb-4'>Property Review</h1>
 
-          <Row className='m-0 align-items-start'>
-            <Col id='left-side' className='col-lg-8 col-md-12 p-0'>
+          <Row className='m-0 justify-content-between align-items-start'>
+            <div id='left-side' className='p-0'>
               <ImageSliderSmall
                 images={property.propertyImages.reviewImages}
                 shownImage={slider_state.shown_image}
@@ -84,11 +84,11 @@ const PropertyPage = ({ match }) => {
               />
 
               <PropertyDetails info={property} />
-            </Col>
+            </div>
 
-            <Col id='right-side' className='col-lg-4 col-md-12 p-0'>
+            <div id='right-side' className='p-0'>
               <AgentListing agent={property.listingAgent} />
-            </Col>
+            </div>
           </Row>
 
           {slider_state.slider_modal_visible && (
