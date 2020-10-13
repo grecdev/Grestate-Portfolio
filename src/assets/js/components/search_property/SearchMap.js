@@ -85,12 +85,14 @@ const SearchMap = () => {
     }));
   }, [map_state.properties]);
 
+  const map_key = 'pk.eyJ1IjoiZ3JlY2RldiIsImEiOiJjazc0eTBjZnEwcW9oM2tudncyaGdhemxvIn0.zgIjs4IpmpFNgxJaeVWjzw';
+
   return (
     <section id="search-map">
       <ReactMapGL
         {...viewport}
         onViewportChange={setViewport}
-        mapboxApiAccessToken={process.env.REACT_MAP_KEY}
+        mapboxApiAccessToken={map_key}
         mapStyle="mapbox://styles/mapbox/dark-v10"
       >
         <Markers
